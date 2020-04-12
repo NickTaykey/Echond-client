@@ -1,0 +1,19 @@
+{
+  "name": "note-app-client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NickTaykey/NoteAppClient.git"
+  },
+  "author": "Niccolò Toccane",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NickTaykey/NoteAppClient/issues"
+  },
+  "homepage": "https://github.com/NickTaykey/NoteAppClient#readme"
+}
