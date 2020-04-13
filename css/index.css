@@ -1,3 +1,7 @@
+#create-note-form{
+    display: none;
+}
+
 .note{
     margin: 30px auto;
 }

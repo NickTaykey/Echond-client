@@ -8,9 +8,17 @@
 </head>
 <body>
     <h1>Welcome to the note app!</h1>
+    <button type="button" id="create-note-btn">create a note</button>
+    <form id="create-note-form">
+        <label for="note-body">Note:</label>
+        <textarea id="note-body" name="body" cols="30" rows="10" placeholder="your note"></textarea>
+        <label for="note-pointed">Pointed?</label>
+        <input type="checkbox" name="pointed" id="note-pointed">
+        <button type="submit">Create</button>
+    </form>
     <div class="container"></div>
     <script>
-        const notesBaseUrl = "http://localhost:8888/notes"
+        const notesBaseUrl = "http://localhost:8888/notes";
     </script>
     <script src="./libs/jquery-3.1.1.min.js"></script>
     <script src="./js/index.js"></script>
