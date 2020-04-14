@@ -1,12 +1,5 @@
 const noteContainer = document.querySelector(".container");
 
-// toggle from display none to block or viceversa
-function toggleVisibility(element){
-    const display = element.style.display;
-    element.style.display = display==="block" ? "none" : "block";
-}
-
-
 // get all the notes
 $.get(
     notesBaseUrl, 
@@ -15,21 +8,7 @@ $.get(
         for(let i = 0; i<notes.length; i++){
             const note = notes[i];
             const oldContent = noteContainer.innerHTML;
-            const newContent = 
-            `
-            <div class="note" id=${note._id}>
-                <h3 class="title">${ note.body }</h3>
-                <button type="button" class="delete-note-btn">Delete Note</button>
-                <button type="button" class="edit-note-btn" id="">Edit</button>
-                <form action="${ notesBaseUrl }/${ note._id }" class="edit-note-form">
-                    <label for="note-${ note._id }-body">Your Note</label>
-                    <textarea name="body" id="note-${ note._id }-body" cols="30" rows="10">${ note.body }</textarea>
-                    <label for="note-${ note._id }-pointed">Pointed</label>
-                    <input type="checkbox" name="pointed" id="note-${ note._id }-pointed" ${ note.pointed ? "checked" : "" }>
-                    <button type="submit">Update</button>
-                </form>
-            </div>
-            `;
+            const newContent = coreMethods.generateNoteMarkup(note);
             noteContainer.innerHTML = oldContent + newContent;
         }        
     }
@@ -60,7 +39,7 @@ $(noteContainer).on("click", ".edit-note-btn", function(e){
     e.preventDefault();
     e.stopPropagation();
     const form = this.nextElementSibling;
-    toggleVisibility(form);
+    coreMethods.toggleVisibility(form);
 });
 
 // update a note
@@ -93,7 +72,7 @@ const createNoteBtn = document.getElementById("create-note-btn");
 createNoteBtn.addEventListener("click", function(e){
     e.preventDefault();
     const form = this.nextElementSibling;
-    toggleVisibility(form);
+    coreMethods.toggleVisibility(form);
 });
 
 // create the note
@@ -104,26 +83,12 @@ createNoteForm.addEventListener("submit", function(e){
     $.post(notesBaseUrl, data, function(response){
         const { note } = response;
         const previousContent = noteContainer.innerHTML;
-        const newContent = 
-            `
-            <div class="note" id=${note._id}>
-                <h3 class="title">${ note.body }</h3>
-                <button type="button" class="delete-note-btn">Delete Note</button>
-                <button type="button" class="edit-note-btn" id="">Edit</button>
-                <form action="${ notesBaseUrl }/${ note._id }" class="edit-note-form">
-                    <label for="note-${ note._id }-body">Your Note</label>
-                    <textarea name="body" id="note-${ note._id }-body" cols="30" rows="10">${ note.body }</textarea>
-                    <label for="note-${ note._id }-pointed">Pointed</label>
-                    <input type="checkbox" name="pointed" id="note-${ note._id }-pointed" ${ note.pointed ? "checked" : "" }>
-                    <button type="submit">Update</button>
-                </form>
-            </div>
-            `;
+        const newContent = coreMethods.generateNoteMarkup(note);
         noteContainer.innerHTML = newContent + previousContent;
         const textarea = createNoteForm.children[1];
         textarea.value = "";
         const pointedCheckBox = createNoteForm.children[3];
         pointedCheckBox.checked = false;
-        toggleVisibility(createNoteForm);
+        coreMethods.toggleVisibility(createNoteForm);
     });
-})
+});
