@@ -38,7 +38,7 @@ $(noteContainer).on("click", ".delete-note-btn", function(e){
 $(noteContainer).on("click", ".edit-note-btn", function(e){
     e.preventDefault();
     e.stopPropagation();
-    const form = this.nextElementSibling;
+    const form = $(this).siblings(".edit-note-form")[0];
     coreMethods.toggleVisibility(form);
 });
 

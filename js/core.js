@@ -8,8 +8,9 @@ const coreMethods = {
         const markup = `
         <div class="note" id=${note._id}>
             <h3 class="title">${ note.body }</h3>
-            <button type="button" class="delete-note-btn">Delete Note</button>
+            <strong>Pointed: ${ note.pointed }</strong>
             <button type="button" class="edit-note-btn" id="">Edit</button>
+            <button type="button" class="delete-note-btn">Delete Note</button>
             <form action="${ notesBaseUrl }/${ note._id }" class="edit-note-form">
                 <label for="note-${ note._id }-body">Your Note</label>
                 <textarea name="body" id="note-${ note._id }-body" cols="30" rows="10">${ note.body }</textarea>

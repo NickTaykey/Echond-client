@@ -8,9 +8,25 @@
 </head>
 <body>
     <h1>Welcome to the note app!</h1>
-    <section id="search-bar">
-        <label for="search-field">Search</label>
-        <input type="text" placeholder="search a note" id="search-field" autofocus>
+    <section id="search-filter-bar">
+        <fieldset id="search-bar">
+            <label for="search-field">Search</label>
+            <input type="text" placeholder="search a note" id="search-field" autofocus>
+        </fieldset>
+        <fieldset id="filter-bar">
+            <label for="filter-date">From the older to the newer</label>
+            <input type="checkbox" name="filter-date" id="filter-date">
+            <br>
+            <label for="filter-pointed">Pointed notes</label>
+            <input type="checkbox" name="filter-pointed" id="filter-pointed">
+            <br>
+            <label for="filter-shared">Shared notes</label>
+            <input type="checkbox" name="" id="filter-shared">
+            <br>
+            <label for="filter-notebook">Notebooks</label>
+            <p>All the notebooks</p>
+            <button type="button" id="filter-notes">Find Notes</button>
+        </fieldset>
     </section>
     <button type="button" id="create-note-btn">create a note</button>
     <form id="create-note-form">
