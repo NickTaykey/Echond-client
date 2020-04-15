@@ -32,3 +32,11 @@ filterNotesBtn.addEventListener("click", function(e){
         });
     });
 });
+
+// reset filters feature
+const resetFiltersBtn = document.getElementById("reset-filters");
+resetFiltersBtn.addEventListener("click", function(e){
+    e.preventDefault();
+    const inputs =document.querySelectorAll("#filter-bar > input");
+    inputs.forEach(e=>e.checked=false);
+})
