@@ -2,7 +2,36 @@
     margin: 30px auto;
 }
 
+#search-field{
+    width: 250px;
+}
+
 #create-note-form{
+    display: none;
+}
+
+.selected-notebook{
+    border: 2px solid blue;;
+}
+
+
+.container{
+    display: flex;
+}
+
+.notebooks-container, .notes-container{
+    margin-right: 80px;
+}
+
+.notebooks-container{
+    border: 2px solid green;
+}
+
+.notes-container{
+    border: 2px solid red;
+}
+
+.edit-notebook-form{
     display: none;
 }
 

@@ -7,42 +7,55 @@
     <title>Note App | index</title>
 </head>
 <body>
-    <h1>Welcome to the note app!</h1>
-    <section id="search-filter-bar">
-        <fieldset id="search-bar">
-            <label for="search-field">Search</label>
-            <input type="text" placeholder="search a note" id="search-field" autofocus>
-        </fieldset>
-        <fieldset id="filter-bar">
-            <label for="filter-date">From the older to the newer</label>
-            <input type="checkbox" name="filter-date" id="filter-date">
-            <br>
-            <label for="filter-pointed">Pointed notes</label>
-            <input type="checkbox" name="filter-pointed" id="filter-pointed">
-            <br>
-            <label for="filter-shared">Shared notes</label>
-            <input type="checkbox" name="" id="filter-shared">
-            <br>
-            <label for="filter-notebook">Notebooks</label>
-            <p>All the notebooks</p>
-            <button type="button" id="filter-notes">Find Notes</button>
-        </fieldset>
+    <header id="page-header">
+
+        <h1>Welcome to the note app!</h1>
+        <section id="search-filter-bar">
+            <fieldset id="search-bar">
+                <label for="search-field">Search</label>
+                <input type="text" placeholder="search a note or a notebook" id="search-field" autofocus>
+            </fieldset>
+            <fieldset id="filter-bar">
+                <label for="filter-date">From the older to the newer</label>
+                <input type="checkbox" name="filter-date" id="filter-date">
+                <br>
+                <label for="filter-pointed">Pointed notes</label>
+                <input type="checkbox" name="filter-pointed" id="filter-pointed">
+                <br>
+                <label for="filter-shared">Shared notes</label>
+                <input type="checkbox" name="" id="filter-shared">
+                <br>
+                <label for="filter-notebook">Notebooks</label>
+                <ul id="notebooks-fiter-bar"></ul>
+                <button type="button" id="filter-notes">Find</button>
+            </fieldset>
+        </section>
+        <button type="button" id="create-note-btn">create a note</button>
+        <form id="create-note-form">
+            <label for="note-body">Note:</label>
+            <textarea id="note-body" name="body" cols="30" rows="10" placeholder="your note"></textarea>
+            <label for="note-pointed">Pointed?</label>
+            <input type="checkbox" name="pointed" id="note-pointed">
+            <button type="submit">Create</button>
+        </form>
+    </header>
+    <section class="container">
+        <div class="notebooks-container">
+            <h3>Notebooks</h3>
+        </div>
+        <div class="notes-container">
+            <h3>Notes</h3>
+        </div>
     </section>
-    <button type="button" id="create-note-btn">create a note</button>
-    <form id="create-note-form">
-        <label for="note-body">Note:</label>
-        <textarea id="note-body" name="body" cols="30" rows="10" placeholder="your note"></textarea>
-        <label for="note-pointed">Pointed?</label>
-        <input type="checkbox" name="pointed" id="note-pointed">
-        <button type="submit">Create</button>
-    </form>
-    <div class="container"></div>
     <script>
+        const defaultUrl = "http://localhost:8888";
         const notesBaseUrl = "http://localhost:8888/notes";
+        const notebooksBaseUrl = "http://localhost:8888/notebooks";
     </script>
     <script src="./libs/jquery-3.1.1.min.js"></script>
     <script src="./js/core.js"></script>
-    <script src="./js/index.js"></script>
+    <script src="./js/notebooks.js"></script>
+    <script src="./js/notes.js"></script>
     <script src="./js/searchAndFilter.js"></script>
 </body>
 </html>

@@ -1,21 +1,5 @@
-const noteContainer = document.querySelector(".container");
-
-// get all the notes
-$.get(
-    notesBaseUrl, 
-    function(response){
-        const { notes } = response;
-        for(let i = 0; i<notes.length; i++){
-            const note = notes[i];
-            const oldContent = noteContainer.innerHTML;
-            const newContent = coreMethods.generateNoteMarkup(note);
-            noteContainer.innerHTML = oldContent + newContent;
-        }        
-    }
-);
-
 // delete a note
-$(noteContainer).on("click", ".delete-note-btn", function(e){
+$(notesContainer).on("click", ".delete-note-btn", function(e){
     e.preventDefault();
     e.stopPropagation();
     const res = confirm("Are you sure you want to delete this note?");
@@ -35,7 +19,7 @@ $(noteContainer).on("click", ".delete-note-btn", function(e){
 });
 
 // show or hide edit note btn
-$(noteContainer).on("click", ".edit-note-btn", function(e){
+$(notesContainer).on("click", ".edit-note-btn", function(e){
     e.preventDefault();
     e.stopPropagation();
     const form = $(this).siblings(".edit-note-form")[0];
@@ -43,7 +27,7 @@ $(noteContainer).on("click", ".edit-note-btn", function(e){
 });
 
 // update a note
-$(noteContainer).on("submit", ".edit-note-form", function(e){
+$(notesContainer).on("submit", ".edit-note-form", function(e){
     e.preventDefault();
     e.stopPropagation();
     const data = $(this).serialize();
@@ -59,7 +43,9 @@ $(noteContainer).on("submit", ".edit-note-form", function(e){
             data,
             success: function(response){
                 const h3 = this.noteElement.children[0];
-                const form = this.noteElement.children[3];
+                const pointedLabel = this.noteElement.children[1];
+                pointedLabel.textContent = "Pointed: " + response.note.pointed;
+                const form = this.noteElement.children[4];
                 h3.textContent = response.note.body;
                 form.style.display = "none";
             }
@@ -82,9 +68,9 @@ createNoteForm.addEventListener("submit", function(e){
     const data = $(this).serialize();
     $.post(notesBaseUrl, data, function(response){
         const { note } = response;
-        const previousContent = noteContainer.innerHTML;
+        const previousContent = notesContainer.innerHTML;
         const newContent = coreMethods.generateNoteMarkup(note);
-        noteContainer.innerHTML = newContent + previousContent;
+        notesContainer.innerHTML = newContent + previousContent;
         const textarea = createNoteForm.children[1];
         textarea.value = "";
         const pointedCheckBox = createNoteForm.children[3];
