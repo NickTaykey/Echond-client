@@ -35,7 +35,6 @@ filterNotesBtn.addEventListener("click", function(e){
         .parents("#search-filter-bar")
         .find("#filter-date")[0]
         .checked;
-
     // FILTER THE NOTES BY DATE
     // remove all the notes from the DOM
     $(notesContainer).html("");

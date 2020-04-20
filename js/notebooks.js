@@ -106,3 +106,14 @@ $(notebooksContainer).on("click", ".delete-notebook-btn", function(e){
         })
     } 
 });
+
+// CREATE NOTEBOOK FEATURE
+
+// toggle create notebook form
+const createNotebookBtn = document.getElementById("create-notebook-btn");
+createNotebookBtn.addEventListener("click", function(e){
+    e.preventDefault();
+    $(this)
+        .siblings("#create-notebook-form")
+        .toggle();
+})
