@@ -28,10 +28,12 @@ filterNotesBtn.addEventListener("click", function(e){
     e.preventDefault();
     e.stopPropagation();
     const filterPointed = $(this)
-        .siblings("#filter-pointed")[0]
+        .parents("#search-filter-bar")
+        .find("#filter-pointed")[0]
         .checked;
     const filterDate = $(this)
-        .siblings("#filter-date")[0]
+        .parents("#search-filter-bar")
+        .find("#filter-date")[0]
         .checked;
 
     // FILTER THE NOTES BY DATE
@@ -96,3 +98,21 @@ filterNotesBtn.addEventListener("click", function(e){
             .click();
     }
 });
+
+const resetBtn = document.getElementById("reset-search-filters-field");
+resetBtn.addEventListener("click", function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    // reset search field
+    $("#search-bar")
+        .find("input[type=text]")
+        .val("");
+    // reset notes filters
+    $("#filter-bar-notes")
+        .find("input[type=checkbox]")
+        .prop("checked", false);
+    // reset notebooks filters
+    $("#filter-bar-notebooks")
+        .find("input[type=checkbox]")
+        .prop("checked", false);
+    })

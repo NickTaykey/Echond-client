@@ -11,25 +11,35 @@
 
         <h1>Welcome to the note app!</h1>
         <section id="search-filter-bar">
+            <h2>Notes and Notebooks fuzzy search</h2>
             <fieldset id="search-bar">
                 <label for="search-field">Search</label>
-                <input type="text" placeholder="search a note or a notebook" id="search-field" autofocus>
+                <input type="text" placeholder="search notes or notebooks" id="search-field" autofocus>
             </fieldset>
-            <fieldset id="filter-bar">
+            <fieldset id="filter-bar-notes">
+                <h2>Notes Filters</h2>
                 <label for="filter-date">From the older to the newer</label>
-                <input type="checkbox" name="filter-date" id="filter-date">
+                <input type="checkbox" id="filter-date">
                 <br>
                 <label for="filter-pointed">Pointed notes</label>
-                <input type="checkbox" name="filter-pointed" id="filter-pointed">
+                <input type="checkbox" id="filter-pointed">
                 <br>
                 <label for="filter-shared">Shared notes</label>
-                <input type="checkbox" name="" id="filter-shared">
-                <br>
+                <input type="checkbox" id="filter-shared">
+            </fieldset>
+            <br>
+            <fieldset id="filter-bar-notebooks">
+                <h2>Notebooks Filters</h2>
                 <label for="filter-notebook">Notebooks</label>
                 <ul id="notebooks-fiter-bar"></ul>
-                <button type="button" id="filter-notes">Find</button>
+            </fieldset>
+            <br>
+            <fieldset id="btns-bar">
+                <button type="button" id="reset-search-filters-field">Reset Search And Filters</button>
+                <button type="button" id="filter-notes">Filter</button>
             </fieldset>
         </section>
+        <br>
         <button type="button" id="create-note-btn">create a note</button>
         <form id="create-note-form">
             <label for="note-body">Note:</label>
@@ -40,11 +50,13 @@
         </form>
     </header>
     <section class="container">
-        <div class="notebooks-container">
+        <div class="notebooks">
             <h3>Notebooks</h3>
+            <div class="notebooks-container"></div>
         </div>
-        <div class="notes-container">
+        <div class="notes">
             <h3>Notes</h3>
+            <div class="notes-container"></div>
         </div>
     </section>
     <script>
