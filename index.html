@@ -44,8 +44,8 @@
             <br><br>
             <button type="button" id="create-notebook-btn">Create a Notebook</button>
             <form id="create-notebook-form">
-                <input type="text" placeholder="title of the notebook" id="notebook-title">
-                <button type="submit">Create Notebook</button>
+                <input type="text" placeholder="title of the notebook" id="notebook-title" name="title">
+                <button type="submit">Create</button>
             </form>
             <h3>Notebooks</h3>
             <div class="notebooks-container"></div>
@@ -54,10 +54,15 @@
             <br><br>
             <button type="button" id="create-note-btn">Write a note</button>
             <form id="create-note-form">
+                <label for="note-notebook">Notebook:</label>
+                <input type="text" placeholder="title of the notebook" name="notebookTitle" id="note-notebook">
+                <br>
                 <label for="note-body">Note:</label>
                 <textarea id="note-body" name="body" cols="30" rows="10" placeholder="your note"></textarea>
+                <br>
                 <label for="note-pointed">Pointed?</label>
                 <input type="checkbox" name="pointed" id="note-pointed">
+                <br>
                 <button type="submit">Create</button>
             </form>
             <h3>Notes</h3>

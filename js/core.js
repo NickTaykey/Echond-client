@@ -19,7 +19,7 @@ const coreMethods = {
         `;
         return markup; 
     },
-    generateNoteMarkup(note){
+    generateNoteMarkup(note, notebookTitle){
         const markup = `
         <div class="note" id=${note._id}>
             <h4 class="title">${ note.body }</h4>
@@ -27,10 +27,15 @@ const coreMethods = {
             <button type="button" class="edit-note-btn" id="">Edit</button>
             <button type="button" class="delete-note-btn">Delete Note</button>
             <form action="${ notesBaseUrl }/${ note._id }" class="edit-note-form">
+                <label for="note-notebook">Notebook:</label>
+                <input type="text" placeholder="title of the notebook" name="notebookTitle" id="note-${ note._id }-notebook" value="${ notebookTitle }">
+                </br>
                 <label for="note-${ note._id }-body">Your Note</label>
                 <textarea name="body" id="note-${ note._id }-body" cols="30" rows="10">${ note.body }</textarea>
+                </br>
                 <label for="note-${ note._id }-pointed">Pointed</label>
                 <input type="checkbox" name="pointed" id="note-${ note._id }-pointed" ${ note.pointed ? "checked" : "" }>
+                </br>
                 <button type="submit">Update</button>
             </form>
         </div>

@@ -11,9 +11,13 @@ $(notesContainer).on("click", ".delete-note-btn", function(e){
            type: "DELETE",
            noteElement,
            success: function(response){
-            this.noteElement.remove();
-            alert("note successfully removed!");
-           }
+                this.noteElement.remove();
+                // remove the note from the notebooks array
+                const { note } = response;
+                const { notes } = coreMethods.findNoteBookById(response.notebook._id);
+                const index = notes.indexOf(note);
+                notes.splice(index, 1);
+            }
         })
     }
 });
@@ -42,12 +46,36 @@ $(notesContainer).on("submit", ".edit-note-form", function(e){
             processData: false,
             data,
             success: function(response){
-                const h3 = this.noteElement.children[0];
-                const pointedLabel = this.noteElement.children[1];
-                pointedLabel.textContent = "Pointed: " + response.note.pointed;
-                const form = this.noteElement.children[4];
-                h3.textContent = response.note.body;
-                form.style.display = "none";
+                // remove current note 
+                const { note, notebook, oldNotebook } = response;
+                const { noteElement } = this;
+                if(notebook._id===oldNotebook._id){
+                    const h3 = noteElement.children[0];
+                    const pointedLabel = noteElement.children[1];
+                    pointedLabel.textContent = "Pointed: " + note.pointed;
+                    const form = noteElement.children[4];
+                    h3.textContent = note.body;
+                    form.style.display = "none";
+                } else {
+                    // remove the original note from the DOM
+                    $(noteElement).remove();
+                    // update usersNotebooks
+                    // remove the note from the old notebook
+                    let clientNotebook = coreMethods.findNoteBookById(oldNotebook._id);
+                    let notebookIndex = usersNotebooks.indexOf(clientNotebook);
+                    let noteIndex = usersNotebooks[notebookIndex].notes.indexOf(note);
+                    usersNotebooks[notebookIndex].notes.splice(noteIndex, 1)
+                    // add the note to the new notebook
+                    clientNotebook = coreMethods.findNoteBookById(notebook._id);
+                    notebookIndex = usersNotebooks.indexOf(clientNotebook);
+                    usersNotebooks[notebookIndex].notes.push(note);
+                    // select the new notebook
+                    const $notebookElement = $(`#${notebook._id}`);
+                    // show the notes
+                    $notebookElement
+                        .find(".show-notes-btn")
+                        .click();
+                }
             }
         }
     );
@@ -67,14 +95,23 @@ createNoteForm.addEventListener("submit", function(e){
     e.preventDefault();
     const data = $(this).serialize();
     $.post(notesBaseUrl, data, function(response){
-        const { note } = response;
-        const previousContent = notesContainer.innerHTML;
-        const newContent = coreMethods.generateNoteMarkup(note);
-        notesContainer.innerHTML = newContent + previousContent;
-        const textarea = createNoteForm.children[1];
-        textarea.value = "";
-        const pointedCheckBox = createNoteForm.children[3];
-        pointedCheckBox.checked = false;
+        // add note to the right notebook in the DOM and select it
+        const { note, notebook } = response;
+        const $notebookItem = $(`#${notebook._id}`);
+        $notebookItem
+            .find(".show-notes-btn")
+            .click();
+        $(notesContainer).append(
+            coreMethods.generateNoteMarkup(note, notebook.title)
+        );
+        // add updated notebook to the array usersNotebooks
+        const notebookElem = coreMethods.findNoteBookById(notebook._id);
+        const index = usersNotebooks.indexOf(notebookElem);
+        usersNotebooks.splice(index, 1, notebook);
+        // clean create note form   
+        $("#note-body").val("");
+        $("#note-notebook").val("");
+        $("#note-pointed").prop("checked", false);
         coreMethods.toggleVisibility(createNoteForm);
     });
 });

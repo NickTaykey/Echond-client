@@ -21,7 +21,7 @@ $(notebooksContainer).on("click", ".show-notes-btn", function(e){
     const notebook = usersNotebooks.find(n=>n._id===notebookId);
     let newContent = "";
     notebook.notes.forEach(n=>{
-        newContent += coreMethods.generateNoteMarkup(n);
+        newContent += coreMethods.generateNoteMarkup(n, notebook.title);
     });
     notesContainer.innerHTML = newContent;
     lastInspectedNotebook = notebookContainer;
@@ -66,7 +66,7 @@ $(notebooksContainer).on("click", ".update-btn", function(e){
                 .siblings("h4")
                 .text(response.notebook.title);
             // update the notebook in the userNotebooks variable
-            const notebook = usersNotebooks.find(n=>response.notebook._id===n._id);
+            const notebook = coreMethods.findNoteBookById(response.notebook._id);
             const notebookIndex = usersNotebooks.indexOf(notebook);
             usersNotebooks.splice(notebookIndex, 1, response.notebook);
         }
@@ -100,7 +100,8 @@ $(notebooksContainer).on("click", ".delete-notebook-btn", function(e){
                 // show the first notebook notes
                 notesContainer.innerHTML = "";
                 usersNotebooks[0].notes.forEach(n=>{
-                    notesContainer.innerHTML += coreMethods.generateNoteMarkup(n);
+                    const notebookTitle = usersNotebooks[0].title;
+                    notesContainer.innerHTML += coreMethods.generateNoteMarkup(n, notebookTitle);
                 });
             }
         })
@@ -116,4 +117,31 @@ createNotebookBtn.addEventListener("click", function(e){
     $(this)
         .siblings("#create-notebook-form")
         .toggle();
-})
+});
+
+const createNotebookForm = document.getElementById("create-notebook-form");
+createNotebookForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    // create the notebook
+    const data = $(this).serialize();
+    $.post(notebooksBaseUrl, data, function(response){
+        const { notebook } = response;
+        // add the notebook to the DOM
+        $(notebooksContainer)
+            .append(
+                coreMethods.generateNotebookMarkup(notebook)
+            );
+        // clean the form
+        $(createNotebookForm).find("input[type=text]").val("");
+        $(createNotebookBtn).click();
+        // add notebook to the usersNotebooks array
+        usersNotebooks.push(notebook);
+        // add the notebook to the filter bar
+        $("#notebooks-fiter-bar").append(
+            `<li>
+                <label for="filter-${notebook._id}">${notebook.title}</label>
+                <input type="checkbox" id="filter-${notebook._id}" class="notebook-filter-item">
+            </li>`
+        );
+    });
+});

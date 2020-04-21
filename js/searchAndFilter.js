@@ -9,7 +9,14 @@ searchFiled.addEventListener("input", function(e){
             const { notes, notebooks } = response;
             let newContent = "";
             notes.forEach(n=>{
-                newContent += coreMethods.generateNoteMarkup(n);
+                // FIND THE NOTEBOOK ONLY WITH THE ID OF THE NOTE
+                const notebook = notebooks.find(notebook=>{
+                    return notebook.notes.find(note=>{
+                       return note===n._id;
+                    });
+                });
+                if(notebook)
+                    newContent += coreMethods.generateNoteMarkup(n, notebook.title);
             });
             notesContainer.innerHTML = newContent;
             
@@ -45,8 +52,9 @@ filterNotesBtn.addEventListener("click", function(e){
     if(filterDate) notes.reverse();
     // append the content of that array to the DOM
     for(let n of notes){
+        const notebookTilte = notebook.title;
         $(notesContainer)
-            .append(coreMethods.generateNoteMarkup(n));
+            .append(coreMethods.generateNoteMarkup(n, notebookTilte));
     }
 
     // FILTER THE NOTES IF THEY ARE POINTED
@@ -114,4 +122,13 @@ resetBtn.addEventListener("click", function(e){
     $("#filter-bar-notebooks")
         .find("input[type=checkbox]")
         .prop("checked", false);
-    })
+    // show all the notebooks and notes back
+    $(notebooksContainer)
+        .children()
+        .show();
+    $(notesContainer)
+        .children()
+        .show();    
+    // select the first notebook
+    $(`#${usersNotebooks[0]._id} > .show-notes-btn`).click();
+});
