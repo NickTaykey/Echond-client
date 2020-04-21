@@ -57,6 +57,8 @@ $(notebooksContainer).on("click", ".update-btn", function(e){
         data,
         btn: this,
         success: function(response){
+            if(response.err) 
+                return alert("notebook not found");
             $(this.btn)
                 .parents(".edit-notebook-form")
                 .siblings(".edit-notebook-btn")
@@ -86,6 +88,8 @@ $(notebooksContainer).on("click", ".delete-notebook-btn", function(e){
             url: `${notebooksBaseUrl}/${id}`,
             $notebook,
             success: function(response){
+                if(response.err) 
+                    return alert("notebook not found");
                 const notebook = usersNotebooks.find(n=>response.notebook._id===n._id);
                 const notebookIndex = usersNotebooks.indexOf(notebook);
                 usersNotebooks.splice(notebookIndex, 1);
