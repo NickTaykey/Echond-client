@@ -123,12 +123,7 @@ resetBtn.addEventListener("click", function(e){
         .find("input[type=checkbox]")
         .prop("checked", false);
     // show all the notebooks and notes back
-    $(notebooksContainer)
-        .children()
-        .show();
-    $(notesContainer)
-        .children()
-        .show();    
+    coreMethods.loadNotebooks();
     // select the first notebook
     $(`#${usersNotebooks[0]._id} > .show-notes-btn`).click();
 });
