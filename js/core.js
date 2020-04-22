@@ -19,6 +19,20 @@ const coreMethods = {
         `;
         return markup; 
     },
+    clientSideNoteErrorHandler(response){
+        if(response.code===404 && response.resource==="Note"){
+            alert("404 note not found");
+            return false;
+        }
+        return true;
+    },
+    clientSideNotebookErrorHandler(response){
+        if(response.code===404 && response.resource==="Notebook"){ 
+            alert("404 notebook not found");
+            return false;
+        }
+        return true;
+    },
     generateNoteMarkup(note, notebookTitle){
         const markup = `
         <div class="note" id=${note._id}>

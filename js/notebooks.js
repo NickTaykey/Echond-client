@@ -57,20 +57,21 @@ $(notebooksContainer).on("click", ".update-btn", function(e){
         data,
         btn: this,
         success: function(response){
-            if(response.err) 
-                return alert("notebook not found");
-            $(this.btn)
-                .parents(".edit-notebook-form")
-                .siblings(".edit-notebook-btn")
-                .click();
-            $(this.btn)
-                .parents(".edit-notebook-form")
-                .siblings("h4")
-                .text(response.notebook.title);
-            // update the notebook in the userNotebooks variable
-            const notebook = coreMethods.findNoteBookById(response.notebook._id);
-            const notebookIndex = usersNotebooks.indexOf(notebook);
-            usersNotebooks.splice(notebookIndex, 1, response.notebook);
+            let cont = coreMethods.clientSideNotebookErrorHandler(response);
+            if(cont){
+                $(this.btn)
+                    .parents(".edit-notebook-form")
+                    .siblings(".edit-notebook-btn")
+                    .click();
+                $(this.btn)
+                    .parents(".edit-notebook-form")
+                    .siblings("h4")
+                    .text(response.notebook.title);
+                // update the notebook in the userNotebooks variable
+                const notebook = coreMethods.findNoteBookById(response.notebook._id);
+                const notebookIndex = usersNotebooks.indexOf(notebook);
+                usersNotebooks.splice(notebookIndex, 1, response.notebook);
+            }
         }
     })
 });
@@ -88,25 +89,26 @@ $(notebooksContainer).on("click", ".delete-notebook-btn", function(e){
             url: `${notebooksBaseUrl}/${id}`,
             $notebook,
             success: function(response){
-                if(response.err) 
-                    return alert("notebook not found");
-                const notebook = usersNotebooks.find(n=>response.notebook._id===n._id);
-                const notebookIndex = usersNotebooks.indexOf(notebook);
-                usersNotebooks.splice(notebookIndex, 1);
-                // if the selected notebook gets deleted select the next
-                if(this.$notebook.hasClass("selected-notebook")){
-                    this.$notebook
-                        .next()
-                        .find(".show-notes-btn")
-                        .click();
+                let cont = coreMethods.clientSideNotebookErrorHandler(response);
+                if(cont){
+                    const notebook = usersNotebooks.find(n=>response.notebook._id===n._id);
+                    const notebookIndex = usersNotebooks.indexOf(notebook);
+                    usersNotebooks.splice(notebookIndex, 1);
+                    // if the selected notebook gets deleted select the next
+                    if(this.$notebook.hasClass("selected-notebook")){
+                        this.$notebook
+                            .next()
+                            .find(".show-notes-btn")
+                            .click();
+                    }
+                    this.$notebook.remove();
+                    // show the first notebook notes
+                    notesContainer.innerHTML = "";
+                    usersNotebooks[0].notes.forEach(n=>{
+                        const notebookTitle = usersNotebooks[0].title;
+                        notesContainer.innerHTML += coreMethods.generateNoteMarkup(n, notebookTitle);
+                    });
                 }
-                this.$notebook.remove();
-                // show the first notebook notes
-                notesContainer.innerHTML = "";
-                usersNotebooks[0].notes.forEach(n=>{
-                    const notebookTitle = usersNotebooks[0].title;
-                    notesContainer.innerHTML += coreMethods.generateNoteMarkup(n, notebookTitle);
-                });
             }
         })
     } 
