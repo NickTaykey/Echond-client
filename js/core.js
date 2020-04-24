@@ -9,6 +9,7 @@ const coreMethods = {
         <div class="notebook" id=${notebook._id}>
             <h4 class="title">${ notebook.title }</h4>
             <section class="edit-notebook-form">
+                <div class="err-label"></div>
                 <input type="text" placeholder="Your notebook's title" name="title" value="${notebook.title}">
                 <button type="button" class="update-btn">Update</button>
             </section>
@@ -41,6 +42,7 @@ const coreMethods = {
             <button type="button" class="edit-note-btn" id="">Edit</button>
             <button type="button" class="delete-note-btn">Delete Note</button>
             <form action="${ notesBaseUrl }/${ note._id }" class="edit-note-form">
+                <div class="err-label"></div>
                 <label for="note-notebook">Notebook:</label>
                 <input type="text" placeholder="title of the notebook" name="notebookTitle" id="note-${ note._id }-notebook" value="${ notebookTitle }">
                 </br>

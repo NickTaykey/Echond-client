@@ -2,6 +2,10 @@
     margin: 30px auto;
 }
 
+#search-filter-bar{
+    display: none;
+}
+
 #search-field{
     width: 250px;
 }
@@ -14,6 +18,10 @@
     border: 2px solid blue;;
 }
 
+.err-label{
+    display: none;
+    color: red;
+}
 
 .container{
     display: flex;

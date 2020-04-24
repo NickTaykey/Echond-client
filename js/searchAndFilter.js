@@ -1,3 +1,9 @@
+const filterBarToggler = document.getElementById("filter-bar-toggler");
+filterBarToggler.addEventListener("click", function(e){
+    e.preventDefault();
+    $("#search-filter-bar").toggle();
+});
+
 // note fuzzy search feature
 const searchFiled = document.getElementById("search-field");
 searchFiled.addEventListener("input", function(e){

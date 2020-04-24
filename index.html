@@ -9,6 +9,7 @@
 <body>
     <header id="page-header">
         <h1>Welcome to the note app!</h1>
+        <button type="button" id="filter-bar-toggler">Show Filter bar</button>
         <section id="search-filter-bar">
             <h2>Notes and Notebooks fuzzy search</h2>
             <fieldset id="search-bar">
@@ -44,6 +45,7 @@
             <br><br>
             <button type="button" id="create-notebook-btn">Create a Notebook</button>
             <form id="create-notebook-form">
+                <div class="err-label"></div>
                 <input type="text" placeholder="title of the notebook" id="notebook-title" name="title">
                 <button type="submit">Create</button>
             </form>
@@ -54,6 +56,8 @@
             <br><br>
             <button type="button" id="create-note-btn">Write a note</button>
             <form id="create-note-form">
+                <div class="err-label"></div>
+                <br>
                 <label for="note-notebook">Notebook:</label>
                 <input type="text" placeholder="title of the notebook" name="notebookTitle" id="note-notebook">
                 <br>
