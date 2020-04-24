@@ -80,8 +80,9 @@ $(notesContainer).on("submit", ".edit-note-form", function(e){
                             // remove the note from the old notebook
                             let clientNotebook = coreMethods.findNoteBookById(oldNotebook._id);
                             let notebookIndex = usersNotebooks.indexOf(clientNotebook);
-                            let noteIndex = usersNotebooks[notebookIndex].notes.indexOf(note);
-                            usersNotebooks[notebookIndex].notes.splice(noteIndex, 1)
+                            let clientNote = usersNotebooks[notebookIndex].notes.find(n=>n._id===note._id);
+                            let noteIndex = usersNotebooks[notebookIndex].notes.indexOf(clientNote);
+                            usersNotebooks[notebookIndex].notes.splice(noteIndex, 1);
                             // add the note to the new notebook
                             clientNotebook = coreMethods.findNoteBookById(notebook._id);
                             notebookIndex = usersNotebooks.indexOf(clientNotebook);
