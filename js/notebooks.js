@@ -53,35 +53,44 @@ $(notebooksContainer).on("click", ".update-btn", function(e){
     const data = $(this).siblings("input").serialize();
     const $errLabel = $(this).siblings(".err-label");
     const titleField = $(this).siblings("input[type=text]").val();
+    const originalTitle = $(`#${id}`).children("h4").text();
     if(!titleField.length){
         $errLabel.text("Provide a title");
         $errLabel.show();
     } else {
-        $errLabel.hide();
-        $errLabel.text("");
-        $.ajax({
-            type: "PUT",
-            url: `${notebooksBaseUrl}/${id}`,
-            data,
-            btn: this,
-            success: function(response){
-                let cont = coreMethods.clientSideNotebookErrorHandler(response);
-                if(cont){
-                    $(this.btn)
+        const n = usersNotebooks.find(n=>n.title===titleField);
+        if(n && originalTitle!==titleField){
+            $errLabel.text("Notebook already existing");
+            $errLabel.show();
+        } else {
+            $.ajax({
+                type: "PUT",
+                url: `${notebooksBaseUrl}/${id}`,
+                data,
+                $errLabel,
+                btn: this,
+                success: function(response){
+                    let cont = coreMethods.clientSideNotebookErrorHandler(response);
+                    if(cont){
+                        $(this.btn)
                         .parents(".edit-notebook-form")
                         .siblings(".edit-notebook-btn")
                         .click();
-                    $(this.btn)
+                        $(this.btn)
                         .parents(".edit-notebook-form")
                         .siblings("h4")
                         .text(response.notebook.title);
-                    // update the notebook in the userNotebooks variable
-                    const notebook = coreMethods.findNoteBookById(response.notebook._id);
-                    const notebookIndex = usersNotebooks.indexOf(notebook);
-                    usersNotebooks.splice(notebookIndex, 1, response.notebook);
+                        // update the notebook in the userNotebooks variable
+                        const notebook = coreMethods.findNoteBookById(response.notebook._id);
+                        const notebookIndex = usersNotebooks.indexOf(notebook);
+                        usersNotebooks.splice(notebookIndex, 1, response.notebook);
+                        this.$errLabel.hide();
+                        this.$errLabel.text("");
+                    }
                 }
-            }
-        })
+            });
+        }
+
     }
 });
 
@@ -137,35 +146,47 @@ createNotebookBtn.addEventListener("click", function(e){
 const createNotebookForm = document.getElementById("create-notebook-form");
 createNotebookForm.addEventListener("submit", function(e){
     e.preventDefault();
-    const $titleField = $("input[name=title]");
+    const titleField = $("input[name=title]").val();
     const $errLabel = $(this).children(".err-label");
-    if(!$titleField.val().length){
+    if(!titleField.length){
         $errLabel.text("Provide a title");
         $errLabel.show();
     } else {
-        $errLabel.hide();
-        $errLabel.text("");
-        // create the notebook
-        const data = $(this).serialize();
-        $.post(notebooksBaseUrl, data, function(response){
-            const { notebook } = response;
-            // add the notebook to the DOM
-            $(notebooksContainer)
-                .append(
-                    coreMethods.generateNotebookMarkup(notebook)
-                );
-            // clean the form
-            $(createNotebookForm).find("input[type=text]").val("");
-            $(createNotebookBtn).click();
-            // add notebook to the usersNotebooks array
-            usersNotebooks.push(notebook);
-            // add the notebook to the filter bar
-            $("#notebooks-fiter-bar").append(
-                `<li>
-                    <label for="filter-${notebook._id}">${notebook.title}</label>
-                    <input type="checkbox" id="filter-${notebook._id}" class="notebook-filter-item">
-                </li>`
-            );
-        });
+        const n = usersNotebooks.find(n=>n.title===titleField); 
+        if(n){
+            $errLabel.text("Notebook already existing");
+            $errLabel.show();
+        } else {
+            // create the notebook
+            const data = $(this).serialize();
+            $.ajax({
+                url: notebooksBaseUrl, 
+                type: "POST",
+                data, 
+                $errLabel,
+                success: function(response){
+                    const { notebook } = response;
+                    // add the notebook to the DOM
+                    $(notebooksContainer)
+                        .append(
+                            coreMethods.generateNotebookMarkup(notebook)
+                        );
+                    // clean the form
+                    $(createNotebookForm).find("input[type=text]").val("");
+                    $(createNotebookBtn).click();
+                    // add notebook to the usersNotebooks array
+                    usersNotebooks.push(notebook);
+                    // add the notebook to the filter bar
+                    $("#notebooks-fiter-bar").append(
+                        `<li>
+                            <label for="filter-${notebook._id}">${notebook.title}</label>
+                            <input type="checkbox" id="filter-${notebook._id}" class="notebook-filter-item">
+                        </li>`
+                    );
+                    this.$errLabel.hide();
+                    this.$errLabel.text("");
+                }
+            });
+        }
     }
 });
