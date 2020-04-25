@@ -16,9 +16,9 @@ searchFiled.addEventListener("input", function(e){
             let newContent = "";
             notes.forEach(n=>{
                 // FIND THE NOTEBOOK ONLY WITH THE ID OF THE NOTE
-                const notebook = notebooks.find(notebook=>{
+                const notebook = usersNotebooks.find(notebook=>{
                     return notebook.notes.find(note=>{
-                       return note===n._id;
+                       return note._id===n._id;
                     });
                 });
                 if(notebook)
@@ -31,20 +31,35 @@ searchFiled.addEventListener("input", function(e){
                 newContent += coreMethods.generateNotebookMarkup(n);
             });
             notebooksContainer.innerHTML = newContent;
+            let type = "danger", msg = "No results found!";
+            const results = notes.length + notebooks.length;
+            if(results>0){
+                type = "success"; msg = `${results} results found!`;
+            }
+            $("fieldset:not(#search-bar)").hide();
+            coreMethods.setAlert(msg, type);
         });
-    } else coreMethods.loadNotebooks();
+    } else{
+        $(".alert-danger, .alert-success").hide();
+        $(".alert-danger, .alert-success").text("");
+        $("fieldset:not(#search-bar)").show();
+        coreMethods.loadNotebooks();
+    }
 });
 
 // filter notes feature
 const filterNotesBtn = document.getElementById("filter-notes");
+let filterPointed = false;
+let filterDate = false;
+
 filterNotesBtn.addEventListener("click", function(e){
     e.preventDefault();
     e.stopPropagation();
-    const filterPointed = $(this)
+    filterPointed = $(this)
         .parents("#search-filter-bar")
         .find("#filter-pointed")[0]
         .checked;
-    const filterDate = $(this)
+    filterDate = $(this)
         .parents("#search-filter-bar")
         .find("#filter-date")[0]
         .checked;
@@ -55,50 +70,51 @@ filterNotesBtn.addEventListener("click", function(e){
     const notebookId = $(".selected-notebook").attr("id");
     const notebook = coreMethods.findNoteBookById(notebookId);
     let notes = [...notebook.notes];
-    if(filterDate) notes.reverse();
+    let startMsg = "Filters active: ", msg = "", type="success";
+    if(filterDate){
+        msg+="recent date,";
+        notes.reverse();
+    }
     // append the content of that array to the DOM
     for(let n of notes){
         const notebookTilte = notebook.title;
         $(notesContainer)
             .append(coreMethods.generateNoteMarkup(n, notebookTilte));
     }
-
+    
     // FILTER THE NOTES IF THEY ARE POINTED
     notes = $(notesContainer).children(".note");
     if(filterPointed){
-        for(let e of notes){
-            const isPoinedLabel = $(e).find("strong").text();
-            if(!(/true/gi.exec(isPoinedLabel))){
-                $(e).hide();
-            }
-        }
+        msg+=" pointeds,";
+        coreMethods.showPointedNotes(notes);
     } else {
         for(let e of notes){
             $(e).show();
         }
     }
-
+    
     // FILTER BY NOTEBOOK
     // find the names of the selected notebook
     const selectedNotebooks = [];
     $(".notebook-filter-item:checked")
-        .siblings("label")
-        .each((i, l)=>{
-            const id = l.getAttribute("for")
-                        .replace("filter-", "");
-            selectedNotebooks.push(id);
-        });
+    .siblings("label")
+    .each((i, l)=>{
+        const id = l.getAttribute("for")
+        .replace("filter-", "");
+        selectedNotebooks.push(id);
+    });
     if(selectedNotebooks.length){
         // hide all the notebooks
         $(notebooksContainer)
-            .children()
-            .hide();
+        .children()
+        .hide();
         // show only the selected notebooks
         selectedNotebooks.forEach((id, i)=>{
             $(`#${id}`).show();
             if(i===0) 
-                $(`#${id} > .show-notes-btn`).click();
+            $(`#${id} > .show-notes-btn`).click();
         });
+        msg+=" notebooks,";
     } else {
         // hide all the notebooks
         $(notebooksContainer)
@@ -110,12 +126,18 @@ filterNotesBtn.addEventListener("click", function(e){
             .find(".show-notes-btn")
             .click();
     }
+    if(msg.length){
+        const fullMsg = startMsg + " " + msg.slice(0, msg.length-1);
+        coreMethods.setAlert(fullMsg, type);
+    }
 });
 
 const resetBtn = document.getElementById("reset-search-filters-field");
 resetBtn.addEventListener("click", function(e){
     e.preventDefault();
     e.stopPropagation();
+    // show all the notebooks and notes back
+    coreMethods.loadNotebooks();
     // reset search field
     $("#search-bar")
         .find("input[type=text]")
@@ -128,8 +150,12 @@ resetBtn.addEventListener("click", function(e){
     $("#filter-bar-notebooks")
         .find("input[type=checkbox]")
         .prop("checked", false);
-    // show all the notebooks and notes back
-    coreMethods.loadNotebooks();
+    $(".alert-success").text("");
+    $(".alert-success").hide();
+    filterDate = false; filterPointed = false;
     // select the first notebook
     $(`#${usersNotebooks[0]._id} > .show-notes-btn`).click();
+    $(notesContainer)
+        .children(".notes")
+        .show();
 });

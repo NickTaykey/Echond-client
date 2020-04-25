@@ -20,6 +20,7 @@ $(notesContainer).on("click", ".delete-note-btn", function(e){
                     const { notes } = coreMethods.findNoteBookById(response.notebook._id);
                     const index = notes.indexOf(note);
                     notes.splice(index, 1);
+                    coreMethods.setAlert("Note successfully deleted!", "success");
                 }
             }
         })
@@ -94,6 +95,7 @@ $(notesContainer).on("submit", ".edit-note-form", function(e){
                                 .find(".show-notes-btn")
                                 .click();
                         }
+                        coreMethods.setAlert("Note successfully updated!", "success");
                     }
                 }
             }
@@ -130,6 +132,8 @@ createNoteForm.addEventListener("submit", function(e){
             $errLabel,
             type: "POST",
             success: function(response){
+                this.$errLabel.text("");
+                this.$errLabel.hide();
                 let contNotebook = coreMethods.clientSideNotebookErrorHandler(response);
                 if(contNotebook){
                     // add note to the right notebook in the DOM and select it
@@ -150,9 +154,7 @@ createNoteForm.addEventListener("submit", function(e){
                     $("#note-notebook").val("");
                     $("#note-pointed").prop("checked", false);
                     coreMethods.toggleVisibility(createNoteForm);
-                    this.$errLabel.text("");
-                    this.$errLabel.hide();
-
+                    coreMethods.setAlert("Note successfully created!", "success");
                 }
              }
         });

@@ -18,9 +18,14 @@
     border: 2px solid blue;;
 }
 
-.err-label{
+.alert-danger, .err-label{
     display: none;
     color: red;
+}
+
+.alert-success{
+    display: none;
+    color: green;
 }
 
 .container{

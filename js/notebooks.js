@@ -20,10 +20,18 @@ $(notebooksContainer).on("click", ".show-notes-btn", function(e){
     const notebookId = notebookContainer.id;
     const notebook = usersNotebooks.find(n=>n._id===notebookId);
     let newContent = "";
-    notebook.notes.forEach(n=>{
+    const notes = [...notebook.notes];
+    if(filterDate){
+        notes.reverse();
+    }
+    notes.forEach(n=>{
         newContent += coreMethods.generateNoteMarkup(n, notebook.title);
     });
     notesContainer.innerHTML = newContent;
+    if(filterPointed){
+        const $notes = $(notesContainer).children(".note");
+        coreMethods.showPointedNotes($notes);
+    }
     lastInspectedNotebook = notebookContainer;
 });
 
@@ -86,6 +94,7 @@ $(notebooksContainer).on("click", ".update-btn", function(e){
                         usersNotebooks.splice(notebookIndex, 1, response.notebook);
                         this.$errLabel.hide();
                         this.$errLabel.text("");
+                        coreMethods.setAlert("Notebook successfully updated!", "success");
                     }
                 }
             });
@@ -126,6 +135,7 @@ $(notebooksContainer).on("click", ".delete-notebook-btn", function(e){
                         const notebookTitle = usersNotebooks[0].title;
                         notesContainer.innerHTML += coreMethods.generateNoteMarkup(n, notebookTitle);
                     });
+                    coreMethods.setAlert("Notebook successfully deleted!", "success");
                 }
             }
         })
@@ -185,6 +195,8 @@ createNotebookForm.addEventListener("submit", function(e){
                     );
                     this.$errLabel.hide();
                     this.$errLabel.text("");
+                    coreMethods.setAlert("Notebook successfully added!", "success");
+
                 }
             });
         }

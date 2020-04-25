@@ -22,14 +22,14 @@ const coreMethods = {
     },
     clientSideNoteErrorHandler(response){
         if(response.code===404 && response.resource==="Note"){
-            alert("404 note not found");
+            coreMethods.setAlert("404 note not found!", "danger");
             return false;
         }
         return true;
     },
     clientSideNotebookErrorHandler(response){
         if(response.code===404 && response.resource==="Notebook"){ 
-            alert("404 notebook not found");
+            coreMethods.setAlert("404 notebook not found!", "danger");
             return false;
         }
         return true;
@@ -91,6 +91,25 @@ const coreMethods = {
     },
     findNoteBookById(id){
        return usersNotebooks.find(n=>n._id===id);
+    },
+    // set up an alert, reset the former
+    setAlert(msg, type){
+        const $alertDanger = $(".alert-danger");
+        $alertDanger.text()
+        $alertDanger.hide();
+        const $alertSuccess = $(".alert-success");
+        $alertSuccess.text()
+        $alertSuccess.hide();
+        $(`.alert-${type}`).show();
+        $(`.alert-${type}`).html(`<h4>${msg}</h4>`);
+    },
+    showPointedNotes(notes){
+        for(let e of notes){
+            const isPoinedLabel = $(e).find("strong").text();
+            if(!(/true/gi.exec(isPoinedLabel))){
+                $(e).hide();
+            }
+        }
     }
 
 }
