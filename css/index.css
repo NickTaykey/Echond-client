@@ -2,7 +2,49 @@
     margin: 30px auto;
 }
 
-#create-note-form{
+#search-filter-bar{
+    display: none;
+}
+
+#search-field{
+    width: 250px;
+}
+
+#create-note-form, #create-notebook-form{
+    display: none;
+}
+
+.selected-notebook{
+    border: 2px solid blue;;
+}
+
+.alert-danger, .err-label{
+    display: none;
+    color: red;
+}
+
+.alert-success{
+    display: none;
+    color: green;
+}
+
+.container{
+    display: flex;
+}
+
+.notebooks-container, .notes-container{
+    margin-right: 80px;
+}
+
+.notebooks-container{
+    border: 2px solid green;
+}
+
+.notes-container{
+    border: 2px solid red;
+}
+
+.edit-notebook-form{
     display: none;
 }
 
