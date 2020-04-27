@@ -7,83 +7,131 @@
     <title>Note App | index</title>
 </head>
 <body>
-    <header id="page-header">
-        <h1>Welcome to the note app!</h1>
-        <div class="alert-success"></div>
-        <div class="alert-danger"></div>
-        <button type="button" id="filter-bar-toggler">Toggle Filter bar</button>
-        <section id="search-filter-bar">
-            <h2>Notes and Notebooks fuzzy search</h2>
-            <fieldset id="search-bar">
-                <label for="search-field">Search</label>
-                <input type="text" placeholder="search notes or notebooks" id="search-field" autofocus>
-            </fieldset>
-            <fieldset id="filter-bar-notes">
-                <h2>Notes Filters</h2>
-                <label for="filter-date">From the older to the newer</label>
-                <input type="checkbox" id="filter-date">
-                <br>
-                <label for="filter-pointed">Pointed notes</label>
-                <input type="checkbox" id="filter-pointed">
-                <br>
-                <label for="filter-shared">Shared notes</label>
-                <input type="checkbox" id="filter-shared">
-            </fieldset>
+    <h1>Welcome to the note app!</h1>
+    <div class="alert-success"></div>
+    <div class="alert-danger"></div>
+    <div id="auth-container">
+        <form action="/" method="post" id="login-form">
+            <h3>Login</h3>
+            <label for="login-username">Username</label>
             <br>
-            <fieldset id="filter-bar-notebooks">
-                <h2>Notebooks Filters</h2>
-                <label for="filter-notebook">Notebooks</label>
-                <ul id="notebooks-fiter-bar"></ul>
-            </fieldset>
+            <input type="text" name="username" id="login-username" placeholder="username">
             <br>
-            <fieldset id="btns-bar">
-                <button type="button" id="reset-search-filters-field">Reset Search And Filters</button>
-                <button type="button" id="filter-notes">Filter</button>
-            </fieldset>
+            <label for="login-password">Password</label>
+            <br>
+            <input type="password" name="password" id="login-password" placeholder="password">
+            <br>
+            <button type="submit">Login</button>
+            <br><br>
+            <a href="#">Forgot Password?</a>
+            <br>
+            <a href="#" id="registration-link">Get Registered</a>
+        </form>
+        <form action="/register" method="post" id="registration-form">
+            <h3>Registration</h3>
+            <label for="regisration-username">Username</label>
+            <input type="text" id="regisration-username" name="username" placeholder="username">
+            <br>
+            <label for="registration-email">Email</label>
+            <input type="email" id="registration-email" placeholder="E-mail">
+            <br>
+            <label for="registration-phone">Phone number</label>
+            <input type="text" id="registration-phone" name="phoneNumber" placeholder="Phone Number">
+            <br>
+            <label for="registration-password">Password</label>
+            <input type="password" id="registration-password" name="password" placeholder="password">
+            <br>
+            <label for="registration-password-confirm">Confirm Password</label>
+            <input type="password" id="registration-password-confirm" name="password-confirm" placeholder="password confirmation">
+            <br>
+            <br>
+            <button type="submit">Get Registered</button>
+            <br><br>
+            <a href="#" id="login-link">Login</a>
+        </form>
+        <a href="#" id="logout-link">Logout</a>
+    </div>
+    <div id="resources-container">
+        <header id="page-header">
+            <button type="button" id="filter-bar-toggler">Toggle Filter bar</button>
+            <section id="search-filter-bar">
+                <h2>Notes and Notebooks fuzzy search</h2>
+                <fieldset id="search-bar">
+                    <label for="search-field">Search</label>
+                    <input type="text" placeholder="search notes or notebooks" id="search-field" autofocus>
+                </fieldset>
+                <fieldset id="filter-bar-notes">
+                    <h2>Notes Filters</h2>
+                    <label for="filter-date">From the older to the newer</label>
+                    <input type="checkbox" id="filter-date">
+                    <br>
+                    <label for="filter-pointed">Pointed notes</label>
+                    <input type="checkbox" id="filter-pointed">
+                    <br>
+                    <label for="filter-shared">Shared notes</label>
+                    <input type="checkbox" id="filter-shared">
+                </fieldset>
+                <br>
+                <fieldset id="filter-bar-notebooks">
+                    <h2>Notebooks Filters</h2>
+                    <label for="filter-notebook">Notebooks</label>
+                    <ul id="notebooks-fiter-bar"></ul>
+                </fieldset>
+                <br>
+                <fieldset id="btns-bar">
+                    <button type="button" id="reset-search-filters-field">Reset Search And Filters</button>
+                    <button type="button" id="filter-notes">Filter</button>
+                </fieldset>
+            </section>
+        </header>
+        <section class="container">
+            <div class="notebooks">
+                <br><br>
+                <button type="button" id="create-notebook-btn">Create a Notebook</button>
+                <form id="create-notebook-form">
+                    <div class="err-label"></div>
+                    <input type="text" placeholder="title of the notebook" id="notebook-title" name="title">
+                    <button type="submit">Create</button>
+                </form>
+                <h3>Notebooks</h3>
+                <div class="notebooks-container"></div>
+            </div>
+            <div class="notes">
+                <br><br>
+                <button type="button" id="create-note-btn">Write a note</button>
+                <form id="create-note-form">
+                    <div class="err-label"></div>
+                    <br>
+                    <label for="note-notebook">Notebook:</label>
+                    <input type="text" placeholder="title of the notebook" name="notebookTitle" id="note-notebook">
+                    <br>
+                    <label for="note-body">Note:</label>
+                    <textarea id="note-body" name="body" cols="30" rows="10" placeholder="your note"></textarea>
+                    <br>
+                    <label for="note-pointed">Pointed?</label>
+                    <input type="checkbox" name="pointed" id="note-pointed">
+                    <br>
+                    <button type="submit">Create</button>
+                </form>
+                <h3>Notes</h3>
+                <div class="notes-container"></div>
+            </div>
         </section>
-    </header>
-    <section class="container">
-        <div class="notebooks">
-            <br><br>
-            <button type="button" id="create-notebook-btn">Create a Notebook</button>
-            <form id="create-notebook-form">
-                <div class="err-label"></div>
-                <input type="text" placeholder="title of the notebook" id="notebook-title" name="title">
-                <button type="submit">Create</button>
-            </form>
-            <h3>Notebooks</h3>
-            <div class="notebooks-container"></div>
-        </div>
-        <div class="notes">
-            <br><br>
-            <button type="button" id="create-note-btn">Write a note</button>
-            <form id="create-note-form">
-                <div class="err-label"></div>
-                <br>
-                <label for="note-notebook">Notebook:</label>
-                <input type="text" placeholder="title of the notebook" name="notebookTitle" id="note-notebook">
-                <br>
-                <label for="note-body">Note:</label>
-                <textarea id="note-body" name="body" cols="30" rows="10" placeholder="your note"></textarea>
-                <br>
-                <label for="note-pointed">Pointed?</label>
-                <input type="checkbox" name="pointed" id="note-pointed">
-                <br>
-                <button type="submit">Create</button>
-            </form>
-            <h3>Notes</h3>
-            <div class="notes-container"></div>
-        </div>
-    </section>
+    </div>
+    <script src="./libs/jsCookies.js"></script>
     <script>
         const defaultUrl = "http://localhost:8888";
         const notesBaseUrl = "http://localhost:8888/notes";
         const notebooksBaseUrl = "http://localhost:8888/notebooks";
+        let cookieContent = Cookies.get("currentUser");
+        let currentUser;
+        if(cookieContent) currentUser = JSON.parse(cookieContent);
     </script>
     <script src="./libs/jquery-3.1.1.min.js"></script>
     <script src="./js/core.js"></script>
-    <script src="./js/notebooks.js"></script>
+    <script src="./js/auth.js"></script>
+    <!-- <script src="./js/notebooks.js"></script>
     <script src="./js/notes.js"></script>
-    <script src="./js/searchAndFilter.js"></script>
+    <script src="./js/searchAndFilter.js"></script> -->
 </body>
 </html>
