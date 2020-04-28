@@ -54,6 +54,8 @@ registrationLink.addEventListener("click", function(e){
     e.preventDefault();
     $(loginForm).hide();
     $(registrationForm).show();
+    $(".alert-danger, .alert-success").hide();
+    $(".alert-danger, .alert-success").text("");
 });
 loginLink.addEventListener("click", function(e){
     e.preventDefault();
@@ -62,28 +64,51 @@ loginLink.addEventListener("click", function(e){
 });
 registrationForm.addEventListener("submit", function(e){
     e.preventDefault();
-    const data = $(this).serialize();
-    const url = defaultUrl + "/register";
-    $.ajax({
-        type: "POST",
-        url,
-        data,
-        form: this,
-        success: function(response){
-            if(response.err){
-                coreMethods.setAlert(response.err.message, "danger");
-                $(this.form).children("input[type=password]").val("");
-            } else {
-                currentUser = response;
-                const userJSON = JSON.stringify(response);
-                Cookies.set("currentUser", userJSON);
-                coreMethods.setAlert(`Welcome ${response.username}!`, "success");
-                $(this.form).children("input").val("");
-                $("#registration-form, #login-form").hide();
-                $(logoutLink).show();
-            }
+    const email = $(this).children("#registration-email").val();
+    const username = $(this).children("#regisration-username").val();
+    const password = $(this).children("#registration-password").val();
+    const passwordConfirm = $(this).children("#registration-password-confirm").val();
+    const phoneNumber = $(this).children("#registration-phone").val();
+    let errMsg = "Missing ";
+    if(!username) errMsg+="username, "
+    if(!email) errMsg+="E-mail, "
+    if(!password) errMsg+="password, "
+    if(!passwordConfirm) errMsg+="Password confirmation, "
+    if(!phoneNumber) errMsg+="Phone Number, "
+    if(errMsg!=="Missing "){
+        errMsg = errMsg.slice(0, errMsg.length - 2);
+        coreMethods.setAlert(errMsg, "danger");
+    } else {
+        if(password!==passwordConfirm){
+            coreMethods.setAlert("Passwords not matching", "danger");
+        } else if(!Number(phoneNumber)){
+            coreMethods.setAlert("Phone number not valid", "danger");
+            
+        } else {
+            const data = $(this).serialize();
+            const url = defaultUrl + "/register";
+            $.ajax({
+                type: "POST",
+                url,
+                data,
+                form: this,
+                success: function(response){
+                    if(response.err){
+                        coreMethods.setAlert(response.err.message, "danger");
+                        $(this.form).children("input[type=password]").val("");
+                    } else {
+                        currentUser = response;
+                        const userJSON = JSON.stringify(response);
+                        Cookies.set("currentUser", userJSON);
+                        coreMethods.setAlert(`Welcome ${response.username}!`, "success");
+                        $(this.form).children("input").val("");
+                        $("#registration-form, #login-form").hide();
+                        $(logoutLink).show();
+                    }
+                }
+            });
         }
-    })
+    }
 });
 
 if(currentUser){
