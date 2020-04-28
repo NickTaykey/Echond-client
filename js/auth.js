@@ -10,6 +10,8 @@ logoutLink.addEventListener("click", function(e){
                 Cookies.remove("currentUser");
                 currentUser = undefined;
                 $("#login-form").show();
+                $(".notebook, .note").remove();
+                $("#resources-container").hide();
                 $(logoutLink).hide();
                 coreMethods.setAlert("Logout successfully completed!", "success");
             }
@@ -36,11 +38,14 @@ loginForm.addEventListener("submit", function(e){
             } else {
                 currentUser = user;
                 const userJSON = JSON.stringify(user);
+                notebooksBaseUrl = defaultUrl + `/${user._id}/notebooks`;
                 Cookies.set("currentUser", userJSON);
                 coreMethods.setAlert(`Welcome back ${user.username}!`, "success");
                 $(this.form).children("input").val("");
                 $("#registration-form, #login-form").hide();
                 $(logoutLink).show();
+                $("#resources-container").show();
+                coreMethods.loadNotebooks();
             }
         }
     })
@@ -110,6 +115,7 @@ registrationForm.addEventListener("submit", function(e){
                         $(this.form).children("input").val("");
                         $("#registration-form, #login-form").hide();
                         $(logoutLink).show();
+                        $("#resources-container").show();
                     }
                 }
             });
@@ -120,4 +126,5 @@ registrationForm.addEventListener("submit", function(e){
 if(currentUser){
     $("#registration-form, #login-form").hide();
     $(logoutLink).show();
+    $("#resources-container").show();
 }

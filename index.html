@@ -50,6 +50,7 @@
             <a href="#" id="login-link">Login</a>
         </form>
         <a href="#" id="logout-link">Logout</a>
+        <br><br>
     </div>
     <div id="resources-container">
         <header id="page-header">
@@ -120,18 +121,21 @@
     </div>
     <script src="./libs/jsCookies.js"></script>
     <script>
+        let cookieContent = Cookies.get("currentUser");
+        let notebooksBaseUrl;
+        let currentUser;
+        if(cookieContent){
+            currentUser = JSON.parse(cookieContent);
+            notebooksBaseUrl = `http://localhost:8888/${currentUser._id}/notebooks`;
+        }
         const defaultUrl = "http://localhost:8888";
         const notesBaseUrl = "http://localhost:8888/notes";
-        const notebooksBaseUrl = "http://localhost:8888/notebooks";
-        let cookieContent = Cookies.get("currentUser");
-        let currentUser;
-        if(cookieContent) currentUser = JSON.parse(cookieContent);
     </script>
     <script src="./libs/jquery-3.1.1.min.js"></script>
     <script src="./js/core.js"></script>
     <script src="./js/auth.js"></script>
-    <!-- <script src="./js/notebooks.js"></script>
+    <script src="./js/notebooks.js"></script>
     <script src="./js/notes.js"></script>
-    <script src="./js/searchAndFilter.js"></script> -->
+    <script src="./js/searchAndFilter.js"></script>
 </body>
 </html>

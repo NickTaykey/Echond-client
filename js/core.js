@@ -59,35 +59,37 @@ const coreMethods = {
         return markup; 
     },
     loadNotebooks(){
-        // get all the notebooks
-        $.get(
-            notebooksBaseUrl, 
-            function(response){
-                // add notebooks to the filter-bar
-                const { notebooks } = response;
-                const notebooksFilterBar = document.getElementById("notebooks-fiter-bar");
-                notebooksFilterBar.innerHTML = "";
-                notebooksFilterBar.innerHTML = "";
-                for(let n of notebooks){
-                    notebooksFilterBar.innerHTML += 
-                    `<li>
-                        <label for="filter-${n._id}">${n.title}</label>
-                        <input type="checkbox" id="filter-${n._id}" class="notebook-filter-item">
-                    </li>`;
+        if(currentUser){
+            // get all the notebooks
+            $.get(
+                notebooksBaseUrl, 
+                function(response){
+                    // add notebooks to the filter-bar
+                    const { notebooks } = response;
+                    const notebooksFilterBar = document.getElementById("notebooks-fiter-bar");
+                    notebooksFilterBar.innerHTML = "";
+                    notebooksFilterBar.innerHTML = "";
+                    for(let n of notebooks){
+                        notebooksFilterBar.innerHTML += 
+                        `<li>
+                            <label for="filter-${n._id}">${n.title}</label>
+                            <input type="checkbox" id="filter-${n._id}" class="notebook-filter-item">
+                        </li>`;
+                    }
+                    // add notebooks item to the container
+                    notebooksContainer.innerHTML = "";
+                    notesContainer.innerHTML = "";
+                    for(let i = 0; i<notebooks.length; i++){
+                        const note = notebooks[i];
+                        const oldContent = notebooksContainer.innerHTML;
+                        const newContent = coreMethods.generateNotebookMarkup(note);
+                        notebooksContainer.innerHTML = oldContent + newContent;
+                        usersNotebooks = notebooks;
+                        $(`#${notebooks[0]._id} > .show-notes-btn`).click();
+                    }        
                 }
-                // add notebooks item to the container
-                notebooksContainer.innerHTML = "";
-                notesContainer.innerHTML = "";
-                for(let i = 0; i<notebooks.length; i++){
-                    const note = notebooks[i];
-                    const oldContent = notebooksContainer.innerHTML;
-                    const newContent = coreMethods.generateNotebookMarkup(note);
-                    notebooksContainer.innerHTML = oldContent + newContent;
-                    usersNotebooks = notebooks;
-                    $(`#${notebooks[0]._id} > .show-notes-btn`).click();
-                }        
-            }
-        );
+            );
+        }
     },
     findNoteBookById(id){
        return usersNotebooks.find(n=>n._id===id);
