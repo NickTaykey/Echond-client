@@ -24,12 +24,18 @@ const coreMethods = {
         if(response.code===404 && response.resource==="Note"){
             coreMethods.setAlert("404 note not found!", "danger");
             return false;
+        } else if(response.code===403 && response.resource==="Note"){
+            coreMethods.setAlert("403 action not allowed!", "danger");
+            return false;
         }
         return true;
     },
     clientSideNotebookErrorHandler(response){
         if(response.code===404 && response.resource==="Notebook"){ 
             coreMethods.setAlert("404 notebook not found!", "danger");
+            return false;
+        } else if(response.code===403 && response.resource==="Notebook"){
+            coreMethods.setAlert("403 action not allowed!", "danger");
             return false;
         }
         return true;

@@ -81,13 +81,13 @@ $(notebooksContainer).on("click", ".update-btn", function(e){
                     let cont = coreMethods.clientSideNotebookErrorHandler(response);
                     if(cont){
                         $(this.btn)
-                        .parents(".edit-notebook-form")
-                        .siblings(".edit-notebook-btn")
-                        .click();
+                            .parents(".edit-notebook-form")
+                            .siblings(".edit-notebook-btn")
+                            .click();
                         $(this.btn)
-                        .parents(".edit-notebook-form")
-                        .siblings("h4")
-                        .text(response.notebook.title);
+                            .parents(".edit-notebook-form")
+                            .siblings("h4")
+                            .text(response.notebook.title);
                         // update the notebook in the userNotebooks variable
                         const notebook = coreMethods.findNoteBookById(response.notebook._id);
                         const notebookIndex = usersNotebooks.indexOf(notebook);
