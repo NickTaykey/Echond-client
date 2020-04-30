@@ -27,6 +27,9 @@ const coreMethods = {
         } else if(response.code===403 && response.resource==="Note"){
             coreMethods.setAlert("403 action not allowed!", "danger");
             return false;
+        } else if(response.err){
+            coreMethods.setAlert("You have to be logged in to do that", "danger");
+            return false;
         }
         return true;
     },
@@ -36,6 +39,9 @@ const coreMethods = {
             return false;
         } else if(response.code===403 && response.resource==="Notebook"){
             coreMethods.setAlert("403 action not allowed!", "danger");
+            return false;
+        } else if(response.err){
+            coreMethods.setAlert("You have to be logged in to do that", "danger");
             return false;
         }
         return true;

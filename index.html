@@ -121,15 +121,16 @@
     </div>
     <script src="./libs/jsCookies.js"></script>
     <script>
+        const defaultUrl = "http://localhost:8888";
         let cookieContent = Cookies.get("currentUser");
         let notebooksBaseUrl;
         let currentUser;
+        let notesBaseUrl;
         if(cookieContent){
             currentUser = JSON.parse(cookieContent);
-            notebooksBaseUrl = `http://localhost:8888/${currentUser._id}/notebooks`;
+            notebooksBaseUrl = `${defaultUrl}/${currentUser._id}/notebooks`;
+            notesBaseUrl = `${defaultUrl}/${currentUser._id}/notes`;
         }
-        const defaultUrl = "http://localhost:8888";
-        const notesBaseUrl = "http://localhost:8888/notes";
     </script>
     <script src="./libs/jquery-3.1.1.min.js"></script>
     <script src="./js/core.js"></script>

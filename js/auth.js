@@ -9,6 +9,8 @@ logoutLink.addEventListener("click", function(e){
             if(response.code===200){
                 Cookies.remove("currentUser");
                 currentUser = undefined;
+                notebooksBaseUrl = undefined;
+                notesBaseUrl = undefined;
                 $("#login-form").show();
                 $(".notebook, .note").remove();
                 $("#resources-container").hide();
@@ -39,6 +41,7 @@ loginForm.addEventListener("submit", function(e){
                 currentUser = user;
                 const userJSON = JSON.stringify(user);
                 notebooksBaseUrl = defaultUrl + `/${user._id}/notebooks`;
+                notesBaseUrl = defaultUrl + `/${user._id}/notes`;
                 Cookies.set("currentUser", userJSON);
                 coreMethods.setAlert(`Welcome back ${user.username}!`, "success");
                 $(this.form).children("input").val("");
@@ -109,6 +112,8 @@ registrationForm.addEventListener("submit", function(e){
                         $(this.form).children("input[type=password]").val("");
                     } else {
                         currentUser = response;
+                        notebooksBaseUrl = defaultUrl + `/${currentUser._id}/notebooks`;
+                        notesBaseUrl = defaultUrl + `/${currentUser._id}/notes`;
                         const userJSON = JSON.stringify(response);
                         Cookies.set("currentUser", userJSON);
                         coreMethods.setAlert(`Welcome ${response.username}!`, "success");
