@@ -109,13 +109,19 @@ const coreMethods = {
     // set up an alert, reset the former
     setAlert(msg, type){
         const $alertDanger = $(".alert-danger");
-        $alertDanger.text()
+        $alertDanger.text();
         $alertDanger.hide();
         const $alertSuccess = $(".alert-success");
         $alertSuccess.text()
         $alertSuccess.hide();
         $(`.alert-${type}`).show();
         $(`.alert-${type}`).html(`<h4>${msg}</h4>`);
+        if(!msg && !type){
+            $alertDanger.hide();
+            $alertDanger.text("");
+            $alertSuccess.hide();
+            $alertSuccess.text("");
+        }
     },
     showPointedNotes(notes){
         for(let e of notes){
