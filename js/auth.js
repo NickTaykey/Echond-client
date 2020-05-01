@@ -2,23 +2,14 @@
 const logoutLink = document.getElementById("logout-link");
 logoutLink.addEventListener("click", function(e){
     e.preventDefault();
-    $.ajax({
-        url: defaultUrl + "/logout",
-        type: "GET",
-        success: function(response){
-            if(response.code===200){
-                Cookies.remove("currentUser");
-                currentUser = undefined;
-                notebooksBaseUrl = undefined;
-                notesBaseUrl = undefined;
-                $("#login-form").show();
-                $(".notebook, .note").remove();
-                $("#resources-container").hide();
-                $(logoutLink).hide();
-                coreMethods.setAlert("Logout successfully completed!", "success");
-            }
-        }
-    })
+    delete localStorage.JWTtoken;
+    notebooksBaseUrl = undefined;
+    notesBaseUrl = undefined;
+    $("#login-form").show();
+    $(".notebook, .note").remove();
+    $("#resources-container").hide();
+    $(logoutLink).hide();
+    coreMethods.setAlert("Logout successfully completed!", "success");
 });
 
 // LOGIN
@@ -38,11 +29,10 @@ loginForm.addEventListener("submit", function(e){
                 coreMethods.setAlert(error.message, "danger");
                 $(this.form).children("#login-password").val("");
             } else {
-                currentUser = user;
-                const userJSON = JSON.stringify(user);
-                notebooksBaseUrl = defaultUrl + `/${user._id}/notebooks`;
-                notesBaseUrl = defaultUrl + `/${user._id}/notes`;
-                Cookies.set("currentUser", userJSON);
+                const { token, user } = response;
+                localStorage.JWTtoken = token;
+                notebooksBaseUrl = defaultUrl + `/${token}/notebooks`;
+                notesBaseUrl = defaultUrl + `/${token}/notes`;
                 coreMethods.setAlert(`Welcome back ${user.username}!`, "success");
                 $(this.form).children("input").val("");
                 $("#registration-form, #login-form").hide();
@@ -111,12 +101,11 @@ registrationForm.addEventListener("submit", function(e){
                         coreMethods.setAlert(msg, "danger");
                         $(this.form).children("input[type=password]").val("");
                     } else {
-                        currentUser = response;
-                        notebooksBaseUrl = defaultUrl + `/${currentUser._id}/notebooks`;
-                        notesBaseUrl = defaultUrl + `/${currentUser._id}/notes`;
-                        const userJSON = JSON.stringify(response);
-                        Cookies.set("currentUser", userJSON);
-                        coreMethods.setAlert(`Welcome ${response.username}!`, "success");
+                        const { token, user } = response;
+                        notebooksBaseUrl = defaultUrl + `/${token}/notebooks`;
+                        notesBaseUrl = defaultUrl + `/${token}/notes`;
+                        localStorage.JWTtoken = token;
+                        coreMethods.setAlert(`Welcome ${user.username}!`, "success");
                         $(this.form).children("input").val("");
                         $("#registration-form, #login-form").hide();
                         $(logoutLink).show();
@@ -128,7 +117,7 @@ registrationForm.addEventListener("submit", function(e){
     }
 });
 
-if(currentUser){
+if(localStorage.JWTtoken){
     $("#registration-form, #login-form").hide();
     $(logoutLink).show();
     $("#resources-container").show();

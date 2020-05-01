@@ -122,14 +122,11 @@
     <script src="./libs/jsCookies.js"></script>
     <script>
         const defaultUrl = "http://localhost:8888";
-        let cookieContent = Cookies.get("currentUser");
         let notebooksBaseUrl;
-        let currentUser;
         let notesBaseUrl;
-        if(cookieContent){
-            currentUser = JSON.parse(cookieContent);
-            notebooksBaseUrl = `${defaultUrl}/${currentUser._id}/notebooks`;
-            notesBaseUrl = `${defaultUrl}/${currentUser._id}/notes`;
+        if(localStorage.JWTtoken){
+            notebooksBaseUrl = `${defaultUrl}/${localStorage.JWTtoken}/notebooks`;
+            notesBaseUrl = `${defaultUrl}/${localStorage.JWTtoken}/notes`;
         }
     </script>
     <script src="./libs/jquery-3.1.1.min.js"></script>

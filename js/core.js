@@ -71,7 +71,7 @@ const coreMethods = {
         return markup; 
     },
     loadNotebooks(){
-        if(currentUser){
+        if(localStorage.JWTtoken){
             // get all the notebooks
             $.get(
                 notebooksBaseUrl, 
