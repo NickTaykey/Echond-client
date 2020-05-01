@@ -31,6 +31,7 @@ loginForm.addEventListener("submit", function(e){
             } else {
                 $(this.form).children("input").val("");
                 $("#registration-form, #login-form").hide();
+                coreMethods.setAlert();
                 // show confirm token form
                 $("#two-factor-form").show();
             }
