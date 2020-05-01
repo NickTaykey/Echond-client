@@ -1,4 +1,4 @@
-#registration-form, #logout-link, #resources-container{
+#registration-form, #logout-link, #resources-container, #two-factor-form{
     display: none;
 }
 

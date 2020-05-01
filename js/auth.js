@@ -24,25 +24,52 @@ loginForm.addEventListener("submit", function(e){
         data,
         form: this,
         success: function(response){
-            const { user, error } = response;
-            if(!user && error){
+            const { code, error } = response;
+            if(error && code!==200){
                 coreMethods.setAlert(error.message, "danger");
                 $(this.form).children("#login-password").val("");
             } else {
-                const { token, user } = response;
-                localStorage.JWTtoken = token;
-                notebooksBaseUrl = defaultUrl + `/${token}/notebooks`;
-                notesBaseUrl = defaultUrl + `/${token}/notes`;
-                coreMethods.setAlert(`Welcome back ${user.username}!`, "success");
                 $(this.form).children("input").val("");
                 $("#registration-form, #login-form").hide();
-                $(logoutLink).show();
-                $("#resources-container").show();
-                coreMethods.loadNotebooks();
+                // show confirm token form
+                $("#two-factor-form").show();
             }
         }
     })
 });
+
+// TWO FACTOR LOGIN
+const twoFactorForm = document.getElementById("two-factor-form");
+twoFactorForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    const token = $(this).children("#token").val();
+    if(token && token.length){
+        const data = $(this).serialize();
+        const url = defaultUrl + "/loginConfirm";
+        $.ajax({
+            url,
+            type: "POST",
+            data,
+            success: function(response){
+                const { err, user, token } = response;
+                if(err){
+                    coreMethods.setAlert(err, "danger");
+                } else {
+                    $("#two-factor-form").hide();
+                    $("#resources-container, #logout-link").show();
+                    localStorage.JWTtoken = token;
+                    notebooksBaseUrl = defaultUrl + `/${token}/notebooks`;
+                    notesBaseUrl = defaultUrl + `/${token}/notes`;
+                    coreMethods.setAlert(`Welcome back ${user.username}!`, "success");
+                    coreMethods.loadNotebooks();
+                }
+            }
+        })
+    } else {
+        coreMethods.setAlert("Missing token", "danger");
+    }
+});
+
 
 // RESGISTRATION
 const registrationForm = document.getElementById("registration-form");

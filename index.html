@@ -11,7 +11,7 @@
     <div class="alert-success"></div>
     <div class="alert-danger"></div>
     <div id="auth-container">
-        <form action="/" method="post" id="login-form">
+        <form id="login-form">
             <h3>Login</h3>
             <label for="login-username">Username</label>
             <br>
@@ -29,7 +29,15 @@
             <br>
             <a href="#" id="registration-link">Get Registered</a>
         </form>
-        <form action="/register" method="post" id="registration-form">
+        <form id="two-factor-form">
+            <label for="token">You have been sent an SMS with a token, type it ...</label>
+            <br>
+            <input type="text" name="token" id="token" placeholder="token">
+            <br>
+            <button type="submit">Login</button>
+            <br>
+        </form>
+        <form id="registration-form">
             <h3>Registration</h3>
             <label for="regisration-username">Username</label>
             <input type="text" id="regisration-username" name="username" placeholder="username">
@@ -53,6 +61,7 @@
             <button type="reset">Reset Form</button>
             <br><br>
             <a href="#" id="login-link">Login</a>
+            <br>
         </form>
         <a href="#" id="logout-link">Logout</a>
         <br><br>
