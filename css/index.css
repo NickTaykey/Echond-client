@@ -60,3 +60,7 @@
 .edit-note-form{
     display: none;
 }
+
+#registration-message{
+    display: none;
+}

@@ -1,3 +1,5 @@
+const $twoFactorForm = $("#two-factor-form");
+
 // LOGOUT
 const logoutLink = document.getElementById("logout-link");
 logoutLink.addEventListener("click", function(e){
@@ -33,35 +35,42 @@ loginForm.addEventListener("submit", function(e){
                 $("#registration-form, #login-form").hide();
                 coreMethods.setAlert();
                 // show confirm token form
-                $("#two-factor-form").show();
+                $twoFactorForm.show();
+                $twoFactorForm.children("input").val("");
+                $twoFactorForm.children("button[type=submit]").text("Login");
             }
         }
     })
 });
 
 // TWO FACTOR LOGIN
-const twoFactorForm = document.getElementById("two-factor-form");
-twoFactorForm.addEventListener("submit", function(e){
+$twoFactorForm.submit(function(e){
     e.preventDefault();
     const token = $(this).children("#token").val();
     if(token && token.length){
         const data = $(this).serialize();
-        const url = defaultUrl + "/loginConfirm";
+        const context = $twoFactorForm.children("button[type=submit]").text();
+        const path = context==="Login" ? "/loginConfirm" : "/registerConfirm";
+        const url = defaultUrl + path;
         $.ajax({
             url,
             type: "POST",
             data,
+            context,
             success: function(response){
                 const { err, user, token } = response;
                 if(err){
                     coreMethods.setAlert(err, "danger");
                 } else {
-                    $("#two-factor-form").hide();
+                    $twoFactorForm.hide();
                     $("#resources-container, #logout-link").show();
                     localStorage.JWTtoken = token;
                     notebooksBaseUrl = defaultUrl + `/${token}/notebooks`;
                     notesBaseUrl = defaultUrl + `/${token}/notes`;
-                    coreMethods.setAlert(`Welcome back ${user.username}!`, "success");
+                    coreMethods.setAlert(`Welcome ${context==="Login" ? "back" : "" } ${user.username}!`, "success");
+                    if(context!=="Login"){
+                        $("#registration-message").hide();
+                    }
                     coreMethods.loadNotebooks();
                 }
             }
@@ -179,16 +188,13 @@ registrationForm.addEventListener("submit", function(e){
                         else msg = response.err;
                         coreMethods.setAlert(msg, "danger");
                         $(this.form).children("input[type=password]").val("");
-                    } else {
-                        const { token, user } = response;
-                        notebooksBaseUrl = defaultUrl + `/${token}/notebooks`;
-                        notesBaseUrl = defaultUrl + `/${token}/notes`;
-                        localStorage.JWTtoken = token;
-                        coreMethods.setAlert(`Welcome ${user.username}!`, "success");
-                        $(this.form).children("input").val("");
-                        $("#registration-form, #login-form").hide();
-                        $(logoutLink).show();
-                        $("#resources-container").show();
+                    } else if(response.code===200) {
+                        coreMethods.setAlert();
+                        $(registrationForm).hide();
+                        $twoFactorForm.show();
+                        $twoFactorForm.children("input").val("");
+                        $twoFactorForm.children("button[type=submit]").text("Get Registered");
+                        $("#registration-message").show();
                     }
                 }
             });
@@ -205,8 +211,6 @@ $("button[type=reset]").click(function(e){
         }
     );
 })
-
-
 
 if(localStorage.JWTtoken){
     $("#registration-form, #login-form").hide();
