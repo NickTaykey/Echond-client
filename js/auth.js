@@ -1,4 +1,4 @@
-const $twoFactorForm = $("#two-factor-form");
+const twoFactorForm = document.getElementById("two-factor-form");
 
 // LOGOUT
 const logoutLink = document.getElementById("logout-link");
@@ -35,40 +35,50 @@ loginForm.addEventListener("submit", function(e){
                 $("#registration-form, #login-form").hide();
                 coreMethods.setAlert();
                 // show confirm token form
-                $twoFactorForm.show();
-                $twoFactorForm.children("input").val("");
-                $twoFactorForm.children("button[type=submit]").text("Login");
+                $(twoFactorForm).show();
+                $(twoFactorForm).children("input").val("");
+                $(twoFactorForm).children("button[type=submit]").text("Login");
             }
         }
     })
 });
 
-// TWO FACTOR LOGIN
-$twoFactorForm.submit(function(e){
+const resetPwdForm = document.getElementById("reset-pwd-form");
+let userConfirmToken;
+
+// TWO FACTOR form involving features
+twoFactorForm.addEventListener("submit", function(e){
     e.preventDefault();
     const token = $(this).children("#token").val();
     if(token && token.length){
         const data = $(this).serialize();
-        const context = $twoFactorForm.children("button[type=submit]").text();
-        const path = context==="Login" ? "/loginConfirm" : "/registerConfirm";
+        const feature = $(twoFactorForm).children("button[type=submit]").text();
+        const path = feature==="Login" ? "/loginConfirm" : feature==="Reset password" ? "/forgotConfirm" :  "/registerConfirm";
         const url = defaultUrl + path;
         $.ajax({
             url,
             type: "POST",
             data,
-            context,
+            feature,
+            token,
             success: function(response){
-                const { err, user, token } = response;
+                const { err, user, token, code } = response;
                 if(err){
                     coreMethods.setAlert(err, "danger");
+                } else if(this.feature==="Reset password" && code===200){
+                    $(resetPwdForm).show();
+                    $(twoFactorForm).hide();
+                    $(twoFactorForm).children("input[type=text]").val("");
+                    userConfirmToken = this.token;
+                    coreMethods.setAlert();
                 } else {
-                    $twoFactorForm.hide();
+                    $(twoFactorForm).hide();
                     $("#resources-container, #logout-link").show();
                     localStorage.JWTtoken = token;
                     notebooksBaseUrl = defaultUrl + `/${token}/notebooks`;
                     notesBaseUrl = defaultUrl + `/${token}/notes`;
-                    coreMethods.setAlert(`Welcome ${context==="Login" ? "back" : "" } ${user.username}!`, "success");
-                    if(context!=="Login"){
+                    coreMethods.setAlert(`Welcome ${this.feature==="Login" ? "back" : "" } ${user.username}!`, "success");
+                    if(this.feature!=="Login"){
                         $("#registration-message").hide();
                     }
                     coreMethods.loadNotebooks();
@@ -80,6 +90,38 @@ $twoFactorForm.submit(function(e){
     }
 });
 
+resetPwdForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    const password = $(this).children("#reset-password").val();
+    const passwordConfirm = $(this).children("#reset-password-confirm").val();
+    if(!password.length) return coreMethods.setAlert("Missing password", "danger");
+    else if(!passwordConfirm.length) return coreMethods.setAlert("Missing password confirmation", "danger");
+    else if(password!==passwordConfirm) return coreMethods.setAlert("Passwords not matching", "danger");
+    else {
+        const data = $(this).serialize() + "&userToken=" + userConfirmToken;
+        const url = defaultUrl + "/reset";
+        $.ajax({
+            type: "PUT",
+            url,
+            data,
+            resetPwdForm,
+            success: function(response){
+                const { err, token } = response;
+                if(err){
+                    return coreMethods.setAlert(err, "danger");
+                }
+                $(this.resetPwdForm).hide();
+                $(this.resetPwdForm).children("input[type=password]").val("");
+                $("#resources-container, #logout-link").show();
+                localStorage.JWTtoken = token;
+                notebooksBaseUrl = defaultUrl + `/${token}/notebooks`;
+                notesBaseUrl = defaultUrl + `/${token}/notes`;
+                coreMethods.loadNotebooks();
+                coreMethods.setAlert("Password successfully reseted", "success");
+            }
+        });
+    }
+})
 
 // RESGISTRATION
 const registrationForm = document.getElementById("registration-form");
@@ -173,9 +215,9 @@ registrationForm.addEventListener("submit", function(e){
                     } else if(response.code===200) {
                         coreMethods.setAlert();
                         $(registrationForm).hide();
-                        $twoFactorForm.show();
-                        $twoFactorForm.children("input").val("");
-                        $twoFactorForm.children("button[type=submit]").text("Get Registered");
+                        $(twoFactorForm).show();
+                        $(twoFactorForm).children("input").val("");
+                        $(twoFactorForm).children("button[type=submit]").text("Get Registered");
                         $("#registration-message").show();
                     }
                 }
@@ -199,3 +241,46 @@ if(localStorage.JWTtoken){
     $(logoutLink).show();
     $("#resources-container").show();
 }
+
+// forgot pwd feature
+const forgotPwdLink = document.getElementById("forgot-pwd-link");
+const forgotPwdForm = document.getElementById("forgot-pwd-form");
+
+forgotPwdLink.addEventListener("click", function(e){
+    e.preventDefault();
+    $(forgotPwdForm).show();
+    $(loginForm).hide();
+});
+
+forgotPwdForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    const number = $(this).children("input").val();
+    if(number && number.length){
+        if(phoneNumberRegex.exec(number)){
+            const url = defaultUrl + "/forgot";
+            const data = $(this).serialize();
+            $.ajax({
+                type: "POST",
+                url,
+                data,
+                form: this,
+                success: function(response){
+                    const { err, code } = response;
+                    if(err){
+                        coreMethods.setAlert(err.message, "danger");
+                    } else if(code===200){
+                        coreMethods.setAlert();
+                        $(twoFactorForm).show();
+                        $("#password-reset-status").show();
+                        $(twoFactorForm).children("button[type=submit]").text("Reset password");
+                        $(this.form).hide();
+                    }
+                }
+            });
+        } else {
+            coreMethods.setAlert("Invalid phone number", "danger");
+        }
+    } else {
+        coreMethods.setAlert("Missing phone number", "danger");
+    }
+});

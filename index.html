@@ -25,11 +25,20 @@
             <br>
             <button type="reset">Reset Form</button>
             <br><br>
-            <a href="#">Forgot Password?</a>
+            <a href="#" id="forgot-pwd-link">Forgot Password?</a>
             <br>
             <a href="#" id="registration-link">Get Registered</a>
         </form>
+        <form id="forgot-pwd-form">
+            <h3>Forgot password</h3>
+            <label for="forgot-phone-number">Type your phone number</label>
+            <br>
+            <input type="text" id="forgot-phone-number" placeholder="phone number" name="phoneNumber">
+            <br>
+            <button type="submit">Continue</button>
+        </form>
         <form id="two-factor-form">
+            <h3 id="password-reset-status">A message with the password reset token VALID FOR ONE HOUR since now has beed sent to you</h3>
             <label for="token">You have been sent an SMS with a token, type it ...</label>
             <br>
             <h3 id="registration-message">If you close this page You will note be able to confirm your account any more</h3>
@@ -60,6 +69,15 @@
             <br><br>
             <a href="#" id="login-link">Login</a>
             <br>
+        </form>
+        <form id="reset-pwd-form">
+            <h3>Reset password</h3>
+            <label for="reset-password">New password: </label><br>
+            <input type="password" name="password" id="reset-password" placeholder="password"><br>
+            <label for="reset-password-confirm">Confirm password: </label><br>
+            <input type="password" name="passwordConfirm" id="reset-password-confirm" placeholder="confirm password">
+            <br>
+            <button type="submit">Reset password</button>
         </form>
         <a href="#" id="logout-link">Logout</a>
         <br><br>
