@@ -9,35 +9,39 @@ const searchFiled = document.getElementById("search-field");
 searchFiled.addEventListener("input", function(e){
     e.preventDefault();
     const queryString = encodeURIComponent(this.value);
-    const url = `${defaultUrl}/search?search=${queryString}`;
+    const url = `${defaultUrl}/${localStorage.JWTtoken}/search?search=${queryString}`;
     if(this.value.length){
         $.get(url, function(response){
-            const { notes, notebooks } = response;
-            let newContent = "";
-            notes.forEach(n=>{
-                // FIND THE NOTEBOOK ONLY WITH THE ID OF THE NOTE
-                const notebook = usersNotebooks.find(notebook=>{
-                    return notebook.notes.find(note=>{
-                       return note._id===n._id;
+            const { err, notes, notebooks } = response;
+            if(err){
+                coreMethods.loginErrorHandler();
+            } else {
+                let newContent = "";
+                notes.forEach(n=>{
+                    // FIND THE NOTEBOOK ONLY WITH THE ID OF THE NOTE
+                    const notebook = usersNotebooks.find(notebook=>{
+                        return notebook.notes.find(note=>{
+                           return note._id===n._id;
+                        });
                     });
+                    if(notebook)
+                        newContent += coreMethods.generateNoteMarkup(n, notebook.title);
                 });
-                if(notebook)
-                    newContent += coreMethods.generateNoteMarkup(n, notebook.title);
-            });
-            notesContainer.innerHTML = newContent;
-            
-            newContent = "";
-            notebooks.forEach(n=>{
-                newContent += coreMethods.generateNotebookMarkup(n);
-            });
-            notebooksContainer.innerHTML = newContent;
-            let type = "danger", msg = "No results found!";
-            const results = notes.length + notebooks.length;
-            if(results>0){
-                type = "success"; msg = `${results} results found!`;
+                notesContainer.innerHTML = newContent;
+                
+                newContent = "";
+                notebooks.forEach(n=>{
+                    newContent += coreMethods.generateNotebookMarkup(n);
+                });
+                notebooksContainer.innerHTML = newContent;
+                let type = "danger", msg = "No results found!";
+                const results = notes.length + notebooks.length;
+                if(results>0){
+                    type = "success"; msg = `${results} results found!`;
+                }
+                $("fieldset:not(#search-bar)").hide();
+                coreMethods.setAlert(msg, type);
             }
-            $("fieldset:not(#search-bar)").hide();
-            coreMethods.setAlert(msg, type);
         });
     } else{
         $(".alert-danger, .alert-success").hide();
