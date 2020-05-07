@@ -78,23 +78,28 @@ $(notebooksContainer).on("click", ".update-btn", function(e){
                 $errLabel,
                 btn: this,
                 success: function(response){
-                    let cont = coreMethods.clientSideNotebookErrorHandler(response);
-                    if(cont){
-                        $(this.btn)
-                            .parents(".edit-notebook-form")
-                            .siblings(".edit-notebook-btn")
-                            .click();
-                        $(this.btn)
-                            .parents(".edit-notebook-form")
-                            .siblings("h4")
-                            .text(response.notebook.title);
-                        // update the notebook in the userNotebooks variable
-                        const notebook = coreMethods.findNoteBookById(response.notebook._id);
-                        const notebookIndex = usersNotebooks.indexOf(notebook);
-                        usersNotebooks.splice(notebookIndex, 1, response.notebook);
-                        this.$errLabel.hide();
-                        this.$errLabel.text("");
-                        coreMethods.setAlert("Notebook successfully updated!", "success");
+                    const { err } = response;
+                    if(err){
+                        coreMethods.loginErrorHandler();
+                    } else {
+                        let cont = coreMethods.clientSideNotebookErrorHandler(response);
+                        if(cont){
+                            $(this.btn)
+                                .parents(".edit-notebook-form")
+                                .siblings(".edit-notebook-btn")
+                                .click();
+                            $(this.btn)
+                                .parents(".edit-notebook-form")
+                                .siblings("h4")
+                                .text(response.notebook.title);
+                            // update the notebook in the userNotebooks variable
+                            const notebook = coreMethods.findNoteBookById(response.notebook._id);
+                            const notebookIndex = usersNotebooks.indexOf(notebook);
+                            usersNotebooks.splice(notebookIndex, 1, response.notebook);
+                            this.$errLabel.hide();
+                            this.$errLabel.text("");
+                            coreMethods.setAlert("Notebook successfully updated!", "success");
+                        }
                     }
                 }
             });
@@ -116,26 +121,31 @@ $(notebooksContainer).on("click", ".delete-notebook-btn", function(e){
             url: `${notebooksBaseUrl}/${id}`,
             $notebook,
             success: function(response){
-                let cont = coreMethods.clientSideNotebookErrorHandler(response);
-                if(cont){
-                    const notebook = usersNotebooks.find(n=>response.notebook._id===n._id);
-                    const notebookIndex = usersNotebooks.indexOf(notebook);
-                    usersNotebooks.splice(notebookIndex, 1);
-                    // if the selected notebook gets deleted select the next
-                    if(this.$notebook.hasClass("selected-notebook")){
-                        this.$notebook
-                            .next()
-                            .find(".show-notes-btn")
-                            .click();
+                const { err } = response;
+                if(err){
+                    coreMethods.loginErrorHandler();
+                } else {
+                    let cont = coreMethods.clientSideNotebookErrorHandler(response);
+                    if(cont){
+                        const notebook = usersNotebooks.find(n=>response.notebook._id===n._id);
+                        const notebookIndex = usersNotebooks.indexOf(notebook);
+                        usersNotebooks.splice(notebookIndex, 1);
+                        // if the selected notebook gets deleted select the next
+                        if(this.$notebook.hasClass("selected-notebook")){
+                            this.$notebook
+                                .next()
+                                .find(".show-notes-btn")
+                                .click();
+                        }
+                        this.$notebook.remove();
+                        // show the first notebook notes
+                        notesContainer.innerHTML = "";
+                        usersNotebooks[0].notes.forEach(n=>{
+                            const notebookTitle = usersNotebooks[0].title;
+                            notesContainer.innerHTML += coreMethods.generateNoteMarkup(n, notebookTitle);
+                        });
+                        coreMethods.setAlert("Notebook successfully deleted!", "success");
                     }
-                    this.$notebook.remove();
-                    // show the first notebook notes
-                    notesContainer.innerHTML = "";
-                    usersNotebooks[0].notes.forEach(n=>{
-                        const notebookTitle = usersNotebooks[0].title;
-                        notesContainer.innerHTML += coreMethods.generateNoteMarkup(n, notebookTitle);
-                    });
-                    coreMethods.setAlert("Notebook successfully deleted!", "success");
                 }
             }
         })
@@ -175,27 +185,31 @@ createNotebookForm.addEventListener("submit", function(e){
                 data, 
                 $errLabel,
                 success: function(response){
-                    const { notebook } = response;
-                    // add the notebook to the DOM
-                    $(notebooksContainer)
-                        .append(
-                            coreMethods.generateNotebookMarkup(notebook)
+                    const { err, notebook } = response;
+                    if(err){
+                        coreMethods.loginErrorHandler();
+                    } else {
+                        // add the notebook to the DOM
+                        $(notebooksContainer)
+                            .append(
+                                coreMethods.generateNotebookMarkup(notebook)
+                            );
+                        // clean the form
+                        $(createNotebookForm).find("input[type=text]").val("");
+                        $(createNotebookBtn).click();
+                        // add notebook to the usersNotebooks array
+                        usersNotebooks.push(notebook);
+                        // add the notebook to the filter bar
+                        $("#notebooks-fiter-bar").append(
+                            `<li>
+                                <label for="filter-${notebook._id}">${notebook.title}</label>
+                                <input type="checkbox" id="filter-${notebook._id}" class="notebook-filter-item">
+                            </li>`
                         );
-                    // clean the form
-                    $(createNotebookForm).find("input[type=text]").val("");
-                    $(createNotebookBtn).click();
-                    // add notebook to the usersNotebooks array
-                    usersNotebooks.push(notebook);
-                    // add the notebook to the filter bar
-                    $("#notebooks-fiter-bar").append(
-                        `<li>
-                            <label for="filter-${notebook._id}">${notebook.title}</label>
-                            <input type="checkbox" id="filter-${notebook._id}" class="notebook-filter-item">
-                        </li>`
-                    );
-                    this.$errLabel.hide();
-                    this.$errLabel.text("");
-                    coreMethods.setAlert("Notebook successfully added!", "success");
+                        this.$errLabel.hide();
+                        this.$errLabel.text("");
+                        coreMethods.setAlert("Notebook successfully added!", "success");
+                    }
 
                 }
             });

@@ -153,9 +153,11 @@
         const defaultUrl = "http://localhost:8888";
         let notebooksBaseUrl;
         let notesBaseUrl;
+        let previouslyLoggedIn = false;
         if(localStorage.JWTtoken){
             notebooksBaseUrl = `${defaultUrl}/${localStorage.JWTtoken}/notebooks`;
             notesBaseUrl = `${defaultUrl}/${localStorage.JWTtoken}/notes`;
+            previouslyLoggedIn = true;
         }
     </script>
     <script src="./libs/jquery-3.1.1.min.js"></script>

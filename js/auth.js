@@ -7,6 +7,7 @@ logoutLink.addEventListener("click", function(e){
     delete localStorage.JWTtoken;
     notebooksBaseUrl = undefined;
     notesBaseUrl = undefined;
+    previouslyLoggedIn = false;
     $("#login-form").show();
     $(".notebook, .note").remove();
     $("#resources-container").hide();
@@ -38,6 +39,7 @@ loginForm.addEventListener("submit", function(e){
                 $(twoFactorForm).show();
                 $(twoFactorForm).children("input").val("");
                 $(twoFactorForm).children("button[type=submit]").text("Login");
+                previouslyLoggedIn = true;
             }
         }
     })
