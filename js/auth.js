@@ -13,6 +13,8 @@ logoutLink.addEventListener("click", function(e){
     $(".notebook, .note").remove();
     $("#resources-container").hide();
     $(logoutLink).hide();
+    $(profileLink).hide();
+    $(profile).hide();
     $("h1").text("Welcome to the note app");
     coreMethods.setAlert("Logout successfully completed!", "success");
 });
@@ -41,7 +43,6 @@ loginForm.addEventListener("submit", function(e){
                 $(twoFactorForm).show();
                 $(twoFactorForm).children("input").val("");
                 $(twoFactorForm).children("button[type=submit]").text("Login");
-                previouslyLoggedIn = true;
             }
         }
     })
@@ -83,10 +84,14 @@ twoFactorForm.addEventListener("submit", function(e){
                     notebooksBaseUrl = defaultUrl + `/${token}/notebooks`;
                     notesBaseUrl = defaultUrl + `/${token}/notes`;
                     const content = `Welcome ${feature==="Login" ? "back" : ""} to the note app ${user.username}!`;
+                    coreMethods.setAlert();
                     $("h1").text(content);
                     if(this.feature!=="Login"){
                         $("#registration-message").hide();
                     }
+                    previouslyLoggedIn = true;
+                    $(profileLink).show();
+                    $(profile).show();
                     coreMethods.loadNotebooks();
                 }
             }
@@ -242,9 +247,14 @@ $("button[type=reset]").click(function(e){
     );
 })
 
+const profileLink = document.getElementById("profile-link");
+const profile = document.getElementById("user-profile");
+
 if(localStorage.JWTtoken){
     $("#registration-form, #login-form").hide();
     $(logoutLink).show();
+    $(profile).show();
+    $(profileLink).show();
     $("#resources-container").show();
 }
 
@@ -289,4 +299,60 @@ forgotPwdForm.addEventListener("submit", function(e){
     } else {
         coreMethods.setAlert("Missing phone number", "danger");
     }
+});
+
+profileLink.addEventListener("click", function(e){
+    e.preventDefault();
+    const display = this.style.display;
+    if(display==="block"){
+        $(profile).hide();
+        $(this).text("Show profile");
+    } else {
+        $(this).text("Hide profile");
+        $(profile).show();
+        $(profile).html("");
+        const currentUser = JSON.parse(localStorage.currentUser);
+        $(profile).append(`
+        <h3>${ currentUser.username }'s Profile</h3>
+        <form id="user-udpate-form">
+            <label for="update-username">Username: </label>
+            <input type="text" id="update-username" name="username" placeholder="username" value="${ currentUser.username }">
+            <br>
+            <label for="current-password-update">Current password: <strong>required to make any change</strong></label>
+            <input type="password" name="currentPassword" id="current-password-update" placeholder="current password">
+            <br>
+            <label for="update-password">New password: </label>
+            <input type="password" name="password" id="update-password" placeholder="new password">
+            <br>
+            <label for="update-password-confirm">Confirm password: </label>
+            <input type="password" name="passwordConfirm" id="update-password-confirm" placeholder="confirm new password">
+            <br>
+            <button type="submit">Update profile</button>
+        </form>
+        `);
+    }
+});
+
+$(profile).on("submit", "#user-udpate-form", function(e){
+    e.preventDefault();
+    const data = $(this).serialize();
+    const url = defaultUrl + "/" + localStorage.JWTtoken;
+    $.ajax({
+        url,
+        type: "PUT",
+        data,
+        success: function(response){
+            const { err, token, user } = response;
+            if(err){
+                return coreMethods.setAlert(err, "danger");
+            } 
+            localStorage.JWTtoken = token;
+            localStorage.currentUser = JSON.stringify(user);
+            $(profile).html("");
+            $(profile).hide();
+            $(profileLink).text("Show profile");
+            $("h1").text("Welcome back to the note app " + user.username);
+            coreMethods.setAlert("Profile successfully updated!", "success");
+        }
+    });
 });

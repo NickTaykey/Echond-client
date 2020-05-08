@@ -65,6 +65,6 @@
     display: none;
 }
 
-#forgot-pwd-form, #reset-pwd-form, #password-reset-status{
+#forgot-pwd-form, #reset-pwd-form, #password-reset-status, #user-profile, #profile-link{
     display: none;
 }
