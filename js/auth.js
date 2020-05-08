@@ -5,6 +5,7 @@ const logoutLink = document.getElementById("logout-link");
 logoutLink.addEventListener("click", function(e){
     e.preventDefault();
     delete localStorage.JWTtoken;
+    delete localStorage.currentUser;
     notebooksBaseUrl = undefined;
     notesBaseUrl = undefined;
     previouslyLoggedIn = false;
@@ -12,6 +13,7 @@ logoutLink.addEventListener("click", function(e){
     $(".notebook, .note").remove();
     $("#resources-container").hide();
     $(logoutLink).hide();
+    $("h1").text("Welcome to the note app");
     coreMethods.setAlert("Logout successfully completed!", "success");
 });
 
@@ -77,9 +79,11 @@ twoFactorForm.addEventListener("submit", function(e){
                     $(twoFactorForm).hide();
                     $("#resources-container, #logout-link").show();
                     localStorage.JWTtoken = token;
+                    localStorage.currentUser = JSON.stringify(user);
                     notebooksBaseUrl = defaultUrl + `/${token}/notebooks`;
                     notesBaseUrl = defaultUrl + `/${token}/notes`;
-                    coreMethods.setAlert(`Welcome ${this.feature==="Login" ? "back" : "" } ${user.username}!`, "success");
+                    const content = `Welcome ${feature==="Login" ? "back" : ""} to the note app ${user.username}!`;
+                    $("h1").text(content);
                     if(this.feature!=="Login"){
                         $("#registration-message").hide();
                     }

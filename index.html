@@ -7,7 +7,7 @@
     <title>Note App | index</title>
 </head>
 <body>
-    <h1>Welcome to the note app!</h1>
+    <h1>Welcome to the note app</h1>
     <div class="alert-success"></div>
     <div class="alert-danger"></div>
     <div id="auth-container">
@@ -158,6 +158,10 @@
             notebooksBaseUrl = `${defaultUrl}/${localStorage.JWTtoken}/notebooks`;
             notesBaseUrl = `${defaultUrl}/${localStorage.JWTtoken}/notes`;
             previouslyLoggedIn = true;
+            const h1 = document.querySelector("h1");
+            const { currentUser } = localStorage;
+            const newContent = `Welcome back to the note app ${JSON.parse(currentUser).username}!`;
+            h1.textContent = newContent;
         }
     </script>
     <script src="./libs/jquery-3.1.1.min.js"></script>
