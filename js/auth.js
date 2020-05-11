@@ -91,7 +91,6 @@ twoFactorForm.addEventListener("submit", function(e){
                     }
                     previouslyLoggedIn = true;
                     $(profileLink).show();
-                    $(profile).show();
                     coreMethods.loadNotebooks();
                 }
             }
@@ -253,7 +252,6 @@ const profile = document.getElementById("user-profile");
 if(localStorage.JWTtoken){
     $("#registration-form, #login-form").hide();
     $(logoutLink).show();
-    $(profile).show();
     $(profileLink).show();
     $("#resources-container").show();
 }
@@ -303,7 +301,7 @@ forgotPwdForm.addEventListener("submit", function(e){
 
 profileLink.addEventListener("click", function(e){
     e.preventDefault();
-    const display = this.style.display;
+    const display = profile.style.display;
     if(display==="block"){
         $(profile).hide();
         $(this).text("Show profile");
