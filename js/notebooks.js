@@ -32,6 +32,15 @@ $(notebooksContainer).on("click", ".show-notes-btn", function(e){
         const $notes = $(notesContainer).children(".note");
         coreMethods.showPointedNotes($notes);
     }
+    const { sharedNotes } = JSON.parse(localStorage.currentUser);
+    $(notesContainer).children(".note").each((i, note)=>{
+        const noteId = note.getAttribute("id");
+        if(sharedNotes.indexOf(noteId)!==-1){
+            $(note).append(coreMethods.sharedNoteBadge);
+        }
+    })
+
+
     lastInspectedNotebook = notebookContainer;
 });
 
@@ -210,7 +219,6 @@ createNotebookForm.addEventListener("submit", function(e){
                         this.$errLabel.text("");
                         coreMethods.setAlert("Notebook successfully added!", "success");
                     }
-
                 }
             });
         }

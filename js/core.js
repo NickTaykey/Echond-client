@@ -4,6 +4,7 @@ const coreMethods = {
         const display = element.style.display;
         element.style.display = display==="block" ? "none" : "block";
     },
+    sharedNoteBadge: "<span class='shared-note-badge'>Shared</span>",
     generateNotebookMarkup(notebook){
         const markup = `
         <div class="notebook" id=${notebook._id}>
@@ -28,7 +29,11 @@ const coreMethods = {
             coreMethods.setAlert("403 action not allowed!", "danger");
             return false;
         } else if(response.err){
-            coreMethods.setAlert("You have to be logged in to do that", "danger");
+            let msg = "You have to be logged in to do that";
+            if(response.err==="user not found"){
+                msg = response.err;
+            }
+            coreMethods.setAlert(msg, "danger");
             return false;
         }
         return true;
@@ -53,7 +58,12 @@ const coreMethods = {
             <strong>Pointed: ${ note.pointed }</strong>
             <button type="button" class="edit-note-btn" id="">Edit</button>
             <button type="button" class="delete-note-btn">Delete Note</button>
-            <form action="${ notesBaseUrl }/${ note._id }" class="edit-note-form">
+            <button type="button" class="share-note-btn">Share Note</button>
+            <section class="find-user-section">
+                <input type="text" name="username" placeholder="search by username">
+                <ul class="user-found"></ul>
+            </section>
+            <form class="edit-note-form">
                 <div class="err-label"></div>
                 <label for="note-notebook">Notebook:</label>
                 <input type="text" placeholder="title of the notebook" name="notebookTitle" id="note-${ note._id }-notebook" value="${ notebookTitle }">

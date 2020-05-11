@@ -175,3 +175,63 @@ createNoteForm.addEventListener("submit", function(e){
         });
     }
 });
+
+$(notesContainer).on("click", ".share-note-btn", function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    $(this).siblings(".find-user-section").toggle();
+});
+
+$(notesContainer).on("input", "input[name=username]", function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    const url = defaultUrl + `/users?username=${this.value}`;
+    const usersList = $(this).siblings(".user-found");
+    $.ajax({
+        url,
+        type: "GET",
+        usersList,
+        success: function(response){
+            const { users } = response;
+            const { usersList } = this;
+            const { username } = JSON.parse(localStorage.currentUser);
+            usersList.html("");
+            users.forEach(u=>{
+                if(u.username!==username)
+                    usersList.append(`<li class="user-item">${u.username}</li>`);
+            });
+            if(!usersList.html().length){
+                usersList.html("<strong class='text-danger'>No users found</strong>");
+            }
+        }
+    })
+});
+
+$(notesContainer).on("click", ".user-item", function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    const username = this.textContent;
+    let confirmation = confirm(`Are you sure you want to share this note with ${username}`);
+    if(confirmation){
+        const $note = $(this).parents(".note");
+        const noteId = $note.attr("id");
+        const url = `${defaultUrl}/${localStorage.JWTtoken}/shareNote/${noteId}/user/${username}`;
+        $.ajax({
+            type: "PUT",
+            url,
+            $note,
+            success: function(response){
+                const status = coreMethods.clientSideNoteErrorHandler(response); 
+                if(status){
+                    const { user } = response;
+                    this.$note.append(coreMethods.sharedNoteBadge);
+                    localStorage.currentUser = JSON.stringify(user);
+                    alert(`Note successfully shared with ${user.username}`);
+                    $note.children(".find-user-section").children("input").val("");
+                    $note.children(".find-user-section").children("ul").html("");
+                    $note.children(".find-user-section").hide();
+                }
+            }
+        });
+    }
+});
