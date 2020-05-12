@@ -89,6 +89,16 @@ twoFactorForm.addEventListener("submit", function(e){
                     if(this.feature!=="Login"){
                         $("#registration-message").hide();
                     }
+                    if(this.feature==="Get Registered"){
+                        $.ajax({
+                            type: "POST",
+                            url: notebooksBaseUrl,
+                            data: "title=My Notebook",
+                            success(response){
+                                coreMethods.loadNotebooks();
+                            }
+                        })
+                    }
                     previouslyLoggedIn = true;
                     $(profileLink).show();
                     coreMethods.loadNotebooks();
