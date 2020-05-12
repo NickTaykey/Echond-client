@@ -18,29 +18,35 @@ $(notebooksContainer).on("click", ".show-notes-btn", function(e){
     // add selected state to the current showed notebook
     notebookContainer.classList.add("selected-notebook");
     const notebookId = notebookContainer.id;
-    const notebook = usersNotebooks.find(n=>n._id===notebookId);
+    const notebookTitle = $(this).text();
+    let notes;
+    if(notebookTitle!=="Shared Notes"){
+        const notebook = usersNotebooks.find(n=>n._id===notebookId);
+        notes = [...notebook.notes];
+    } else {
+        notes = JSON.parse(localStorage.currentUser).sharedWithMeNotes;
+    }
     let newContent = "";
-    const notes = [...notebook.notes];
     if(filterDate){
         notes.reverse();
     }
     notes.forEach(n=>{
-        newContent += coreMethods.generateNoteMarkup(n, notebook.title);
+        newContent += coreMethods.generateNoteMarkup(n, notebookTitle);
     });
     notesContainer.innerHTML = newContent;
     if(filterPointed){
         const $notes = $(notesContainer).children(".note");
         coreMethods.showPointedNotes($notes);
     }
-    const { sharedNotes } = JSON.parse(localStorage.currentUser);
-    $(notesContainer).children(".note").each((i, note)=>{
-        const noteId = note.getAttribute("id");
-        if(sharedNotes.indexOf(noteId)!==-1){
-            $(note).append(coreMethods.sharedNoteBadge);
-        }
-    })
-
-
+    if(notebookTitle!=="Shared Notes"){
+        const { sharedNotes } = JSON.parse(localStorage.currentUser);
+        $(notesContainer).children(".note").each((i, note)=>{
+            const noteId = note.getAttribute("id");
+            if(sharedNotes.indexOf(noteId)!==-1){
+                $(note).append(coreMethods.sharedNoteBadge);
+            }
+        });
+    }
     lastInspectedNotebook = notebookContainer;
 });
 

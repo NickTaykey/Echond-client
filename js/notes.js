@@ -223,10 +223,10 @@ $(notesContainer).on("click", ".user-item", function(e){
             success: function(response){
                 const status = coreMethods.clientSideNoteErrorHandler(response); 
                 if(status){
-                    const { user } = response;
+                    const { user, userCollector } = response;
                     this.$note.append(coreMethods.sharedNoteBadge);
                     localStorage.currentUser = JSON.stringify(user);
-                    alert(`Note successfully shared with ${user.username}`);
+                    alert(`Note successfully shared with ${userCollector.username}`);
                     $note.children(".find-user-section").children("input").val("");
                     $note.children(".find-user-section").children("ul").html("");
                     $note.children(".find-user-section").hide();
