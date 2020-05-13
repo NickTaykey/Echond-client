@@ -25,7 +25,7 @@ $(notebooksContainer).on("click", ".show-notes-btn", function(e){
         notes.reverse();
     }
     notes.forEach(n=>{
-        newContent += coreMethods.generateNoteMarkup(n, notebook.title);
+        newContent += coreMethods.generateNoteMarkup(n);
     });
     notesContainer.innerHTML = newContent;
     if(filterPointed){
@@ -141,8 +141,7 @@ $(notebooksContainer).on("click", ".delete-notebook-btn", function(e){
                         // show the first notebook notes
                         notesContainer.innerHTML = "";
                         usersNotebooks[0].notes.forEach(n=>{
-                            const notebookTitle = usersNotebooks[0].title;
-                            notesContainer.innerHTML += coreMethods.generateNoteMarkup(n, notebookTitle);
+                            notesContainer.innerHTML += coreMethods.generateNoteMarkup(n);
                         });
                         coreMethods.loadNotebooks();
                         coreMethods.setAlert("Notebook successfully deleted!", "success");

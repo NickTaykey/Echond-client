@@ -25,7 +25,7 @@ searchFiled.addEventListener("input", function(e){
                         });
                     });
                     if(notebook)
-                        newContent += coreMethods.generateNoteMarkup(n, notebook.title);
+                        newContent += coreMethods.generateNoteMarkup(n);
                 });
                 notesContainer.innerHTML = newContent;
                 
@@ -81,9 +81,8 @@ filterNotesBtn.addEventListener("click", function(e){
     }
     // append the content of that array to the DOM
     for(let n of notes){
-        const notebookTilte = notebook.title;
         $(notesContainer)
-            .append(coreMethods.generateNoteMarkup(n, notebookTilte));
+            .append(coreMethods.generateNoteMarkup(n));
     }
     
     // FILTER THE NOTES IF THEY ARE POINTED

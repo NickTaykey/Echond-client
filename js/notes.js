@@ -46,10 +46,10 @@ $(notesContainer).on("submit", ".edit-note-form", function(e){
     e.stopPropagation();
     const noteElement = this.parentElement;
     const id = noteElement.getAttribute("id");
-    const notebook = $(this).children(`#note-${id}-notebook`).val();
+    const notebook = $(this).children(".notebooks-list-update").children("input[type=radio]:checked").val();
     const body =  $(this).children(`#note-${id}-body`).val();
     const $errLabel = $(this).children(".err-label");
-    if(!notebook.length){
+    if(!notebook){
         $errLabel.text("Missing notebook!");
         $errLabel.show();
     } else if(!body.length){
@@ -157,7 +157,7 @@ createNoteForm.addEventListener("submit", function(e){
                             .find(".show-notes-btn")
                             .click();
                         $(notesContainer).append(
-                            coreMethods.generateNoteMarkup(note, notebook.title)
+                            coreMethods.generateNoteMarkup(note)
                         );
                         // add updated notebook to the array usersNotebooks
                         const notebookElem = coreMethods.findNoteBookById(notebook._id);

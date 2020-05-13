@@ -46,18 +46,27 @@ const coreMethods = {
         }
         return true;
     },
-    generateNoteMarkup(note, notebookTitle){
+    generateNoteMarkup(note){
+        let updateNotebookFieldSet = `<h3>Notebook</h3>`;
+        const selectedNotebookId = $(".selected-notebook").attr("id");
+        usersNotebooks.forEach(n=>{
+            updateNotebookFieldSet+=
+            `
+            <input type="radio" name="notebook" class="notebook-radio" value="${ n._id }" id="${ note._id }-update-${ n._id }" ${ selectedNotebookId===n._id ? "checked" : "" }>
+            <label for="${ note._id }-update-${ n._id }">${ n.title }</label>
+            `;
+        });
         const markup = `
         <div class="note" id=${note._id}>
             <h4 class="title">${ note.body }</h4>
             <strong>Pointed: ${ note.pointed }</strong>
-            <button type="button" class="edit-note-btn" id="">Edit</button>
+            <button type="button" class="edit-note-btn">Edit</button>
             <button type="button" class="delete-note-btn">Delete Note</button>
             <form action="${ notesBaseUrl }/${ note._id }" class="edit-note-form">
                 <div class="err-label"></div>
-                <label for="note-notebook">Notebook:</label>
-                <input type="text" placeholder="title of the notebook" name="notebookTitle" id="note-${ note._id }-notebook" value="${ notebookTitle }">
-                </br>
+                <br>
+                <section class="notebooks-list-update">${ updateNotebookFieldSet }</section>
+                <br>
                 <label for="note-${ note._id }-body">Your Note</label>
                 <textarea name="body" id="note-${ note._id }-body" cols="30" rows="10">${ note.body }</textarea>
                 </br>
@@ -112,8 +121,8 @@ const coreMethods = {
                             notebooksContainer.innerHTML = oldContent + newContent;
                             usersNotebooks = notebooks;
                             $notebooksList.append(`
-                            <input type="radio" name="notebook" class="notebook-radio" value="${ notebook._id }" id="${ notebook._id }">
-                            <label for="${ notebook._id }">${ notebook.title }</label>
+                            <input type="radio" name="notebook" class="notebook-radio" value="${ notebook._id }" id="create-${ notebook._id }">
+                            <label for="create-${ notebook._id }">${ notebook.title }</label>
                             `);
                             $(`#${notebooks[0]._id} > .show-notes-btn`).click();
                         }        
