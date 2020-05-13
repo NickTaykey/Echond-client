@@ -98,13 +98,13 @@ $(notebooksContainer).on("click", ".update-btn", function(e){
                             usersNotebooks.splice(notebookIndex, 1, response.notebook);
                             this.$errLabel.hide();
                             this.$errLabel.text("");
+                            coreMethods.loadNotebooks();
                             coreMethods.setAlert("Notebook successfully updated!", "success");
                         }
                     }
                 }
             });
         }
-
     }
 });
 
@@ -144,6 +144,7 @@ $(notebooksContainer).on("click", ".delete-notebook-btn", function(e){
                             const notebookTitle = usersNotebooks[0].title;
                             notesContainer.innerHTML += coreMethods.generateNoteMarkup(n, notebookTitle);
                         });
+                        coreMethods.loadNotebooks();
                         coreMethods.setAlert("Notebook successfully deleted!", "success");
                     }
                 }
@@ -208,6 +209,7 @@ createNotebookForm.addEventListener("submit", function(e){
                         );
                         this.$errLabel.hide();
                         this.$errLabel.text("");
+                        coreMethods.loadNotebooks();
                         coreMethods.setAlert("Notebook successfully added!", "success");
                     }
 

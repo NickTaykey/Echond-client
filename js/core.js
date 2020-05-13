@@ -103,12 +103,18 @@ const coreMethods = {
                         // add notebooks item to the container
                         notebooksContainer.innerHTML = "";
                         notesContainer.innerHTML = "";
+                        const $notebooksList = $("#notebooks-list");
+                        $notebooksList.html("<h3>Choose a Notebook</h3>");
                         for(let i = 0; i<notebooks.length; i++){
-                            const note = notebooks[i];
+                            const notebook = notebooks[i];
                             const oldContent = notebooksContainer.innerHTML;
-                            const newContent = coreMethods.generateNotebookMarkup(note);
+                            const newContent = coreMethods.generateNotebookMarkup(notebook);
                             notebooksContainer.innerHTML = oldContent + newContent;
                             usersNotebooks = notebooks;
+                            $notebooksList.append(`
+                            <input type="radio" name="notebook" class="notebook-radio" value="${ notebook._id }" id="${ notebook._id }">
+                            <label for="${ notebook._id }">${ notebook.title }</label>
+                            `);
                             $(`#${notebooks[0]._id} > .show-notes-btn`).click();
                         }        
                     }

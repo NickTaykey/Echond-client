@@ -125,10 +125,10 @@ createNoteBtn.addEventListener("click", function(e){
 const createNoteForm = document.getElementById("create-note-form");
 createNoteForm.addEventListener("submit", function(e){
     e.preventDefault();
-    const notebook = $(this).children("#note-notebook").val();
+    const notebook = $("#notebooks-list").children(".notebook-radio:checked").val();
     const body =  $(this).children("#note-body").val();
     const $errLabel = $(this).children(".err-label");
-    if(!notebook.length){
+    if(!notebook){
         $errLabel.text("Missing notebook!");
         $errLabel.show();
     } else if(!body.length){
@@ -165,8 +165,7 @@ createNoteForm.addEventListener("submit", function(e){
                         usersNotebooks.splice(index, 1, notebook);
                         // clean create note form   
                         $("#note-body").val("");
-                        $("#note-notebook").val("");
-                        $("#note-pointed").prop("checked", false);
+                        $("#note-pointed, .notebook-radio").prop("checked", false);
                         coreMethods.toggleVisibility(createNoteForm);
                         coreMethods.setAlert("Note successfully created!", "success");
                     }
