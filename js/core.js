@@ -4,6 +4,21 @@ const coreMethods = {
         const display = element.style.display;
         element.style.display = display==="block" ? "none" : "block";
     },
+    configureTextEditor(selector){
+        tinymce.init({
+            selector,
+            height: 300,
+            menubar: false, 
+            content_style: "*{ font-family: 'Roboto'; }",
+            plugins: [
+                'lists table link hr',
+            ],
+            toolbar: 'undo redo | formatselect | ' +
+            'bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter ' +
+            'alignright alignjustify | bullist numlist outdent indent | ' +
+            'removeformat | ' + 'table tabledelete' + ' | link hr',
+        });
+    },
     generateNotebookMarkup(notebook){
         const markup = `
         <div class="notebook" id=${notebook._id}>
@@ -58,7 +73,7 @@ const coreMethods = {
         });
         const markup = `
         <div class="note" id=${note._id}>
-            <h4 class="title">${ note.body }</h4>
+            <section class="note-body-show">${ note.body }</section>
             <strong>Pointed: ${ note.pointed }</strong>
             <button type="button" class="edit-note-btn">Edit</button>
             <button type="button" class="delete-note-btn">Delete Note</button>
@@ -68,7 +83,7 @@ const coreMethods = {
                 <section class="notebooks-list-update">${ updateNotebookFieldSet }</section>
                 <br>
                 <label for="note-${ note._id }-body">Your Note</label>
-                <textarea name="body" id="note-${ note._id }-body" cols="30" rows="10">${ note.body }</textarea>
+                <textarea class="note-body" name="body" id="note-${ note._id }-body" cols="30" rows="10">${ note.body }</textarea>
                 </br>
                 <label for="note-${ note._id }-pointed">Pointed</label>
                 <input type="checkbox" name="pointed" id="note-${ note._id }-pointed" ${ note.pointed ? "checked" : "" }>
@@ -125,7 +140,7 @@ const coreMethods = {
                             <label for="create-${ notebook._id }">${ notebook.title }</label>
                             `);
                             $(`#${notebooks[0]._id} > .show-notes-btn`).click();
-                        }        
+                        }
                     }
                 }
             );

@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdn.tiny.cloud/1/9cbw25nbsuh6olfeexue6xus4x3mbul4vlpyms2alpfnrk24/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     <link rel="stylesheet" href="./css/index.css">
     <title>Note App | index</title>
 </head>
@@ -136,7 +138,7 @@
                     <section id="notebooks-list"></section>
                     <br>
                     <label for="note-body">Note:</label>
-                    <textarea id="note-body" name="body" cols="30" rows="10" placeholder="your note"></textarea>
+                    <textarea class="note-body" id="note-body" name="body" cols="30" rows="10" placeholder="your note"></textarea>
                     <br>
                     <label for="note-pointed">Pointed?</label>
                     <input type="checkbox" name="pointed" id="note-pointed">
@@ -148,6 +150,8 @@
             </div>
         </section>
     </div>
+    <script src="./libs/jquery-3.1.1.min.js"></script>
+    <script src="./js/core.js"></script>
     <script>
         const defaultUrl = "http://localhost:8888";
         let notebooksBaseUrl;
@@ -162,9 +166,8 @@
             const newContent = `Welcome back to the note app ${JSON.parse(currentUser).username}!`;
             h1.textContent = newContent;
         }
+        coreMethods.configureTextEditor("#note-body");
     </script>
-    <script src="./libs/jquery-3.1.1.min.js"></script>
-    <script src="./js/core.js"></script>
     <script src="./js/auth.js"></script>
     <script src="./js/notebooks.js"></script>
     <script src="./js/notes.js"></script>

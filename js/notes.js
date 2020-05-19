@@ -38,6 +38,13 @@ $(notesContainer).on("click", ".edit-note-btn", function(e){
     e.stopPropagation();
     const form = $(this).siblings(".edit-note-form")[0];
     coreMethods.toggleVisibility(form);
+    const id = $(this).parents(".note").attr("id");
+    const selector = `note-${id}-body`;
+    if(form.style.display!=="none"){
+        coreMethods.configureTextEditor(`#${selector}`);
+    } else {
+        tinyMCE.editors[selector].remove();
+    }
 });
 
 // update a note
@@ -126,7 +133,9 @@ const createNoteForm = document.getElementById("create-note-form");
 createNoteForm.addEventListener("submit", function(e){
     e.preventDefault();
     const notebook = $("#notebooks-list").children(".notebook-radio:checked").val();
-    const body =  $(this).children("#note-body").val();
+    const activeEditor = tinyMCE.activeEditor;
+    const body = activeEditor.getContent();
+    const pointed = $(this).find("#note-pointed").prop("checked")
     const $errLabel = $(this).children(".err-label");
     if(!notebook){
         $errLabel.text("Missing notebook!");
@@ -135,11 +144,11 @@ createNoteForm.addEventListener("submit", function(e){
         $errLabel.text("Missing note body!");
         $errLabel.show();
     } else {
-        const data = $(this).serialize();
         $.ajax({
             url: notesBaseUrl, 
-            data, 
+            data: { notebook, body, pointed }, 
             $errLabel,
+            activeEditor,
             type: "POST",
             success: function(response){
                 const { err } = response;
@@ -159,6 +168,9 @@ createNoteForm.addEventListener("submit", function(e){
                         $(notesContainer).append(
                             coreMethods.generateNoteMarkup(note)
                         );
+                        this.activeEditor.setContent("");
+                        this.activeEditor.remove();
+                        coreMethods.configureTextEditor("#note-body");
                         // add updated notebook to the array usersNotebooks
                         const notebookElem = coreMethods.findNoteBookById(notebook._id);
                         const index = usersNotebooks.indexOf(notebookElem);

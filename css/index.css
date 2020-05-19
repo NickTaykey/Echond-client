@@ -1,7 +1,10 @@
+*{
+    font-family: 'Roboto';
+}
+
 #registration-form, #logout-link, #resources-container, #two-factor-form{
     display: none;
 }
-
 
 #search-bar{
     margin: 30px auto;
