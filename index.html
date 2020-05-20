@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
-    <script src="https://cdn.tiny.cloud/1/9cbw25nbsuh6olfeexue6xus4x3mbul4vlpyms2alpfnrk24/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="./libs/tinymce.min.js"></script>
+    <link href="./css/Roboto.css" rel="stylesheet">
     <link rel="stylesheet" href="./css/index.css">
     <title>Note App | index</title>
 </head>
@@ -152,22 +152,7 @@
     </div>
     <script src="./libs/jquery-3.1.1.min.js"></script>
     <script src="./js/core.js"></script>
-    <script>
-        const defaultUrl = "http://localhost:8888";
-        let notebooksBaseUrl;
-        let notesBaseUrl;
-        let previouslyLoggedIn = false;
-        if(localStorage.JWTtoken){
-            notebooksBaseUrl = `${defaultUrl}/${localStorage.JWTtoken}/notebooks`;
-            notesBaseUrl = `${defaultUrl}/${localStorage.JWTtoken}/notes`;
-            previouslyLoggedIn = true;
-            const h1 = document.querySelector("h1");
-            const { currentUser } = localStorage;
-            const newContent = `Welcome back to the note app ${JSON.parse(currentUser).username}!`;
-            h1.textContent = newContent;
-        }
-        coreMethods.configureTextEditor("#note-body");
-    </script>
+    <script src="./js/appConfiguration.js"></script>
     <script src="./js/auth.js"></script>
     <script src="./js/notebooks.js"></script>
     <script src="./js/notes.js"></script>
