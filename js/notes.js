@@ -52,9 +52,11 @@ $(notesContainer).on("submit", ".edit-note-form", function(e){
     e.preventDefault();
     e.stopPropagation();
     const noteElement = this.parentElement;
+    const { activeEditor } = tinyMCE;
     const id = noteElement.getAttribute("id");
     const notebook = $(this).children(".notebooks-list-update").children("input[type=radio]:checked").val();
-    const body =  $(this).children(`#note-${id}-body`).val();
+    const body =  activeEditor.getContent();
+    const pointed = $(`#note-${ id }-pointed`).prop("checked");
     const $errLabel = $(this).children(".err-label");
     if(!notebook){
         $errLabel.text("Missing notebook!");
@@ -63,14 +65,13 @@ $(notesContainer).on("submit", ".edit-note-form", function(e){
         $errLabel.text("Missing body!");
         $errLabel.show();
     } else {
-        const data = $(this).serialize();
+        const data = { body, notebook, pointed };
         $.ajax(
             {
                 url: `${notesBaseUrl}/${id}`,
                 type: "PUT",
                 noteElement,
-                cache : false,
-                processData: false,
+                activeEditor,
                 data,
                 success: function(response){
                     const { err } = response;
@@ -84,15 +85,16 @@ $(notesContainer).on("submit", ".edit-note-form", function(e){
                             const { note, notebook, oldNotebook } = response;
                             const { noteElement } = this;
                             if(notebook._id===oldNotebook._id){
-                                const h3 = noteElement.children[0];
+                                const section = noteElement.children[0];
                                 const pointedLabel = noteElement.children[1];
-                                pointedLabel.textContent = "Pointed: " + note.pointed;
+                                pointedLabel.textContent = `Pointed: ${ note.pointed }`;
                                 const form = noteElement.children[4];
-                                h3.textContent = note.body;
+                                section.innerHTML = note.body;
                                 form.style.display = "none";
                             } else {
                                 // remove the original note from the DOM
                                 $(noteElement).remove();
+                                this.activeEditor.remove();
                                 // update usersNotebooks
                                 // remove the note from the old notebook
                                 let clientNotebook = coreMethods.findNoteBookById(oldNotebook._id);
@@ -149,6 +151,7 @@ createNoteForm.addEventListener("submit", function(e){
             data: { notebook, body, pointed }, 
             $errLabel,
             activeEditor,
+            createNoteForm: this,
             type: "POST",
             success: function(response){
                 const { err } = response;
@@ -176,8 +179,9 @@ createNoteForm.addEventListener("submit", function(e){
                         const index = usersNotebooks.indexOf(notebookElem);
                         usersNotebooks.splice(index, 1, notebook);
                         // clean create note form   
-                        $("#note-body").val("");
-                        $("#note-pointed, .notebook-radio").prop("checked", false);
+                        $(this.createNoteForm)
+                            .find("#note-pointed, .notebook-radio")
+                            .prop("checked", false);
                         coreMethods.toggleVisibility(createNoteForm);
                         coreMethods.setAlert("Note successfully created!", "success");
                     }
