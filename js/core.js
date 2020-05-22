@@ -95,7 +95,7 @@ const coreMethods = {
         return markup; 
     },
     loginErrorHandler(){
-        $("#resources-container, #logout-link").hide();
+        $("#resources-container, #logout-link, #profile-link").hide();
         $("#login-form").show();
         delete localStorage.JWTtoken;
         if(previouslyLoggedIn){
