@@ -1,5 +1,5 @@
 *{
-    font-family: 'Roboto';
+    font-family: 'Roboto'!important;
 }
 
 #registration-form, #logout-link, #resources-container, #two-factor-form{
