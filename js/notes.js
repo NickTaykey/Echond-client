@@ -57,13 +57,10 @@ $(notesContainer).on("submit", ".edit-note-form", function(e){
     const notebook = $(this).children(".notebooks-list-update").children("input[type=radio]:checked").val();
     const body =  activeEditor.getContent();
     const pointed = $(`#note-${ id }-pointed`).prop("checked");
-    const $errLabel = $(this).children(".err-label");
     if(!notebook){
-        $errLabel.text("Missing notebook!");
-        $errLabel.show();
+        coreMethods.setFormErrLabel(this, "Missing notebook!");
     } else if(!body.length){
-        $errLabel.text("Missing body!");
-        $errLabel.show();
+        coreMethods.setFormErrLabel(this, "Missing body!");
     } else {
         const data = { body, notebook, pointed };
         $.ajax(
@@ -138,18 +135,14 @@ createNoteForm.addEventListener("submit", function(e){
     const activeEditor = tinyMCE.activeEditor;
     const body = activeEditor.getContent();
     const pointed = $(this).find("#note-pointed").prop("checked")
-    const $errLabel = $(this).children(".err-label");
     if(!notebook){
-        $errLabel.text("Missing notebook!");
-        $errLabel.show();
+        coreMethods.setFormErrLabel(this, "Missing notebook!");
     } else if(!body.length){
-        $errLabel.text("Missing note body!");
-        $errLabel.show();
+        coreMethods.setFormErrLabel(this, "Missing note body!");
     } else {
         $.ajax({
             url: notesBaseUrl, 
             data: { notebook, body, pointed }, 
-            $errLabel,
             activeEditor,
             createNoteForm: this,
             type: "POST",
@@ -158,8 +151,7 @@ createNoteForm.addEventListener("submit", function(e){
                 if(err){
                     coreMethods.loginErrorHandler();
                 } else {
-                    this.$errLabel.text("");
-                    this.$errLabel.hide();
+                    coreMethods.setFormErrLabel();
                     let contNotebook = coreMethods.clientSideNotebookErrorHandler(response);
                     if(contNotebook){
                         // add note to the right notebook in the DOM and select it

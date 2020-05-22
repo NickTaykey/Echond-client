@@ -59,23 +59,20 @@ $(notebooksContainer).on("click", ".update-btn", function(e){
     e.stopPropagation();
     const id = $(this).parents(".notebook").attr("id");
     const data = $(this).siblings("input").serialize();
-    const $errLabel = $(this).siblings(".err-label");
     const titleField = $(this).siblings("input[type=text]").val();
     const originalTitle = $(`#${id}`).children("h4").text();
+    const editForm = $(this).parents(".edit-notebook-form")[0];
     if(!titleField.length){
-        $errLabel.text("Provide a title");
-        $errLabel.show();
+        coreMethods.setFormErrLabel(editForm, "Provide a title");
     } else {
         const n = usersNotebooks.find(n=>n.title===titleField);
         if(n && originalTitle!==titleField){
-            $errLabel.text("Notebook already existing");
-            $errLabel.show();
+            coreMethods.setFormErrLabel(editForm, "Notebook already existing");
         } else {
             $.ajax({
                 type: "PUT",
                 url: `${notebooksBaseUrl}/${id}`,
                 data,
-                $errLabel,
                 btn: this,
                 success: function(response){
                     const { err } = response;
@@ -96,8 +93,7 @@ $(notebooksContainer).on("click", ".update-btn", function(e){
                             const notebook = coreMethods.findNoteBookById(response.notebook._id);
                             const notebookIndex = usersNotebooks.indexOf(notebook);
                             usersNotebooks.splice(notebookIndex, 1, response.notebook);
-                            this.$errLabel.hide();
-                            this.$errLabel.text("");
+                            coreMethods.setFormErrLabel();
                             coreMethods.loadNotebooks();
                             coreMethods.setAlert("Notebook successfully updated!", "success");
                         }
@@ -140,9 +136,11 @@ $(notebooksContainer).on("click", ".delete-notebook-btn", function(e){
                         this.$notebook.remove();
                         // show the first notebook notes
                         notesContainer.innerHTML = "";
-                        usersNotebooks[0].notes.forEach(n=>{
-                            notesContainer.innerHTML += coreMethods.generateNoteMarkup(n);
-                        });
+                        if(usersNotebooks[0]){
+                            usersNotebooks[0].notes.forEach(n=>{
+                                notesContainer.innerHTML += coreMethods.generateNoteMarkup(n);
+                            });
+                        }
                         coreMethods.loadNotebooks();
                         coreMethods.setAlert("Notebook successfully deleted!", "success");
                     }
@@ -167,15 +165,12 @@ const createNotebookForm = document.getElementById("create-notebook-form");
 createNotebookForm.addEventListener("submit", function(e){
     e.preventDefault();
     const titleField = $("input[name=title]").val();
-    const $errLabel = $(this).children(".err-label");
     if(!titleField.length){
-        $errLabel.text("Provide a title");
-        $errLabel.show();
+        coreMethods.setFormErrLabel(this, "Provide a title");
     } else {
         const n = usersNotebooks.find(n=>n.title===titleField); 
         if(n){
-            $errLabel.text("Notebook already existing");
-            $errLabel.show();
+            coreMethods.setFormErrLabel(this, "Notebook already existing");
         } else {
             // create the notebook
             const data = $(this).serialize();
@@ -183,7 +178,6 @@ createNotebookForm.addEventListener("submit", function(e){
                 url: notebooksBaseUrl, 
                 type: "POST",
                 data, 
-                $errLabel,
                 success: function(response){
                     const { err, notebook } = response;
                     if(err){
@@ -206,8 +200,7 @@ createNotebookForm.addEventListener("submit", function(e){
                                 <input type="checkbox" id="filter-${notebook._id}" class="notebook-filter-item">
                             </li>`
                         );
-                        this.$errLabel.hide();
-                        this.$errLabel.text("");
+                        coreMethods.setFormErrLabel();
                         coreMethods.loadNotebooks();
                         coreMethods.setAlert("Notebook successfully added!", "success");
                     }

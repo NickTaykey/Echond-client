@@ -24,7 +24,12 @@ const coreMethods = {
         <div class="notebook" id=${notebook._id}>
             <h4 class="title">${ notebook.title }</h4>
             <section class="edit-notebook-form">
-                <div class="err-label"></div>
+                <div class="alert alert-danger alert-dismissible fade show err-label" role="alert">
+                    <strong></strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>    
                 <input type="text" placeholder="Your notebook's title" name="title" value="${notebook.title}">
                 <button type="button" class="update-btn">Update</button>
             </section>
@@ -78,7 +83,12 @@ const coreMethods = {
             <button type="button" class="edit-note-btn">Edit</button>
             <button type="button" class="delete-note-btn">Delete Note</button>
             <form action="${ notesBaseUrl }/${ note._id }" class="edit-note-form">
-                <div class="err-label"></div>
+                <div class="alert alert-danger alert-dismissible fade show err-label" role="alert">
+                    <strong></strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
                 <br>
                 <section class="notebooks-list-update">${ updateNotebookFieldSet }</section>
                 <br>
@@ -151,19 +161,53 @@ const coreMethods = {
     },
     // set up an alert, reset the former
     setAlert(msg, type){
+        let strong;
         const $alertDanger = $(".alert-danger");
-        $alertDanger.text();
+        strong = $alertDanger.find("strong");
+        strong.text("");
         $alertDanger.hide();
         const $alertSuccess = $(".alert-success");
-        $alertSuccess.text()
+        strong = $alertSuccess.find("strong");
+        strong.text("");
         $alertSuccess.hide();
-        $(`.alert-${type}`).show();
-        $(`.alert-${type}`).html(`<h4>${msg}</h4>`);
-        if(!msg && !type){
-            $alertDanger.hide();
-            $alertDanger.text("");
-            $alertSuccess.hide();
-            $alertSuccess.text("");
+        if(msg && type){
+            $(`.alert-${type}`).show();
+            $(`.alert-${type}`).find("strong").text(msg);
+            $(`.alert-${type}`).on('closed.bs.alert', function () {
+                this.remove();
+                $("h1").after(
+                    `
+                    <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                        <strong></strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    `
+                );
+            });
+        }
+    },
+    setFormErrLabel(form, msg){
+        $(".err-label").hide();
+        $(".err-label").find("strong").text("");
+        if(form && msg){
+            const $errLabel = $(form).children(".err-label");
+            $errLabel.find("strong").text(msg);
+            $errLabel.show();
+            $errLabel.on('closed.bs.alert', function () {
+                this.remove();
+                $(form).prepend(
+                    `
+                    <div class="alert alert-danger alert-dismissible fade show err-label" role="alert">
+                        <strong></strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    `
+                );
+            });
         }
     },
     showPointedNotes(notes){

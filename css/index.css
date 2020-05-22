@@ -28,7 +28,6 @@
 
 .alert-danger, .err-label{
     display: none;
-    color: red;
 }
 
 .alert-success{
