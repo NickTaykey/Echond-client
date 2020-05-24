@@ -74,11 +74,13 @@ twoFactorForm.addEventListener("submit", function(e){
                 if(err){
                     coreMethods.setAlert(err, "danger");
                 } else {
-                    const content = `Welcome ${feature!=="Get Registered" ? "back" : ""} ${user.username}!`;
-                    $("#welcome-item").show();
-                    $("#welcome-msg").text(content);
-                    $("#profile-item, #sf-item").show();
-                    $("#login-item, #registration-item").hide();
+                    if(this.feature!=="Reset password"){
+                        const content = `Welcome ${feature!=="Get Registered" ? "back" : ""} ${user.username}!`;
+                        $("#welcome-item").show();
+                        $("#welcome-msg").text(content);
+                        $("#profile-item, #sf-item").show();
+                        $("#login-item, #registration-item").hide();
+                    }
                     if(this.feature==="Reset password" && code===200){
                         $(resetPwdForm).show();
                         $(twoFactorForm).hide();
@@ -125,22 +127,29 @@ resetPwdForm.addEventListener("submit", function(e){
     else if(!passwordConfirm.length) return coreMethods.setAlert("Missing password confirmation", "danger");
     else if(password!==passwordConfirm) return coreMethods.setAlert("Passwords not matching", "danger");
     else {
-        const data = $(this).serialize() + "&userToken=" + userConfirmToken;
         const url = defaultUrl + "/reset";
         $.ajax({
             type: "PUT",
             url,
-            data,
+            data: {
+                password, 
+                passwordConfirm, 
+                userToken: userConfirmToken
+            },
             resetPwdForm,
             success: function(response){
-                const { err, token } = response;
+                const { err, token, user } = response;
                 if(err){
                     return coreMethods.setAlert(err, "danger");
                 }
                 $(this.resetPwdForm).hide();
                 $(this.resetPwdForm).children("input[type=password]").val("");
-                $("#resources-container, #logout-item").show();
+                $(
+                    "#resources-container, #logout-item, #welcome-item, #profile-item, #fs-item"
+                ).show();
+                $("#welcome-link").text(`Welcome back ${user.username}!`);
                 localStorage.JWTtoken = token;
+                localStorage.currentUser = JSON.stringify(user);
                 notebooksBaseUrl = defaultUrl + `/${token}/notebooks`;
                 notesBaseUrl = defaultUrl + `/${token}/notes`;
                 coreMethods.loadNotebooks();
@@ -274,7 +283,7 @@ if(localStorage.JWTtoken){
     $("#welcome-msg").text(`Welcome back ${username}!`);
     $("#resources-container").show();
 } else {
-    $("#login-item, #registration-item").hide();
+    $("#login-item, #registration-item").show();
 }
 
 // forgot pwd feature
