@@ -175,7 +175,7 @@ const coreMethods = {
             $(`.alert-${type}`).find("strong").text(msg);
             $(`.alert-${type}`).on('closed.bs.alert', function () {
                 this.remove();
-                $("h1").after(
+                $("nav").after(
                     `
                     <div class="alert alert-${type} alert-dismissible fade show" role="alert">
                         <strong></strong>

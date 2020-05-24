@@ -2,7 +2,31 @@
     font-family: 'Roboto'!important;
 }
 
-#registration-form, #logout-link, #resources-container, #two-factor-form{
+.alert-success,
+.alert-danger, 
+.err-label,
+#registration-form, 
+#resources-container, 
+#two-factor-form,
+#search-filter-bar,
+#create-note-form, 
+#create-notebook-form,
+.edit-notebook-form,
+.edit-note-form,
+#registration-message,
+#forgot-pwd-form, 
+#reset-pwd-form, 
+#password-reset-status, 
+#user-profile, 
+#profile-link,
+/* NAVBAR */
+#login-item,
+#logout-item,
+#registration-item,
+#welcome-item,
+#sf-item,
+#profile-item
+{
     display: none;
 }
 
@@ -10,29 +34,13 @@
     margin: 30px auto;
 }
 
-#search-filter-bar{
-    display: none;
-}
 
 #search-field{
     width: 250px;
 }
 
-#create-note-form, #create-notebook-form{
-    display: none;
-}
-
 .selected-notebook{
     border: 2px solid blue;;
-}
-
-.alert-danger, .err-label{
-    display: none;
-}
-
-.alert-success{
-    display: none;
-    color: green;
 }
 
 .container{
@@ -51,22 +59,6 @@
     border: 2px solid red;
 }
 
-.edit-notebook-form{
-    display: none;
-}
-
 .note{
     margin: 30px auto;
-}
-
-.edit-note-form{
-    display: none;
-}
-
-#registration-message{
-    display: none;
-}
-
-#forgot-pwd-form, #reset-pwd-form, #password-reset-status, #user-profile, #profile-link{
-    display: none;
 }

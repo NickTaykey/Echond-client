@@ -2,6 +2,7 @@ const twoFactorForm = document.getElementById("two-factor-form");
 
 // LOGOUT
 const logoutLink = document.getElementById("logout-link");
+const logoutItem = document.getElementById("logout-item");
 logoutLink.addEventListener("click", function(e){
     e.preventDefault();
     delete localStorage.JWTtoken;
@@ -12,10 +13,12 @@ logoutLink.addEventListener("click", function(e){
     $("#login-form").show();
     $(".notebook, .note").remove();
     $("#resources-container").hide();
-    $(logoutLink).hide();
+    $(logoutItem).hide();
     $(profileLink).hide();
     $(profile).hide();
-    $("h1").text("Welcome to the note app");
+    $("#welcome-item, #profile-item, #sf-item").hide();
+    $("#registration-item, #login-item").show();
+    $("#welcome-msg").text("");
     coreMethods.setAlert("Logout successfully completed!", "success");
 });
 
@@ -70,41 +73,45 @@ twoFactorForm.addEventListener("submit", function(e){
                 const { err, user, token, code } = response;
                 if(err){
                     coreMethods.setAlert(err, "danger");
-                } else if(this.feature==="Reset password" && code===200){
-                    $(resetPwdForm).show();
-                    $(twoFactorForm).hide();
-                    $(twoFactorForm).children("input[type=text]").val("");
-                    userConfirmToken = this.token;
-                    coreMethods.setAlert();
                 } else {
-                    $(twoFactorForm).hide();
-                    $("#resources-container, #logout-link").show();
-                    localStorage.JWTtoken = token;
-                    localStorage.currentUser = JSON.stringify(user);
-                    notebooksBaseUrl = defaultUrl + `/${token}/notebooks`;
-                    notesBaseUrl = defaultUrl + `/${token}/notes`;
-                    const content = `Welcome ${feature==="Login" ? "back" : ""} to the note app ${user.username}!`;
-                    coreMethods.setAlert();
-                    $("h1").text(content);
-                    if(this.feature!=="Login"){
-                        $("#registration-message").hide();
+                    const content = `Welcome ${feature!=="Get Registered" ? "back" : ""} ${user.username}!`;
+                    $("#welcome-item").show();
+                    $("#welcome-msg").text(content);
+                    $("#profile-item, #sf-item").show();
+                    $("#login-item, #registration-item").hide();
+                    if(this.feature==="Reset password" && code===200){
+                        $(resetPwdForm).show();
+                        $(twoFactorForm).hide();
+                        $(twoFactorForm).children("input[type=text]").val("");
+                        userConfirmToken = this.token;
+                        coreMethods.setAlert();
+                    } else {
+                        $(twoFactorForm).hide();
+                        $("#resources-container, #logout-item").show();
+                        localStorage.JWTtoken = token;
+                        localStorage.currentUser = JSON.stringify(user);
+                        notebooksBaseUrl = defaultUrl + `/${token}/notebooks`;
+                        notesBaseUrl = defaultUrl + `/${token}/notes`;
+                        coreMethods.setAlert();
+                        if(this.feature!=="Login"){
+                            $("#registration-message").hide();
+                        }
+                        if(this.feature==="Get Registered"){
+                            $.ajax({
+                                type: "POST",
+                                url: notebooksBaseUrl,
+                                data: "title=My Notebook",
+                                success(response){
+                                    coreMethods.loadNotebooks();
+                                }
+                            })
+                        }
+                        previouslyLoggedIn = true;
+                        coreMethods.loadNotebooks();
                     }
-                    if(this.feature==="Get Registered"){
-                        $.ajax({
-                            type: "POST",
-                            url: notebooksBaseUrl,
-                            data: "title=My Notebook",
-                            success(response){
-                                coreMethods.loadNotebooks();
-                            }
-                        })
-                    }
-                    previouslyLoggedIn = true;
-                    $(profileLink).show();
-                    coreMethods.loadNotebooks();
                 }
-            }
-        })
+            } 
+        });
     } else {
         coreMethods.setAlert("Missing token", "danger");
     }
@@ -132,7 +139,7 @@ resetPwdForm.addEventListener("submit", function(e){
                 }
                 $(this.resetPwdForm).hide();
                 $(this.resetPwdForm).children("input[type=password]").val("");
-                $("#resources-container, #logout-link").show();
+                $("#resources-container, #logout-item").show();
                 localStorage.JWTtoken = token;
                 notebooksBaseUrl = defaultUrl + `/${token}/notebooks`;
                 notesBaseUrl = defaultUrl + `/${token}/notes`;
@@ -250,20 +257,24 @@ registrationForm.addEventListener("submit", function(e){
 $("button[type=reset]").click(function(e){
     coreMethods.setAlert();
     $(this).siblings("button[type=submit]").each(
-        (i, e)=>{
-            e.removeAttribute("disabled");
-        }
+        e=>e.removeAttribute("disabled")
     );
-})
+});
 
 const profileLink = document.getElementById("profile-link");
 const profile = document.getElementById("user-profile");
 
 if(localStorage.JWTtoken){
     $("#registration-form, #login-form").hide();
-    $(logoutLink).show();
+    $(logoutItem).show();
     $(profileLink).show();
+    const { username } = JSON.parse(localStorage.currentUser);
+    $("#welcome-item, #profile-item, #sf-item").show();
+    $("#login-item, #registration-item").hide();
+    $("#welcome-msg").text(`Welcome back ${username}!`);
     $("#resources-container").show();
+} else {
+    $("#login-item, #registration-item").hide();
 }
 
 // forgot pwd feature
@@ -359,7 +370,7 @@ $(profile).on("submit", "#user-udpate-form", function(e){
             $(profile).html("");
             $(profile).hide();
             $(profileLink).text("Show profile");
-            $("h1").text("Welcome back to the note app " + user.username);
+            $("#welcome-msg").text(`Welcome back ${user.username}!`);
             coreMethods.setAlert("Profile successfully updated!", "success");
         }
     });
