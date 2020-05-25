@@ -161,15 +161,13 @@ const coreMethods = {
     },
     // set up an alert, reset the former
     setAlert(msg, type){
-        let strong;
-        const $alertDanger = $(".alert-danger");
-        strong = $alertDanger.find("strong");
-        strong.text("");
-        $alertDanger.hide();
-        const $alertSuccess = $(".alert-success");
-        strong = $alertSuccess.find("strong");
-        strong.text("");
-        $alertSuccess.hide();
+        const alertBody = 
+        `
+        <strong></strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        `;
         if(msg && type){
             $(`.alert-${type}`).show();
             $(`.alert-${type}`).find("strong").text(msg);
@@ -178,14 +176,14 @@ const coreMethods = {
                 $("nav").after(
                     `
                     <div class="alert alert-${type} alert-dismissible fade show" role="alert">
-                        <strong></strong>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        ${alertBody}
                     </div>
                     `
                 );
             });
+        } else {
+            $(".alert").hide();
+            $(".alert").html(alertBody);
         }
     },
     setFormErrLabel(form, msg){

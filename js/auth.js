@@ -10,6 +10,7 @@ logoutLink.addEventListener("click", function(e){
     notebooksBaseUrl = undefined;
     notesBaseUrl = undefined;
     previouslyLoggedIn = false;
+    $("#login-item").addClass("active");
     $("#login-form").show();
     $(".notebook, .note").remove();
     $("#resources-container").hide();
@@ -143,11 +144,12 @@ resetPwdForm.addEventListener("submit", function(e){
                     return coreMethods.setAlert(err, "danger");
                 }
                 $(this.resetPwdForm).hide();
+                $("#registration-item, #login-item").hide();
                 $(this.resetPwdForm).children("input[type=password]").val("");
                 $(
-                    "#resources-container, #logout-item, #welcome-item, #profile-item, #fs-item"
+                    "#resources-container, #logout-item, #welcome-item, #profile-item, #sf-item"
                 ).show();
-                $("#welcome-link").text(`Welcome back ${user.username}!`);
+                $("#welcome-msg").text(`Welcome back ${user.username}!`);
                 localStorage.JWTtoken = token;
                 localStorage.currentUser = JSON.stringify(user);
                 notebooksBaseUrl = defaultUrl + `/${token}/notebooks`;
@@ -167,14 +169,18 @@ const phoneNumberRegex = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/i;
 
 registrationLink.addEventListener("click", function(e){
     e.preventDefault();
+    coreMethods.setAlert();
+    $("#login-item").removeClass("active");
+    $("#registration-item").addClass("active");
     $(loginForm).hide();
     $(registrationForm).show();
-    $(".alert-danger, .alert-success").hide();
-    $(".alert-danger, .alert-success").text("");
 });
 
 loginLink.addEventListener("click", function(e){
     e.preventDefault();
+    coreMethods.setAlert();
+    $("#login-item").addClass("active");
+    $("#registration-item").removeClass("active");
     $(registrationForm).hide();
     $(loginForm).show();
 });
@@ -284,6 +290,7 @@ if(localStorage.JWTtoken){
     $("#resources-container").show();
 } else {
     $("#login-item, #registration-item").show();
+    $("#login-item").addClass("active");
 }
 
 // forgot pwd feature
