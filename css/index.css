@@ -25,7 +25,9 @@
 #registration-item,
 #welcome-item,
 #sf-item,
-#profile-item
+#profile-item,
+#login-form-title,
+#registration-form-title
 {
     display: none;
 }

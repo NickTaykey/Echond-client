@@ -69,22 +69,30 @@
         </button>
     </div>
     <div id="auth-container">
-        <form id="login-form">
-            <h3>Login</h3>
-            <label for="login-username">Username</label>
-            <br>
-            <input type="text" name="username" id="login-username" placeholder="username">
-            <br>
-            <label for="login-password">Password</label>
-            <br>
-            <input type="password" name="password" id="login-password" placeholder="password">
-            <br>
-            <button type="submit">Login</button>
-            <br>
-            <button type="reset">Reset Form</button>
-            <br><br>
-            <a href="#" id="forgot-pwd-link">Forgot Password?</a>
-        </form>
+        <div class="row mt-5">
+            <div class="col-12 col-md-4 offset-md-4">
+                <h3 class="display-4 text-center my-2" id="login-form-title">Login</h3>
+                <form id="login-form">
+                    <div class="alert alert-danger alert-dismissible fade show err-label" role="alert">
+                        <strong></strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-username">Username</label>
+                        <input type="text" class="form-control" name="username" id="login-username" placeholder="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" class="form-control" name="password" id="login-password" placeholder="password">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block mt-4 mb-2">Login</button>
+                    <button type="reset" class="btn btn-danger mb-4 btn-block">Reset Form</button>
+                    <a href="#" id="forgot-pwd-link">Forgot Password?</a>
+                </form>
+            </div>
+        </div>
         <form id="forgot-pwd-form">
             <h3>Forgot password</h3>
             <label for="forgot-phone-number">Type your phone number</label>
@@ -103,26 +111,37 @@
             <button type="submit">Confrim</button>
             <br>
         </form>
-        <form id="registration-form">
-            <h3>Registration</h3>
-            <label for="regisration-username">Username</label>
-            <input type="text" id="regisration-username" name="username" placeholder="username">
-            <br>
-            <label for="registration-phone">Phone number <strong>Country prefix required</strong></label>
-            <br>
-            <input type="text" id="registration-phone" name="phoneNumber" placeholder="Phone Number">
-            <br>
-            <label for="registration-password">Password</label>
-            <input type="password" id="registration-password" name="password" placeholder="password">
-            <br>
-            <label for="registration-password-confirm">Confirm Password</label>
-            <input type="password" id="registration-password-confirm" name="passwordConfirm" placeholder="password confirmation">
-            <br>
-            <br>
-            <button type="submit">Get Registered</button>
-            <br>
-            <button type="reset">Reset Form</button>
-        </form>
+        <div class="row mt-3">
+            <div class="col-12 col-md-4 offset-md-4">
+                <h3 class="text-center display-4 my-2" id="registration-form-title">Registration</h3>
+                <form id="registration-form">
+                    <div class="alert alert-danger alert-dismissible fade show err-label" role="alert">
+                        <strong></strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label for="regisration-username">Username</label>
+                        <input class="form-control" type="text" id="regisration-username" name="username" placeholder="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="registration-phone">Phone number <strong>Country prefix required</strong></label>
+                        <input class="form-control" type="text" id="registration-phone" name="phoneNumber" placeholder="Phone Number">
+                    </div>
+                    <div class="form-group">
+                        <label for="registration-password">Password</label>
+                        <input class="form-control" type="password" id="registration-password" name="password" placeholder="password">
+                    </div>
+                    <div class="form-group">
+                        <label for="registration-password-confirm">Confirm Password</label>
+                        <input class="form-control" type="password" id="registration-password-confirm" name="passwordConfirm" placeholder="password confirmation">
+                    </div>
+                    <button type="submit" class="btn btn-info btn-block mt-4 mb-2">Get Registered</button>
+                    <button type="reset" class="btn btn-warning btn-block mb-4">Reset Form</button>
+                </form>
+            </div>
+        </div>
         <form id="reset-pwd-form">
             <h3>Reset password</h3>
             <label for="reset-password">New password: </label><br>

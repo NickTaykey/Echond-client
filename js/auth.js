@@ -11,6 +11,7 @@ logoutLink.addEventListener("click", function(e){
     notesBaseUrl = undefined;
     previouslyLoggedIn = false;
     $("#login-item").addClass("active");
+    $(loginFormTitle).show();
     $("#login-form").show();
     $(".notebook, .note").remove();
     $("#resources-container").hide();
@@ -37,10 +38,13 @@ loginForm.addEventListener("submit", function(e){
         success: function(response){
             const { code, error } = response;
             if(error && code!==200){
-                coreMethods.setAlert(error.message, "danger");
-                $(this.form).children("#login-password").val("");
+                coreMethods.setFormErrLabel(this.form, error.message);
+                $("#login-password").val("");
             } else {
-                $(this.form).children("input").val("");
+                $(this.form)
+                    .children(".form-group")
+                    .children("input")
+                    .val("");
                 $("#registration-form, #login-form").hide();
                 coreMethods.setAlert();
                 // show confirm token form
@@ -124,9 +128,9 @@ resetPwdForm.addEventListener("submit", function(e){
     e.preventDefault();
     const password = $(this).children("#reset-password").val();
     const passwordConfirm = $(this).children("#reset-password-confirm").val();
-    if(!password.length) return coreMethods.setAlert("Missing password", "danger");
-    else if(!passwordConfirm.length) return coreMethods.setAlert("Missing password confirmation", "danger");
-    else if(password!==passwordConfirm) return coreMethods.setAlert("Passwords not matching", "danger");
+    if(!password.length) return coreMethods.setFormErrLabel(this, "Missing password");
+    else if(!passwordConfirm.length) return coreMethods.setFormErrLabel(this, "Missing password confirmation");
+    else if(password!==passwordConfirm) return coreMethods.setFormErrLabel(this, "Passwords not matching");
     else {
         const url = defaultUrl + "/reset";
         $.ajax({
@@ -141,7 +145,7 @@ resetPwdForm.addEventListener("submit", function(e){
             success: function(response){
                 const { err, token, user } = response;
                 if(err){
-                    return coreMethods.setAlert(err, "danger");
+                    return coreMethods.setFormErrLabel(this.resetPwdForm, err);
                 }
                 $(this.resetPwdForm).hide();
                 $("#registration-item, #login-item").hide();
@@ -165,6 +169,8 @@ resetPwdForm.addEventListener("submit", function(e){
 const registrationForm = document.getElementById("registration-form");
 const registrationLink = document.getElementById("registration-link");
 const loginLink = document.getElementById("login-link");
+const loginFormTitle = document.getElementById("login-form-title");
+const registrationFormTitle = document.getElementById("registration-form-title");
 const phoneNumberRegex = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/i;
 
 registrationLink.addEventListener("click", function(e){
@@ -173,6 +179,9 @@ registrationLink.addEventListener("click", function(e){
     $("#login-item").removeClass("active");
     $("#registration-item").addClass("active");
     $(loginForm).hide();
+    $(loginFormTitle).hide();
+    $(registrationFormTitle).show();
+    $(forgotPwdForm).hide();
     $(registrationForm).show();
 });
 
@@ -182,6 +191,9 @@ loginLink.addEventListener("click", function(e){
     $("#login-item").addClass("active");
     $("#registration-item").removeClass("active");
     $(registrationForm).hide();
+    $(loginFormTitle).show();
+    $(registrationFormTitle).hide();
+    $(forgotPwdForm).hide();
     $(loginForm).show();
 });
 
@@ -194,10 +206,11 @@ registrationPhoneInput.addEventListener("input", function(e){
     e.preventDefault();
     const { value } = this;
     if(!phoneNumberRegex.exec(value) && value.length){
-        coreMethods.setAlert("Phone Number not valid", "danger");
+        const form = $(this).parents("form");
+        coreMethods.setFormErrLabel(form, "Phone Number not valid");
         registrationFormSubmitBtn.setAttribute("disabled", true);
     } else {
-        coreMethods.setAlert();
+        coreMethods.setFormErrLabel();
         registrationFormSubmitBtn.removeAttribute("disabled");
     }
 }); 
@@ -208,24 +221,26 @@ paswordConfirmInput.addEventListener("input", function(e){
     const password = passwordInput.value;
     if(confirmPassword.length && password.length){
         if(confirmPassword!==password){
-            coreMethods.setAlert("passwords don't match", "danger");
+            const form = $(this).parents("form");
+            coreMethods.setFormErrLabel(form, "passwords don't match");
             registrationFormSubmitBtn.setAttribute("disabled", true);
         } else {
-            coreMethods.setAlert();
+            coreMethods.setFormErrLabel();
             registrationFormSubmitBtn.removeAttribute("disabled");
         }
     } else {
-        coreMethods.setAlert();
+        coreMethods.setFormErrLabel();
         registrationFormSubmitBtn.removeAttribute("disabled");
     }
 });
 
 registrationForm.addEventListener("submit", function(e){
     e.preventDefault();
-    const username = $(this).children("#regisration-username").val();
-    const password = $(this).children("#registration-password").val();
-    const passwordConfirm = $(this).children("#registration-password-confirm").val();
-    const phoneNumber = $(this).children("#registration-phone").val();
+    const username = $("#regisration-username").val();
+    const password = $("#registration-password").val();
+    const passwordConfirm = $("#registration-password-confirm").val();
+    const phoneNumber = $("#registration-phone").val();
+    debugger;
     let errMsg = "Missing ";
     if(!username) errMsg+="username, "
     if(!password) errMsg+="password, "
@@ -233,12 +248,12 @@ registrationForm.addEventListener("submit", function(e){
     if(!phoneNumber) errMsg+="Phone Number, "
     if(errMsg!=="Missing "){
         errMsg = errMsg.slice(0, errMsg.length - 2);
-        coreMethods.setAlert(errMsg, "danger");
+        coreMethods.setFormErrLabel(this, errMsg);
     } else {
         if(password!==passwordConfirm){
-            coreMethods.setAlert("Passwords not matching", "danger");
+            coreMethods.setFormErrLabel(this, "Passwords not matching");
         } else if(!phoneNumberRegex.exec(phoneNumber)){
-            coreMethods.setAlert("Phone number not valid", "danger");
+            coreMethods.setFormErrLabel(this, "Phone number not valid");
         } else {
             const data = $(this).serialize();
             const url = defaultUrl + "/register";
@@ -252,7 +267,7 @@ registrationForm.addEventListener("submit", function(e){
                         let msg;
                         if(response.err.message) msg = response.err.message;
                         else msg = response.err;
-                        coreMethods.setAlert(msg, "danger");
+                        coreMethods.setFormErrLabel(this, msg);
                         $(this.form).children("input[type=password]").val("");
                     } else if(response.code===200) {
                         coreMethods.setAlert();
@@ -289,6 +304,7 @@ if(localStorage.JWTtoken){
     $("#welcome-msg").text(`Welcome back ${username}!`);
     $("#resources-container").show();
 } else {
+    $(loginFormTitle).show();
     $("#login-item, #registration-item").show();
     $("#login-item").addClass("active");
 }
