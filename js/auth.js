@@ -1,4 +1,7 @@
 const twoFactorForm = document.getElementById("two-factor-form");
+const loginFormTitle = document.getElementById("login-form-title");
+const registrationFormTitle = document.getElementById("registration-form-title");
+const twoFactorFormTitle = document.getElementById("two-factor-form-title");
 
 // LOGOUT
 const logoutLink = document.getElementById("logout-link");
@@ -47,8 +50,10 @@ loginForm.addEventListener("submit", function(e){
                     .val("");
                 $("#registration-form, #login-form").hide();
                 coreMethods.setAlert();
+                $(loginFormTitle).hide();
                 // show confirm token form
                 $(twoFactorForm).show();
+                $(twoFactorFormTitle).show();
                 $(twoFactorForm).children("input").val("");
                 $(twoFactorForm).children("button[type=submit]").text("Login");
             }
@@ -62,7 +67,8 @@ let userConfirmToken;
 // TWO FACTOR form involving features
 twoFactorForm.addEventListener("submit", function(e){
     e.preventDefault();
-    const token = $(this).children("#token").val();
+    const token = $("#token").val();
+    const formGroup = $(this).children(".form-group")[0];
     if(token && token.length){
         const data = $(this).serialize();
         const feature = $(twoFactorForm).children("button[type=submit]").text();
@@ -73,11 +79,12 @@ twoFactorForm.addEventListener("submit", function(e){
             type: "POST",
             data,
             feature,
+            form: formGroup,
             token,
             success: function(response){
                 const { err, user, token, code } = response;
                 if(err){
-                    coreMethods.setAlert(err, "danger");
+                    coreMethods.setFormErrLabel(this.form, err);
                 } else {
                     if(this.feature!=="Reset password"){
                         const content = `Welcome ${feature!=="Get Registered" ? "back" : ""} ${user.username}!`;
@@ -120,7 +127,7 @@ twoFactorForm.addEventListener("submit", function(e){
             } 
         });
     } else {
-        coreMethods.setAlert("Missing token", "danger");
+        coreMethods.setFormErrLabel(formGroup, "Missing token");
     }
 });
 
@@ -169,8 +176,6 @@ resetPwdForm.addEventListener("submit", function(e){
 const registrationForm = document.getElementById("registration-form");
 const registrationLink = document.getElementById("registration-link");
 const loginLink = document.getElementById("login-link");
-const loginFormTitle = document.getElementById("login-form-title");
-const registrationFormTitle = document.getElementById("registration-form-title");
 const phoneNumberRegex = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/i;
 
 registrationLink.addEventListener("click", function(e){

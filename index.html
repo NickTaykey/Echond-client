@@ -87,16 +87,24 @@
             <br>
             <button type="submit">Continue</button>
         </form>
-        <form id="two-factor-form">
-            <h3 id="password-reset-status">A message with the password reset token VALID FOR ONE HOUR since now has beed sent to you</h3>
-            <label for="token">You have been sent an SMS with a token, type it ...</label>
-            <br>
-            <h3 id="registration-message">If you close this page You will note be able to confirm your account any more</h3>
-            <input type="text" name="token" id="token" placeholder="token">
-            <br>
-            <button type="submit">Confrim</button>
-            <br>
-        </form>
+        <div class="row mt-5">
+            <div class="col-10 col-md-4 offset-md-4 custom-offset">
+                <div id="two-factor-form-title">
+                    <h2 class="display-4 text-center">Account verfication</h2>
+                    <span class="text-muted d-block text-center">You have been sent an SMS with a token</span>
+                </div>
+                <form id="two-factor-form" class="mt-5">
+                    <h3 id="password-reset-status">A message with the password reset token VALID FOR ONE HOUR since now has beed sent to you</h3>
+                    <h3 id="registration-message">If you close this page You will note be able to confirm your account any more</h3>
+                    <div class="form-group">
+                        <div class="alert alert-danger err-label"></div>
+                        <label for="token" class="d-none">You have been sent an SMS with a token</label>
+                        <input class="form-control" type="text" name="token" id="token" placeholder="token">
+                    </div>
+                    <button type="submit" class="btn btn-success btn-block">Confrim</button>
+                </form>
+            </div>
+        </div>
         <div class="row mt-3">
             <div class="col-10 col-md-6 col-lg-4 offset-lg-4 offset-md-3 custom-offset">
                 <h2 class="display-4 text-center my-2" id="registration-form-title">Registration</h2>
