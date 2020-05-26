@@ -32,6 +32,14 @@
     display: none;
 }
 
+
+@media (max-width: 576px){
+    .custom-offset{
+        margin-left: 9.5%;
+    }
+}
+
+
 #search-bar{
     margin: 30px auto;
 }

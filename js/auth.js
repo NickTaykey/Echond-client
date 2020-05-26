@@ -222,7 +222,7 @@ paswordConfirmInput.addEventListener("input", function(e){
     if(confirmPassword.length && password.length){
         if(confirmPassword!==password){
             const form = $(this).parents("form");
-            coreMethods.setFormErrLabel(form, "passwords don't match");
+            coreMethods.setFormErrLabel(form, "passwords not matching");
             registrationFormSubmitBtn.setAttribute("disabled", true);
         } else {
             coreMethods.setFormErrLabel();
@@ -240,14 +240,12 @@ registrationForm.addEventListener("submit", function(e){
     const password = $("#registration-password").val();
     const passwordConfirm = $("#registration-password-confirm").val();
     const phoneNumber = $("#registration-phone").val();
-    debugger;
-    let errMsg = "Missing ";
-    if(!username) errMsg+="username, "
-    if(!password) errMsg+="password, "
-    if(!passwordConfirm) errMsg+="Password confirmation, "
-    if(!phoneNumber) errMsg+="Phone Number, "
-    if(errMsg!=="Missing "){
-        errMsg = errMsg.slice(0, errMsg.length - 2);
+    let errMsg;
+    if(!passwordConfirm) errMsg="Missing Password confirmation"
+    if(!password) errMsg="Missing password"
+    if(!phoneNumber) errMsg="Missing Phone Number"
+    if(!username) errMsg="Missing username"
+    if(errMsg){
         coreMethods.setFormErrLabel(this, errMsg);
     } else {
         if(password!==passwordConfirm){
@@ -267,7 +265,7 @@ registrationForm.addEventListener("submit", function(e){
                         let msg;
                         if(response.err.message) msg = response.err.message;
                         else msg = response.err;
-                        coreMethods.setFormErrLabel(this, msg);
+                        coreMethods.setFormErrLabel(this.form, msg);
                         $(this.form).children("input[type=password]").val("");
                     } else if(response.code===200) {
                         coreMethods.setAlert();

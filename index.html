@@ -56,28 +56,14 @@
 
 
 
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong></strong>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong></strong>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
+    <div class="alert alert-danger" role="alert"></div>
+    <div class="alert alert-success" role="alert"></div>
     <div id="auth-container">
         <div class="row mt-5">
-            <div class="col-12 col-md-4 offset-md-4">
-                <h3 class="display-4 text-center my-2" id="login-form-title">Login</h3>
+            <div class="col-10 col-md-4 offset-md-4 custom-offset">
+                <h2 class="display-4 text-center my-2" id="login-form-title">Login</h2>
                 <form id="login-form">
-                    <div class="alert alert-danger alert-dismissible fade show err-label" role="alert">
-                        <strong></strong>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                    <div class="alert alert-danger err-label" role="alert">
                     </div>
                     <div class="form-group">
                         <label for="login-username">Username</label>
@@ -112,14 +98,10 @@
             <br>
         </form>
         <div class="row mt-3">
-            <div class="col-12 col-md-4 offset-md-4">
-                <h3 class="text-center display-4 my-2" id="registration-form-title">Registration</h3>
+            <div class="col-10 col-md-6 col-lg-4 offset-lg-4 offset-md-3 custom-offset">
+                <h2 class="display-4 text-center my-2" id="registration-form-title">Registration</h2>
                 <form id="registration-form">
-                    <div class="alert alert-danger alert-dismissible fade show err-label" role="alert">
-                        <strong></strong>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                    <div class="alert alert-danger err-label" role="alert">
                     </div>
                     <div class="form-group">
                         <label for="regisration-username">Username</label>
@@ -190,12 +172,7 @@
                 <br><br>
                 <button type="button" id="create-notebook-btn">Create a Notebook</button>
                 <form id="create-notebook-form">
-                    <div class="alert alert-danger alert-dismissible fade show err-label" role="alert">
-                        <strong></strong>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
+                    <div class="alert alert-danger err-label" role="alert"></div>
                     <input type="text" placeholder="title of the notebook" id="notebook-title" name="title">
                     <button type="submit">Create</button>
                 </form>
@@ -206,12 +183,7 @@
                 <br><br>
                 <button type="button" id="create-note-btn">Write a note</button>
                 <form id="create-note-form">
-                    <div class="alert alert-danger alert-dismissible fade show err-label" role="alert">
-                        <strong></strong>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
+                    <div class="alert alert-danger err-label" role="alert"></div>
                     <br>
                     <section id="notebooks-list"></section>
                     <br>
