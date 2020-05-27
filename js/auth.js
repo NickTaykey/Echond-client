@@ -2,6 +2,9 @@ const twoFactorForm = document.getElementById("two-factor-form");
 const loginFormTitle = document.getElementById("login-form-title");
 const registrationFormTitle = document.getElementById("registration-form-title");
 const twoFactorFormTitle = document.getElementById("two-factor-form-title");
+const forgotPwdFormTitle = document.getElementById("forgot-pwd-form-title");
+const twoFactorPwdResetStatus = document.getElementById("password-reset-status");
+const resetPwdFormTitle = document.getElementById("reset-pwd-form-title");
 
 // LOGOUT
 const logoutLink = document.getElementById("logout-link");
@@ -51,8 +54,10 @@ loginForm.addEventListener("submit", function(e){
                 $("#registration-form, #login-form").hide();
                 coreMethods.setAlert();
                 $(loginFormTitle).hide();
+                coreMethods.hideFormContainers(this.form);
                 // show confirm token form
                 $(twoFactorForm).show();
+                $(twoFactorPwdResetStatus).hide();
                 $(twoFactorFormTitle).show();
                 $(twoFactorForm).children("input").val("");
                 $(twoFactorForm).children("button[type=submit]").text("Login");
@@ -86,6 +91,9 @@ twoFactorForm.addEventListener("submit", function(e){
                 if(err){
                     coreMethods.setFormErrLabel(this.form, err);
                 } else {
+                    $(twoFactorForm).hide();
+                    $(twoFactorFormTitle).hide();
+                    $(twoFactorForm).children("input[type=text]").val("");
                     if(this.feature!=="Reset password"){
                         const content = `Welcome ${feature!=="Get Registered" ? "back" : ""} ${user.username}!`;
                         $("#welcome-item").show();
@@ -94,13 +102,14 @@ twoFactorForm.addEventListener("submit", function(e){
                         $("#login-item, #registration-item").hide();
                     }
                     if(this.feature==="Reset password" && code===200){
+                        $(twoFactorPwdResetStatus).hide();
                         $(resetPwdForm).show();
-                        $(twoFactorForm).hide();
-                        $(twoFactorForm).children("input[type=text]").val("");
+                        $(forgotPwdFormTitle).hide();
+                        coreMethods.hideFormContainers(this.form);
+                        $(resetPwdFormTitle).show();
                         userConfirmToken = this.token;
                         coreMethods.setAlert();
                     } else {
-                        $(twoFactorForm).hide();
                         $("#resources-container, #logout-item").show();
                         localStorage.JWTtoken = token;
                         localStorage.currentUser = JSON.stringify(user);
@@ -185,8 +194,14 @@ registrationLink.addEventListener("click", function(e){
     $("#registration-item").addClass("active");
     $(loginForm).hide();
     $(loginFormTitle).hide();
+    $(twoFactorFormTitle).hide();
+    $(twoFactorForm).hide();
     $(registrationFormTitle).show();
     $(forgotPwdForm).hide();
+    $(forgotPwdFormTitle).hide();
+    $(resetPwdForm).hide();    
+    $(resetPwdFormTitle).hide();
+    coreMethods.hideFormContainers(registrationForm);
     $(registrationForm).show();
 });
 
@@ -197,8 +212,14 @@ loginLink.addEventListener("click", function(e){
     $("#registration-item").removeClass("active");
     $(registrationForm).hide();
     $(loginFormTitle).show();
+    $(twoFactorFormTitle).hide();
     $(registrationFormTitle).hide();
+    $(twoFactorForm).hide();
     $(forgotPwdForm).hide();
+    $(forgotPwdFormTitle).hide();
+    $(resetPwdForm).hide();    
+    $(resetPwdFormTitle).hide();
+    coreMethods.hideFormContainers(loginForm);
     $(loginForm).show();
 });
 
@@ -275,7 +296,9 @@ registrationForm.addEventListener("submit", function(e){
                     } else if(response.code===200) {
                         coreMethods.setAlert();
                         $(registrationForm).hide();
+                        coreMethods.hideFormContainers(twoFactorForm);
                         $(twoFactorForm).show();
+                        $(twoFactorPwdResetStatus).hide();
                         $(twoFactorForm).children("input").val("");
                         $(twoFactorForm).children("button[type=submit]").text("Get Registered");
                         $("#registration-message").show();
@@ -318,13 +341,17 @@ const forgotPwdForm = document.getElementById("forgot-pwd-form");
 
 forgotPwdLink.addEventListener("click", function(e){
     e.preventDefault();
+    coreMethods.hideFormContainers(forgotPwdForm);
     $(forgotPwdForm).show();
+    $(forgotPwdFormTitle).show();
     $(loginForm).hide();
+    $(loginFormTitle).hide();
 });
 
 forgotPwdForm.addEventListener("submit", function(e){
     e.preventDefault();
-    const number = $(this).children("input").val();
+    const number = $("#forgot-phone-number").val();
+    const formGroup = $(this).children(".form-group");
     if(number && number.length){
         if(phoneNumberRegex.exec(number)){
             const url = defaultUrl + "/forgot";
@@ -334,13 +361,16 @@ forgotPwdForm.addEventListener("submit", function(e){
                 url,
                 data,
                 form: this,
+                formGroup,
                 success: function(response){
                     const { err, code } = response;
                     if(err){
-                        coreMethods.setAlert(err.message, "danger");
+                        coreMethods.setFormErrLabel(this.formGroup, err.message);
                     } else if(code===200){
                         coreMethods.setAlert();
+                        coreMethods.hideFormContainers(this.form);
                         $(twoFactorForm).show();
+                        $(twoFactorPwdResetStatus).show();
                         $("#password-reset-status").show();
                         $(twoFactorForm).children("button[type=submit]").text("Reset password");
                         $(this.form).hide();
@@ -348,10 +378,10 @@ forgotPwdForm.addEventListener("submit", function(e){
                 }
             });
         } else {
-            coreMethods.setAlert("Invalid phone number", "danger");
+            coreMethods.setFormErrLabel(formGroup, "Invalid phone number");
         }
     } else {
-        coreMethods.setAlert("Missing phone number", "danger");
+        coreMethods.setFormErrLabel(formGroup, "Missing phone number");
     }
 });
 

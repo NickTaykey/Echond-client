@@ -155,8 +155,8 @@ const coreMethods = {
             $(`.alert-${type}`).show();
             $(`.alert-${type}`).text(msg);
         } else {
-            $(".alert").hide();
-            $(".alert").text("");
+            $(".alert-danger, .alert-success").hide();
+            $(".alert-danger, .alert-success").text("");
         }
     },
     setFormErrLabel(form, msg){
@@ -175,6 +175,10 @@ const coreMethods = {
                 $(e).hide();
             }
         }
+    },
+    hideFormContainers(formToDisplay){
+        $(".form-container").hide();
+        $(formToDisplay).parents(".form-container").show();
     }
 
 }
