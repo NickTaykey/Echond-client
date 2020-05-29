@@ -18,7 +18,6 @@
 #reset-pwd-form, 
 #password-reset-status, 
 #user-profile, 
-#profile-link,
 #two-factor-form-title,
 #two-factor-form,
 #forgot-pwd-form-title,
@@ -36,11 +35,18 @@
     display: none;
 }
 
+#user-profile{
+    width: 400px;
+}
 
 @media (max-width: 576px){
     .custom-offset{
         margin-left: 9.5%;
     }
+    #user-profile{
+        width: 100%;
+    }
+
 }
 
 

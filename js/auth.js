@@ -105,7 +105,8 @@ twoFactorForm.addEventListener("submit", function(e){
                         userConfirmToken = this.token;
                         coreMethods.setAlert();
                     } else {
-                        $("#resources-container, #logout-item").show();
+                        $("#resources-container, #logout-item, #profile-item").show();
+                        debugger;
                         localStorage.JWTtoken = token;
                         localStorage.currentUser = JSON.stringify(user);
                         notebooksBaseUrl = defaultUrl + `/${token}/notebooks`;
@@ -382,28 +383,34 @@ profileLink.addEventListener("click", function(e){
     const display = profile.style.display;
     if(display==="block"){
         $(profile).hide();
-        $(this).text("Show profile");
+        $(this).text("Show Profile");
     } else {
-        $(this).text("Hide profile");
+        $(this).text("Hide Profile");
         $(profile).show();
         $(profile).html("");
         const currentUser = JSON.parse(localStorage.currentUser);
         $(profile).append(`
-        <h3>${ currentUser.username }'s Profile</h3>
-        <form id="user-udpate-form">
-            <label for="update-username">Username: </label>
-            <input type="text" id="update-username" name="username" placeholder="username" value="${ currentUser.username }">
-            <br>
-            <label for="current-password-update">Current password: <strong>required to make any change</strong></label>
-            <input type="password" name="currentPassword" id="current-password-update" placeholder="current password">
-            <br>
-            <label for="update-password">New password: </label>
-            <input type="password" name="password" id="update-password" placeholder="new password">
-            <br>
-            <label for="update-password-confirm">Confirm password: </label>
-            <input type="password" name="passwordConfirm" id="update-password-confirm" placeholder="confirm new password">
-            <br>
-            <button type="submit">Update profile</button>
+        <h3 class="text-center my-4" id="update-profile-title">${ currentUser.username }'s Profile</h3>
+        <form id="user-udpate-form" class="w-75 mx-auto mb-4">
+            <div class="alert alert-success my-3" role="alert" id="success-profile-update-label">Profile successfully Updated!</div>
+            <div class="alert alert-danger err-label my-3" role="alert"></div>
+            <div class="form-group">
+                <label for="update-username">Username: </label>
+                <input type="text" class="form-control" id="update-username" name="username" placeholder="username" value="${ currentUser.username }">
+            </div>
+            <div class="form-group">
+                <label for="current-password-update">Current password: </label>
+                <input type="password" class="form-control" name="currentPassword" id="current-password-update" placeholder="current password">
+            </div>
+            <div class="form-group">
+                <label for="update-password">New password: </label>
+                <input type="password" class="form-control" name="password" id="update-password" placeholder="new password">
+            </div>
+            <div class="form-group">
+                <label for="update-password-confirm">Confirm password: </label>
+                <input type="password" class="form-control" name="passwordConfirm" id="update-password-confirm" placeholder="confirm new password">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Update profile</button>
         </form>
         `);
     }
@@ -417,18 +424,21 @@ $(profile).on("submit", "#user-udpate-form", function(e){
         url,
         type: "PUT",
         data,
+        form: this,
         success: function(response){
             const { err, token, user } = response;
             if(err){
-                return coreMethods.setAlert(err, "danger");
+                $("#success-profile-update-label").hide();
+                return coreMethods.setFormErrLabel(this.form, err);
             } 
             localStorage.JWTtoken = token;
             localStorage.currentUser = JSON.stringify(user);
-            $(profile).html("");
-            $(profile).hide();
-            $(profileLink).text("Show profile");
+            coreMethods.setFormErrLabel();
+            $(this.form).find("input").val("")
+            $("#update-username").val(user.username);
             $("#welcome-msg").text(`Welcome back ${user.username}!`);
-            coreMethods.setAlert("Profile successfully updated!", "success");
+            $("#success-profile-update-label").show();
+            $("#update-profile-title").text(`${user.username}'s Profile`);
         }
     });
 });
