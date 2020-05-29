@@ -116,7 +116,6 @@ const coreMethods = {
                     } else {
                         const notebooksFilterBar = document.getElementById("notebooks-fiter-bar");
                         notebooksFilterBar.innerHTML = "";
-                        notebooksFilterBar.innerHTML = "";
                         for(let n of notebooks){
                             notebooksFilterBar.innerHTML += 
                             `<li>
