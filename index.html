@@ -59,7 +59,7 @@
     <div class="alert alert-danger" role="alert"></div>
     <div class="alert alert-success" role="alert"></div>
     <div id="auth-container">
-        <div class="row mt-5 form-container">
+        <div class="row mt-5">
             <div class="col-10 col-md-4 offset-md-4 custom-offset">
                 <h2 class="display-4 text-center my-2" id="login-form-title">Login</h2>
                 <form id="login-form">
@@ -78,33 +78,28 @@
                     <a href="#" id="forgot-pwd-link">Forgot Password?</a>
                 </form>
             </div>
-        </div>
-        <div class="row mt-5 form-container">
             <div class="col-10 col-md-4 offset-md-4 custom-offset">
                 <div id="forgot-pwd-form-title">
-                    <h2 class="display-4 text-center">Forgot password</h2>
+                    <span class="text-center text-muted d-block">type your phone number</span>
                 </div>
-                <form id="forgot-pwd-form" class="mt-5">
+                <form id="forgot-pwd-form" class="mt-4">
                     <div class="form-group">
                         <div class="alert alert-danger err-label" role="alert"></div>
-                        <label for="forgot-phone-number">Type your phone number</label>
+                        <label for="forgot-phone-number" class="d-none">Type your phone number</label>
                         <input type="text" class="form-control" id="forgot-phone-number" placeholder="phone number" name="phoneNumber">
                     </div>
                     <button type="submit" class="btn btn-warning btn-block">Continue</button>
                 </form>
             </div>
-        </div>
-        <div class="row mt-5 form-container">
             <div class="col-10 col-md-4 offset-md-4 custom-offset">
                 <div id="two-factor-form-title">
-                    <h2 class="display-4 text-center">Account verfication</h2>
                     <span class="text-muted d-block text-center">You have been sent an SMS with a token</span>
                 </div>
-                <div class="alert alert-warning text-center" id="password-reset-status" role="alert">
-                    A message with the password reset token VALID FOR ONE HOUR since now has beed sent to you
+                <div class="alert alert-warning text-center m-0 my-3" id="password-reset-status" role="alert">
+                    A message with the password reset token <strong>valid for one hour</strong> since now has beed sent to you
                 </div>
-                <form id="two-factor-form" class="mt-5">
-                    <h3 id="registration-message">If you close this page You will note be able to confirm your account any more</h3>
+                <form id="two-factor-form" class="mt-4">
+                    <div id="registration-message" class="alert alert-warning text-center my-3" role="alert">If you close this page You will note be able to confirm your account any more</div>
                     <div class="form-group">
                         <div class="alert alert-danger err-label"></div>
                         <label for="token" class="d-none">You have been sent an SMS with a token</label>
@@ -113,8 +108,6 @@
                     <button type="submit" class="btn btn-success btn-block">Confrim</button>
                 </form>
             </div>
-        </div>
-        <div class="row mt-3">
             <div class="col-10 col-md-6 col-lg-4 offset-lg-4 offset-md-3 custom-offset">
                 <h2 class="display-4 text-center my-2" id="registration-form-title">Registration</h2>
                 <form id="registration-form">
@@ -140,13 +133,9 @@
                     <button type="reset" class="btn btn-warning btn-block mb-4">Reset Form</button>
                 </form>
             </div>
-        </div>
-        <div class="row mt-5 form-container">
             <div class="col-10 col-md-4 offset-md-4 custom-offset">
-                <div id="reset-pwd-form-title">
-                    <h2 class="display-4 text-center">Reset password</h2>
-                </div>
                 <form id="reset-pwd-form">
+                    <div class="alert alert-danger err-label" role="alert"></div>
                     <div class="form-group">
                         <label for="reset-password">New password: </label>
                         <input type="password" class="form-control" name="password" id="reset-password" placeholder="password">

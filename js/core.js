@@ -175,10 +175,5 @@ const coreMethods = {
                 $(e).hide();
             }
         }
-    },
-    hideFormContainers(formToDisplay){
-        $(".form-container").hide();
-        $(formToDisplay).parents(".form-container").show();
     }
-
 }
