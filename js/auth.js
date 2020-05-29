@@ -20,7 +20,7 @@ logoutLink.addEventListener("click", function(e){
     $(".notebook, .note").remove();
     $("#resources-container").hide();
     $(logoutItem).hide();
-    $(profileLink).hide();
+    $("#profile-item").hide();
     $(profile).hide();
     $("#welcome-item, #profile-item, #sf-item").hide();
     $("#registration-item, #login-item").show();
@@ -105,8 +105,7 @@ twoFactorForm.addEventListener("submit", function(e){
                         userConfirmToken = this.token;
                         coreMethods.setAlert();
                     } else {
-                        $("#resources-container, #logout-item, #profile-item").show();
-                        debugger;
+                        $("#resources-container, #logout-item").show();
                         localStorage.JWTtoken = token;
                         localStorage.currentUser = JSON.stringify(user);
                         notebooksBaseUrl = defaultUrl + `/${token}/notebooks`;
@@ -318,7 +317,7 @@ const profile = document.getElementById("user-profile");
 if(localStorage.JWTtoken){
     $("#registration-form, #login-form").hide();
     $(logoutItem).show();
-    $(profileLink).show();
+    $("#profile-item").show();
     const { username } = JSON.parse(localStorage.currentUser);
     $("#welcome-item, #profile-item, #sf-item").show();
     $("#login-item, #registration-item").hide();
