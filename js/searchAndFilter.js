@@ -2,6 +2,7 @@
 const searchFiled = document.getElementById("search-field");
 searchFiled.addEventListener("input", function(e){
     e.preventDefault();
+    $("#filters, #user-profile").hide();
     const queryString = encodeURIComponent(this.value);
     const url = `${defaultUrl}/${localStorage.JWTtoken}/search?search=${queryString}`;
     if(this.value.length){
@@ -34,14 +35,14 @@ searchFiled.addEventListener("input", function(e){
                 if(results>0){
                     type = "success"; msg = `${results} results found!`;
                 }
-                $("fieldset:not(#search-bar)").hide();
+                $("#sf-item").hide();
                 coreMethods.setAlert(msg, type);
             }
         });
     } else{
         $(".alert-danger, .alert-success").hide();
         $(".alert-danger, .alert-success").text("");
-        $("fieldset:not(#search-bar)").show();
+        $("#sf-item").show();
         coreMethods.loadNotebooks();
     }
 });
