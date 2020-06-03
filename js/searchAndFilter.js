@@ -52,14 +52,15 @@ searchFiled.addEventListener("input", function(e){
 });
 
 // filter notes feature
-const filterNotesBtn = document.getElementById("filter-notes");
+const filtersLink = document.getElementById("filters-link");
 let filterPointed = false;
 let filterDate = false;
 
-filterNotesBtn.addEventListener("click", function(e){
+filtersLink.addEventListener("click", function(e){
     e.preventDefault();
-    e.stopPropagation();
-    filterPointed = $(this)
+    $(profile).hide();
+    $(filters).toggle();
+    /* filterPointed = $(this)
         .parents("#search-filter-bar")
         .find("#filter-pointed")[0]
         .checked;
@@ -132,7 +133,7 @@ filterNotesBtn.addEventListener("click", function(e){
     if(msg.length){
         const fullMsg = startMsg + " " + msg.slice(0, msg.length-1);
         coreMethods.setAlert(fullMsg, type);
-    }
+    } */
 });
 
 const resetBtn = document.getElementById("reset-search-filters-field");

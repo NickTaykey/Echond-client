@@ -12,11 +12,11 @@
     <script src="./libs/tinymce.min.js"></script>
     <title>Note App | index</title>
 </head>
-<body>
+<body class="pt-5">
 
 
 
-    <nav class="navbar navbar-expand-sm navbar-light bg-light">
+    <nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="/client">Echond</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,9 +27,42 @@
                         <li class="nav-item active" id="welcome-item">
                             <a class="nav-link" href="#" id="welcome-msg"></a>
                         </li>
+                        <li class="nav-item mx-lg-2" id="fuzzy-search-item">
+                            <input type="text" class="form-control" placeholder="fuzzy search">
+                        </li>
+                        <li class="nav-item dropdown" id="sf-item">
+                            <a class="nav-link dropdown-toggle" href="#" id="filters-link" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Filters
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="filters-link" id="filters">
+                                <h3 class="text-center my-4">
+                                    Notes Filters
+                                </h3>
+                                <fieldset id="filter-bar-notes" class="text-muted ml-5">
+                                    <div>
+                                        <input type="checkbox" id="filter-date" class="mr-2">
+                                        <label for="filter-date">From the older to the newer</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="filter-pointed" class="mr-2">
+                                        <label for="filter-pointed">Pointed notes</label>
+                                    </div>
+                                </fieldset>
+                                <h3 class="text-center my-4">
+                                    Notebooks Filters
+                                </h3>
+                                <fieldset id="filter-bar-notebooks" class="text-muted ml-5">
+                                    <ul id="notebooks-fiter-bar"></ul>
+                                </fieldset>
+                                <fieldset id="btns-bar" class="my-4">
+                                    <button type="button" class="btn btn-primary w-75 mx-auto btn-block mb-2" id="filter-notes">Filter</button>
+                                    <button type="button" class="btn btn-warning w-75 mx-auto btn-block" id="reset-search-filters-field">Reset Search And Filters</button>
+                                </fieldset>
+                            </div>
+                        </li>
                         <li class="nav-item dropdown" id="profile-item">
                             <a class="nav-link dropdown-toggle" href="#" id="profile-link" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Show Profile
+                                Profile
                             </a>
                             <div class="dropdown-menu" aria-labelledby="profile-link" id="user-profile"></div>
                         </li>
@@ -152,25 +185,24 @@
                     <label for="search-field">Search</label>
                     <input type="text" placeholder="search notes or notebooks" id="search-field" autofocus>
                 </fieldset>
-                <fieldset id="filter-bar-notes">
+                <!-- <fieldset id="filter-bar-notes">
                     <h2>Notes Filters</h2>
                     <label for="filter-date">From the older to the newer</label>
                     <input type="checkbox" id="filter-date">
                     <br>
                     <label for="filter-pointed">Pointed notes</label>
                     <input type="checkbox" id="filter-pointed">
-                </fieldset>
-                <br>
-                <fieldset id="filter-bar-notebooks">
+                </fieldset> -->
+                <!-- <fieldset id="filter-bar-notebooks">
                     <h2>Notebooks Filters</h2>
                     <label for="filter-notebook">Notebooks</label>
                     <ul id="notebooks-fiter-bar"></ul>
-                </fieldset>
+                </fieldset> -->
                 <br>
-                <fieldset id="btns-bar">
+                <!-- <fieldset id="btns-bar">
                     <button type="button" id="reset-search-filters-field">Reset Search And Filters</button>
                     <button type="button" id="filter-notes">Filter</button>
-                </fieldset>
+                </fieldset> -->
             </section>
         </header>
         <section class="container">

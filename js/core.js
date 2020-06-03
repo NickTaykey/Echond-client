@@ -119,8 +119,8 @@ const coreMethods = {
                         for(let n of notebooks){
                             notebooksFilterBar.innerHTML += 
                             `<li>
+                                <input type="checkbox" id="filter-${n._id}" class="notebook-filter-item mr-2">
                                 <label for="filter-${n._id}">${n.title}</label>
-                                <input type="checkbox" id="filter-${n._id}" class="notebook-filter-item">
                             </li>`;
                         }
                         // add notebooks item to the container

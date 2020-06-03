@@ -22,7 +22,7 @@ logoutLink.addEventListener("click", function(e){
     $(logoutItem).hide();
     $("#profile-item").hide();
     $(profile).hide();
-    $("#welcome-item, #profile-item, #sf-item").hide();
+    $("#welcome-item, #profile-item, #sf-item, #fuzzy-search-item").hide();
     $("#registration-item, #login-item").show();
     $("#welcome-msg").text("");
     coreMethods.setAlert("Logout successfully completed!", "success");
@@ -95,7 +95,7 @@ twoFactorForm.addEventListener("submit", function(e){
                         const content = `Welcome ${feature!=="Get Registered" ? "back" : ""} ${user.username}!`;
                         $("#welcome-item").show();
                         $("#welcome-msg").text(content);
-                        $("#profile-item, #sf-item").show();
+                        $("#profile-item, #sf-item, #fuzzy-search-item").show();
                         $("#login-item, #registration-item").hide();
                     }
                     if(this.feature==="Reset password" && code===200){
@@ -313,13 +313,14 @@ $("button[type=reset]").click(function(e){
 
 const profileLink = document.getElementById("profile-link");
 const profile = document.getElementById("user-profile");
+const filters = document.getElementById("filters")
 
 if(localStorage.JWTtoken){
     $("#registration-form, #login-form").hide();
     $(logoutItem).show();
     $("#profile-item").show();
     const { username } = JSON.parse(localStorage.currentUser);
-    $("#welcome-item, #profile-item, #sf-item").show();
+    $("#welcome-item, #profile-item, #sf-item, #fuzzy-search-item").show();
     $("#login-item, #registration-item").hide();
     $("#welcome-msg").text(`Welcome back ${username}!`);
     $("#resources-container").show();
@@ -379,13 +380,9 @@ forgotPwdForm.addEventListener("submit", function(e){
 
 profileLink.addEventListener("click", function(e){
     e.preventDefault();
-    const display = profile.style.display;
-    if(display==="block"){
-        $(profile).hide();
-        $(this).text("Show Profile");
-    } else {
-        $(this).text("Hide Profile");
-        $(profile).show();
+    $(filters).hide();
+    $(profile).toggle();
+    if(profile.style.display==="block"){
         $(profile).html("");
         const currentUser = JSON.parse(localStorage.currentUser);
         $(profile).append(`
