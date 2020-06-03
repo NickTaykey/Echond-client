@@ -1,9 +1,3 @@
-const filterBarToggler = document.getElementById("filter-bar-toggler");
-filterBarToggler.addEventListener("click", function(e){
-    e.preventDefault();
-    $("#search-filter-bar").toggle();
-});
-
 // note fuzzy search feature
 const searchFiled = document.getElementById("search-field");
 searchFiled.addEventListener("input", function(e){
@@ -36,6 +30,7 @@ searchFiled.addEventListener("input", function(e){
                 notebooksContainer.innerHTML = newContent;
                 let type = "danger", msg = "No results found!";
                 const results = notes.length + notebooks.length;
+                coreMethods.setAlert();
                 if(results>0){
                     type = "success"; msg = `${results} results found!`;
                 }

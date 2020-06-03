@@ -10,9 +10,9 @@
     <link href="./css/Roboto.css" rel="stylesheet">
     <link rel="stylesheet" href="./css/index.css">
     <script src="./libs/tinymce.min.js"></script>
-    <title>Note App | index</title>
+    <title>Echond</title>
 </head>
-<body class="pt-5">
+<body>
 
 
 
@@ -28,7 +28,7 @@
                             <a class="nav-link" href="#" id="welcome-msg"></a>
                         </li>
                         <li class="nav-item mx-lg-2" id="fuzzy-search-item">
-                            <input type="text" class="form-control" placeholder="fuzzy search">
+                            <input type="text" class="form-control" placeholder="fuzzy search" id="search-field">
                         </li>
                         <li class="nav-item dropdown" id="sf-item">
                             <a class="nav-link dropdown-toggle" href="#" id="filters-link" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -82,9 +82,10 @@
         </div>
     </nav>
 
-
-    <div class="alert alert-danger" role="alert"></div>
-    <div class="alert alert-success" role="alert"></div>
+    <header class="container">
+        <div class="alert alert-danger" role="alert"></div>
+        <div class="alert alert-success" role="alert"></div>
+    </header>
     <div id="auth-container">
         <div class="row mt-5">
             <div class="col-10 col-md-4 offset-md-4 custom-offset">
@@ -176,67 +177,37 @@
             </div>
         </div>
     </div>
-    <div id="resources-container">
-        <header id="page-header">
-            <button type="button" id="filter-bar-toggler">Toggle Filter bar</button>
-            <section id="search-filter-bar">
-                <h2>Notes and Notebooks fuzzy search</h2>
-                <fieldset id="search-bar">
-                    <label for="search-field">Search</label>
-                    <input type="text" placeholder="search notes or notebooks" id="search-field" autofocus>
-                </fieldset>
-                <!-- <fieldset id="filter-bar-notes">
-                    <h2>Notes Filters</h2>
-                    <label for="filter-date">From the older to the newer</label>
-                    <input type="checkbox" id="filter-date">
-                    <br>
-                    <label for="filter-pointed">Pointed notes</label>
-                    <input type="checkbox" id="filter-pointed">
-                </fieldset> -->
-                <!-- <fieldset id="filter-bar-notebooks">
-                    <h2>Notebooks Filters</h2>
-                    <label for="filter-notebook">Notebooks</label>
-                    <ul id="notebooks-fiter-bar"></ul>
-                </fieldset> -->
+    <div id="resources-container" class="container">
+        <div class="notebooks">
+            <br><br>
+            <button type="button" id="create-notebook-btn">Create a Notebook</button>
+            <form id="create-notebook-form">
+                <div class="alert alert-danger err-label" role="alert"></div>
+                <input type="text" placeholder="title of the notebook" id="notebook-title" name="title">
+                <button type="submit">Create</button>
+            </form>
+            <h3>Notebooks</h3>
+            <div class="notebooks-container"></div>
+        </div>
+        <div class="notes">
+            <br><br>
+            <button type="button" id="create-note-btn">Write a note</button>
+            <form id="create-note-form">
+                <div class="alert alert-danger err-label" role="alert"></div>
                 <br>
-                <!-- <fieldset id="btns-bar">
-                    <button type="button" id="reset-search-filters-field">Reset Search And Filters</button>
-                    <button type="button" id="filter-notes">Filter</button>
-                </fieldset> -->
-            </section>
-        </header>
-        <section class="container">
-            <div class="notebooks">
-                <br><br>
-                <button type="button" id="create-notebook-btn">Create a Notebook</button>
-                <form id="create-notebook-form">
-                    <div class="alert alert-danger err-label" role="alert"></div>
-                    <input type="text" placeholder="title of the notebook" id="notebook-title" name="title">
-                    <button type="submit">Create</button>
-                </form>
-                <h3>Notebooks</h3>
-                <div class="notebooks-container"></div>
-            </div>
-            <div class="notes">
-                <br><br>
-                <button type="button" id="create-note-btn">Write a note</button>
-                <form id="create-note-form">
-                    <div class="alert alert-danger err-label" role="alert"></div>
-                    <br>
-                    <section id="notebooks-list"></section>
-                    <br>
-                    <label for="note-body">Note:</label>
-                    <textarea class="note-body" id="note-body" name="body" cols="30" rows="10" placeholder="your note"></textarea>
-                    <br>
-                    <label for="note-pointed">Pointed?</label>
-                    <input type="checkbox" name="pointed" id="note-pointed">
-                    <br>
-                    <button type="submit">Create</button>
-                </form>
-                <h3>Notes</h3>
-                <div class="notes-container"></div>
-            </div>
-        </section>
+                <section id="notebooks-list"></section>
+                <br>
+                <label for="note-body">Note:</label>
+                <textarea class="note-body" id="note-body" name="body" cols="30" rows="10" placeholder="your note"></textarea>
+                <br>
+                <label for="note-pointed">Pointed?</label>
+                <input type="checkbox" name="pointed" id="note-pointed">
+                <br>
+                <button type="submit">Create</button>
+            </form>
+            <h3>Notes</h3>
+            <div class="notes-container"></div>
+        </div>
     </div>
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="./libs/jquery-3.5.1.min.js"></script>
