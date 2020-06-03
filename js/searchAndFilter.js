@@ -48,6 +48,7 @@ searchFiled.addEventListener("input", function(e){
 
 // filter notes feature
 const filtersLink = document.getElementById("filters-link");
+const filterBtn = document.getElementById("filter-btn");
 let filterPointed = false;
 let filterDate = false;
 
@@ -55,14 +56,12 @@ filtersLink.addEventListener("click", function(e){
     e.preventDefault();
     $(profile).hide();
     $(filters).toggle();
-    /* filterPointed = $(this)
-        .parents("#search-filter-bar")
-        .find("#filter-pointed")[0]
-        .checked;
-    filterDate = $(this)
-        .parents("#search-filter-bar")
-        .find("#filter-date")[0]
-        .checked;
+});
+
+filterBtn.addEventListener("click", function(e){
+    e.preventDefault();
+    filterPointed = $("#filter-pointed")[0].checked;
+    filterDate = $("#filter-date")[0].checked;
     // FILTER THE NOTES BY DATE
     // remove all the notes from the DOM
     $(notesContainer).html("");
@@ -128,8 +127,9 @@ filtersLink.addEventListener("click", function(e){
     if(msg.length){
         const fullMsg = startMsg + " " + msg.slice(0, msg.length-1);
         coreMethods.setAlert(fullMsg, type);
-    } */
+    }
 });
+
 
 const resetBtn = document.getElementById("reset-search-filters-field");
 resetBtn.addEventListener("click", function(e){
