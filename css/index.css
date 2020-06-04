@@ -1,4 +1,4 @@
-*{
+*:not(i){
     font-family: 'Roboto'!important;
 }
 
@@ -45,11 +45,15 @@ body{
     width: 400px;
 }
 
-@media (max-width: 576px){
+#search-field{
+    width: 250px;
+}
+
+@media (max-width: 992px){
     .custom-offset{
         margin-left: 9.5%;
     }
-    #user-profile, #filters{
+    #user-profile, #filters, #search-field{
         width: 100%;
     }
 
@@ -66,15 +70,24 @@ body{
     padding: 0;
 }
 
-#search-field{
-    width: 250px;
-}
 
 #resources-container{
     display: flex;
 }
 
+#inline-form-submit-btn, .update-btn{
+    width: 23.9%;
+}
+
+.card-title{
+    display: inline-block;
+}
+
 .notes{
+    display: none;
+}
+
+#arrow-right{
     display: none;
 }
 
@@ -84,4 +97,8 @@ body{
 
 .note{
     margin: 30px auto;
+}
+
+.fa-arrow-left, .fa-arrow-right{
+    font-size: 40px;
 }

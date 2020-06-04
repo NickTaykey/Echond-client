@@ -20,19 +20,44 @@ const coreMethods = {
         });
     },
     generateNotebookMarkup(notebook){
-        const markup = `
-        <div class="card notebook" id="${ notebook._id }">
+        const markup = 
+        `
+        <div class="card mb-3 notebook" id="${ notebook._id }">
             <div class="card-body">
-                <h5 class="card-title">${ notebook.title }</h5>
-                <a href="#" class="btn btn-sm btn-primary show-notes-btn">Checkout</a>
-                <a href="#" class="btn btn-sm btn-warning edit-notebook-btn">Edit</a>
-                <a href="#" class="btn btn-danger delete-notebook-btn">
-                <i class="fas fa-trash-alt"></i>
-                </a>
-                <section class="edit-notebook-form">
+                <div class="notebook-showcase">
+                    <h5 class="card-title mr-4">${ notebook.title }</h5>
+                    <div class="d-inline-block float-right">
+                        <a href="#" class="btn btn-sm btn-primary show-notes-btn">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <a href="#" class="btn btn-sm btn-warning edit-notebook-btn">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#staticBackdrop">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                        <div class="modal fade notebook-delete-modal" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="staticBackdropLabel">Are you sure to delete this notebook?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-danger delete-notebook-btn">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <section class="edit-notebook-form form-inline mt-5">
                     <div class="alert alert-danger err-label" role="alert"></div>    
-                    <input type="text" placeholder="Your notebook's title" name="title" value="${notebook.title}">
-                    <button type="button" class="update-btn">Update</button>
+                    <input type="text" class="form-control w-75 d-inline-block" placeholder="Your notebook's title" name="title" value="${notebook.title}"/>
+                    <button type="button" class="btn btn-warning update-btn d-inline-block">Update</button>
                 </section>
             </div>
         </div>

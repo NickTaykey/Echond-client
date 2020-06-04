@@ -42,15 +42,12 @@ coreMethods.loadNotebooks();
 $(notebooksContainer).on("click", ".edit-notebook-btn", function(e){
     e.preventDefault();
     e.stopPropagation();
-    if(this.textContent==="Edit"){
-        $(this).siblings("h4").hide();
-        $(this).siblings(".edit-notebook-form").show();
-        this.textContent = "close";
-    } else {
-        $(this).siblings("h4").show();
-        $(this).siblings(".edit-notebook-form").hide();
-        this.textContent = "Edit";
-    }
+    const $div = $(this).parents("div");
+    const title = $div.siblings(".card-title").text();
+    $div.siblings("section").find("input").val(title);
+    coreMethods.setAlert();
+    $div.siblings(".card-title").toggle();
+    $div.siblings(".edit-notebook-form").toggle();
 });
 
 // update a notebook
@@ -60,7 +57,11 @@ $(notebooksContainer).on("click", ".update-btn", function(e){
     const id = $(this).parents(".notebook").attr("id");
     const data = $(this).siblings("input").serialize();
     const titleField = $(this).siblings("input[type=text]").val();
-    const originalTitle = $(`#${id}`).children("h4").text();
+    const originalTitle = $(this)
+        .parents("section")
+        .siblings(".notebook-showcase")
+        .find(".card-title")
+        .text();
     const editForm = $(this).parents(".edit-notebook-form")[0];
     if(!titleField.length){
         coreMethods.setFormErrLabel(editForm, "Provide a title");
@@ -108,46 +109,44 @@ $(notebooksContainer).on("click", ".update-btn", function(e){
 $(notebooksContainer).on("click", ".delete-notebook-btn", function(e){
     e.preventDefault();
     e.stopPropagation();
-    let choice = confirm("Are You sure You want to delete this notebook?");
-    if(choice){
-        const $notebook = $(this).parents(".notebook");
-        const id = $notebook.attr("id");
-        $.ajax({
-            type: "DELETE",
-            url: `${notebooksBaseUrl}/${id}`,
-            $notebook,
-            success: function(response){
-                const { err } = response;
-                if(err){
-                    coreMethods.loginErrorHandler();
-                } else {
-                    let cont = coreMethods.clientSideNotebookErrorHandler(response);
-                    if(cont){
-                        const notebook = usersNotebooks.find(n=>response.notebook._id===n._id);
-                        const notebookIndex = usersNotebooks.indexOf(notebook);
-                        usersNotebooks.splice(notebookIndex, 1);
-                        // if the selected notebook gets deleted select the next
-                        if(this.$notebook.hasClass("selected-notebook")){
-                            this.$notebook
-                                .next()
-                                .find(".show-notes-btn")
-                                .click();
-                        }
-                        this.$notebook.remove();
-                        // show the first notebook notes
-                        notesContainer.innerHTML = "";
-                        if(usersNotebooks[0]){
-                            usersNotebooks[0].notes.forEach(n=>{
-                                notesContainer.innerHTML += coreMethods.generateNoteMarkup(n);
-                            });
-                        }
-                        coreMethods.loadNotebooks();
-                        coreMethods.setAlert("Notebook successfully deleted!", "success");
+    $(".modal-backdrop").remove();
+    const $notebook = $(this).parents(".notebook");
+    const id = $notebook.attr("id");
+    $.ajax({
+        type: "DELETE",
+        url: `${notebooksBaseUrl}/${id}`,
+        $notebook,
+        success: function(response){
+            const { err } = response;
+            if(err){
+                coreMethods.loginErrorHandler();
+            } else {
+                let cont = coreMethods.clientSideNotebookErrorHandler(response);
+                if(cont){
+                    const notebook = usersNotebooks.find(n=>response.notebook._id===n._id);
+                    const notebookIndex = usersNotebooks.indexOf(notebook);
+                    usersNotebooks.splice(notebookIndex, 1);
+                    // if the selected notebook gets deleted select the next
+                    if(this.$notebook.hasClass("selected-notebook")){
+                        this.$notebook
+                            .next()
+                            .find(".show-notes-btn")
+                            .click();
                     }
+                    this.$notebook.remove();
+                    // show the first notebook notes
+                    notesContainer.innerHTML = "";
+                    if(usersNotebooks[0]){
+                        usersNotebooks[0].notes.forEach(n=>{
+                            notesContainer.innerHTML += coreMethods.generateNoteMarkup(n);
+                        });
+                    }
+                    coreMethods.loadNotebooks();
+                    coreMethods.setAlert("Notebook successfully deleted!", "success");
                 }
             }
-        })
-    } 
+        }
+    })
 });
 
 // CREATE NOTEBOOK FEATURE
@@ -209,4 +208,9 @@ createNotebookForm.addEventListener("submit", function(e){
             });
         }
     }
+});
+
+$(".notebooks-bar-toggler").click(function(e){
+    e.preventDefault();
+    $(".notebooks, .notebooks-bar-toggler").toggle("fast");
 });
