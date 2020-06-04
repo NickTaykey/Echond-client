@@ -21,16 +21,20 @@ const coreMethods = {
     },
     generateNotebookMarkup(notebook){
         const markup = `
-        <div class="notebook" id=${notebook._id}>
-            <h4 class="title">${ notebook.title }</h4>
-            <section class="edit-notebook-form">
-                <div class="alert alert-danger err-label" role="alert"></div>    
-                <input type="text" placeholder="Your notebook's title" name="title" value="${notebook.title}">
-                <button type="button" class="update-btn">Update</button>
-            </section>
-            <button type="button" class="show-notes-btn">Show Notes</button>
-            <button type="button" class="edit-notebook-btn">Edit</button>
-            <button type="button" class="delete-notebook-btn">Delete</button>
+        <div class="card notebook" id="${ notebook._id }">
+            <div class="card-body">
+                <h5 class="card-title">${ notebook.title }</h5>
+                <a href="#" class="btn btn-sm btn-primary show-notes-btn">Checkout</a>
+                <a href="#" class="btn btn-sm btn-warning edit-notebook-btn">Edit</a>
+                <a href="#" class="btn btn-danger delete-notebook-btn">
+                <i class="fas fa-trash-alt"></i>
+                </a>
+                <section class="edit-notebook-form">
+                    <div class="alert alert-danger err-label" role="alert"></div>    
+                    <input type="text" placeholder="Your notebook's title" name="title" value="${notebook.title}">
+                    <button type="button" class="update-btn">Update</button>
+                </section>
+            </div>
         </div>
         `;
         return markup; 

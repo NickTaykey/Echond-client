@@ -70,24 +70,16 @@ body{
     width: 250px;
 }
 
-.selected-notebook{
-    border: 2px solid blue;;
-}
-
 #resources-container{
     display: flex;
 }
 
+.notes{
+    display: none;
+}
+
 .notebooks-container, .notes-container{
     margin-right: 80px;
-}
-
-.notebooks-container{
-    border: 2px solid green;
-}
-
-.notes-container{
-    border: 2px solid red;
 }
 
 .note{

@@ -4,9 +4,8 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous">
     <link rel="stylesheet" href="./libs/bootstrap4/bootstrap.min.css">
-    <link rel="stylesheet" href="./libs/wrapkit/css/style.css">
-    <link rel="stylesheet" href="./libs/wrapkit/css/animate.css">
     <link href="./css/Roboto.css" rel="stylesheet">
     <link rel="stylesheet" href="./css/index.css">
     <script src="./libs/tinymce.min.js"></script>
@@ -178,42 +177,45 @@
         </div>
     </div>
     <div id="resources-container" class="container">
-        <div class="notebooks">
-            <br><br>
-            <button type="button" id="create-notebook-btn">Create a Notebook</button>
-            <form id="create-notebook-form">
-                <div class="alert alert-danger err-label" role="alert"></div>
-                <input type="text" placeholder="title of the notebook" id="notebook-title" name="title">
-                <button type="submit">Create</button>
-            </form>
-            <h3>Notebooks</h3>
-            <div class="notebooks-container"></div>
-        </div>
-        <div class="notes">
-            <br><br>
-            <button type="button" id="create-note-btn">Write a note</button>
-            <form id="create-note-form">
-                <div class="alert alert-danger err-label" role="alert"></div>
-                <br>
-                <section id="notebooks-list"></section>
-                <br>
-                <label for="note-body">Note:</label>
-                <textarea class="note-body" id="note-body" name="body" cols="30" rows="10" placeholder="your note"></textarea>
-                <br>
-                <label for="note-pointed">Pointed?</label>
-                <input type="checkbox" name="pointed" id="note-pointed">
-                <br>
-                <button type="submit">Create</button>
-            </form>
-            <h3>Notes</h3>
-            <div class="notes-container"></div>
+        <div class="row">
+
+            <div class="notebooks">
+                <h2 class="mb-3">Notebooks</h2>
+                <button type="button" id="create-notebook-btn" class="btn btn-success btn-block">Create a Notebook</button>
+                <form id="create-notebook-form" class="form-inline my-4">
+                    <div class="alert alert-danger err-label" role="alert"></div>
+                    <label class="sr-only" for="notebook-title">Title</label>
+                    <input type="text" class="form-control" placeholder="title of the notebook" id="notebook-title" name="title">
+                    <button type="submit" class="btn btn-primary" id="inline-form-submit-btn">Create</button>
+                </form>
+                <div class="notebooks-container mt-4"></div>
+            </div>
+    
+    
+            <div class="notes">
+                <button type="button" id="create-note-btn">Write a note</button>
+                <form id="create-note-form">
+                    <div class="alert alert-danger err-label" role="alert"></div>
+                    <br>
+                    <section id="notebooks-list"></section>
+                    <br>
+                    <label for="note-body">Note:</label>
+                    <textarea class="note-body" id="note-body" name="body" cols="30" rows="10" placeholder="your note"></textarea>
+                    <br>
+                    <label for="note-pointed">Pointed?</label>
+                    <input type="checkbox" name="pointed" id="note-pointed">
+                    <br>
+                    <button type="submit">Create</button>
+                </form>
+                <h3>Notes</h3>
+                <div class="notes-container"></div>
+            </div>
         </div>
     </div>
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="./libs/jquery-3.5.1.min.js"></script>
     <script src="./libs/popper.min.js"></script>
     <script src="./libs/bootstrap4/bootstrap.min.js"></script>
-    <script src="./libs/wrapkit/js/custom.min.js"></script>
     <script src="./js/core.js"></script>
     <script src="./js/appConfiguration.js"></script>
     <script src="./js/auth.js"></script>
