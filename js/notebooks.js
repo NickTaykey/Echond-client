@@ -14,7 +14,7 @@ $(notebooksContainer).on("click", ".show-notes-btn", function(e){
     $(notebooksContainer)
         .find(".selected-notebook")
         .removeClass("selected-notebook");
-    const notebookContainer = this.parentElement;
+    const notebookContainer = $(this).parents(".notebook")[0];
     // add selected state to the current showed notebook
     notebookContainer.classList.add("selected-notebook");
     const notebookId = notebookContainer.id;
@@ -212,6 +212,6 @@ createNotebookForm.addEventListener("submit", function(e){
 
 $(".notebooks-bar-toggler").click(function(e){
     e.preventDefault();
-    $("#notebooks-bar").collapse('toggle')
+    $("#notebooks-bar").collapse('toggle');
     $(".notebooks-bar-toggler").toggle("fast");
 });

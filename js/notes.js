@@ -2,34 +2,32 @@
 $(notesContainer).on("click", ".delete-note-btn", function(e){
     e.preventDefault();
     e.stopPropagation();
-    const res = confirm("Are you sure you want to delete this note?");
-    if(res){
-        const noteElement = this.parentElement;
-        const id = noteElement.getAttribute("id");
-        $.ajax({
-            url: `${notesBaseUrl}/${id}`,
-            type: "DELETE",
-            noteElement,
-            success: function(response){
-                const { err } = response;
-                if(err){
-                    coreMethods.loginErrorHandler();
-                } else {
-                    let contNotebook = coreMethods.clientSideNotebookErrorHandler(response);
-                    let contNote = coreMethods.clientSideNoteErrorHandler(response);  
-                    if(contNote && contNotebook){
-                        this.noteElement.remove();
-                        // remove the note from the notebooks array
-                        const { note } = response;
-                        const { notes } = coreMethods.findNoteBookById(response.notebook._id);
-                        const index = notes.indexOf(note);
-                        notes.splice(index, 1);
-                        coreMethods.setAlert("Note successfully deleted!", "success");
-                    }
+    const noteElement = $(this).parents(".note")[0];
+    const id = noteElement.getAttribute("id");
+    $.ajax({
+        url: `${notesBaseUrl}/${id}`,
+        type: "DELETE",
+        noteElement,
+        success: function(response){
+            const { err } = response;
+            if(err){
+                coreMethods.loginErrorHandler();
+            } else {
+                let contNotebook = coreMethods.clientSideNotebookErrorHandler(response);
+                let contNote = coreMethods.clientSideNoteErrorHandler(response);  
+                if(contNote && contNotebook){
+                    this.noteElement.remove();
+                    $(".modal-backdrop").remove();
+                    // remove the note from the notebooks array
+                    const { note } = response;
+                    const { notes } = coreMethods.findNoteBookById(response.notebook._id);
+                    const index = notes.indexOf(note);
+                    notes.splice(index, 1);
+                    coreMethods.setAlert("Note successfully deleted!", "success");
                 }
             }
-        })
-    }
+        }
+    });
 });
 
 // show or hide edit note btn

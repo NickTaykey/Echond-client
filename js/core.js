@@ -33,10 +33,10 @@ const coreMethods = {
                         <a href="#" class="btn btn-sm btn-warning edit-notebook-btn">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#staticBackdrop">
+                        <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-notebook-modal">
                             <i class="fas fa-trash-alt"></i>
                         </a>
-                        <div class="modal fade notebook-delete-modal" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal fade notebook-delete-modal" id="delete-notebook-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -100,7 +100,7 @@ const coreMethods = {
             <label for="${ note._id }-update-${ n._id }">${ n.title }</label>
             `;
         });
-        const markup = `
+        /* const markup = `
         <div class="note" id=${note._id}>
             <section class="note-body-show">${ note.body }</section>
             <strong>Pointed: ${ note.pointed }</strong>
@@ -119,6 +119,49 @@ const coreMethods = {
                 </br>
                 <button type="submit">Update</button>
             </form>
+        </div>
+        `; */
+        const markup = `
+        <div class="note card col-12 col-lg-5" id=${note._id}>
+            <div class="card-body">
+                <div class="mb-4 d-flex justify-content-${ note.pointed ? 'between' : 'end'}">
+                    <i class="fas fa-star pointed-note-star text-warning ${ note.pointed ? '' : 'd-none'}"></i>
+                    <div>
+                        <button type="button" class="btn btn-sm btn-warning edit-note-btn">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delete-note-modal">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+                <section class="note-body-show">${ note.body.slice(0, 25) } ... </section>
+                <div class="modal fade" id="delete-note-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Are you sure to delete this note?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger delete-note-btn">Delete</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <form action="${ notesBaseUrl }/${ note._id }" class="edit-note-form">
+                    <div class="alert alert-danger err-label" role="alert"></div>
+                    <section class="notebooks-list-update">${ updateNotebookFieldSet }</section>
+                    <label for="note-${ note._id }-body">Your Note</label>
+                    <textarea class="note-body" name="body" id="note-${ note._id }-body" cols="30" rows="10">${ note.body }</textarea>
+                    <label for="note-${ note._id }-pointed">Pointed</label>
+                    <input type="checkbox" name="pointed" id="note-${ note._id }-pointed" ${ note.pointed ? "checked" : "" }>
+                    <button type="submit">Update</button>
+                </form>
+            </div>
         </div>
         `;
         return markup; 
@@ -167,8 +210,8 @@ const coreMethods = {
                             <input type="radio" name="notebook" class="notebook-radio d-inline-block ml-3 mr-1" value="${ notebook._id }" id="create-${ notebook._id }">
                             <label for="create-${ notebook._id }">${ notebook.title }</label>
                             `);
-                            $(`#${notebooks[0]._id} > .show-notes-btn`).click();
                         }
+                        $(`#${notebooks[0]._id}`).find(".show-notes-btn").click()
                     }
                 }
             );

@@ -16,7 +16,7 @@ logoutLink.addEventListener("click", function(e){
     previouslyLoggedIn = false;
     $("#login-item").addClass("active");
     $(loginFormTitle).show();
-    $("#login-form").show();
+    $("#login-form, #auth-container").show();
     $(".notebook, .note").remove();
     $("#resources-container").hide();
     $(logoutItem).hide();
@@ -93,6 +93,7 @@ twoFactorForm.addEventListener("submit", function(e){
                     $(twoFactorForm).children("input[type=text]").val("");
                     if(this.feature!=="Reset password"){
                         const content = `Welcome ${feature!=="Get Registered" ? "back" : ""} ${user.username}!`;
+                        $("#auth-container").hide();
                         $("#welcome-item").show();
                         $("#welcome-msg").text(content);
                         $("#profile-item, #sf-item, #fuzzy-search-item").show();
@@ -159,7 +160,7 @@ resetPwdForm.addEventListener("submit", function(e){
                     return coreMethods.setFormErrLabel(this.resetPwdForm, err);
                 }
                 $(this.resetPwdForm).hide();
-                $("#registration-item, #login-item").hide();
+                $("#registration-item, #login-item, #auth-container").hide();
                 $(this.resetPwdForm).children("input[type=password]").val("");
                 $(
                     "#resources-container, #logout-item, #welcome-item, #profile-item, #sf-item"
@@ -316,7 +317,7 @@ const profile = document.getElementById("user-profile");
 const filters = document.getElementById("filters")
 
 if(localStorage.JWTtoken){
-    $("#registration-form, #login-form").hide();
+    $("#registration-form, #login-form, #auth-container").hide();
     $(logoutItem).show();
     $("#profile-item").show();
     const { username } = JSON.parse(localStorage.currentUser);

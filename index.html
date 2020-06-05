@@ -85,8 +85,8 @@
         <div class="alert alert-danger" role="alert"></div>
         <div class="alert alert-success" role="alert"></div>
     </header>
-    <div id="auth-container">
-        <div class="row mt-5">
+    <div id="auth-container" class="mt-5">
+        <div class="row">
             <div class="col-10 col-md-4 offset-md-4 custom-offset">
                 <h2 class="display-4 text-center my-2" id="login-form-title">Login</h2>
                 <form id="login-form">
@@ -176,15 +176,23 @@
             </div>
         </div>
     </div>
-        <header class="container p-0 my-3 offset-1">
-            <i class="fas fa-arrow-left notebooks-bar-toggler" id="arrow-left" data-toggle="collapse" href="#notebooks-bar" role="button" aria-expanded="false" aria-controls="notebooks-bar"></i>
-            <i class="fas fa-arrow-right notebooks-bar-toggler" id="arrow-right"></i>
-        </header>
-        <div id="resources-container">
+        <div id="resources-container" class="mt-5">
             <div class="container">
+                <div class="row mb-4">
+                    <div id="notebooks-bar-header" class="col-12 col-lg-4">
+                        <h2 class="mb-3 d-inline-block">Notebooks</h2>
+                        <span id="arrows" class="d-inline-block float-right">
+                            <i class="fas fa-arrow-left notebooks-bar-toggler" id="arrow-left" data-toggle="collapse" href="#notebooks-bar" role="button" aria-expanded="false" aria-controls="notebooks-bar"></i>
+                            <i class="fas fa-arrow-right notebooks-bar-toggler" id="arrow-right"></i>
+                        </span>
+                    </div>
+                    <div id="notes-bar-header" class="col-12 col-lg-8">
+                        <h2 class="mb-3 d-inline-block">Notes</h2>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="notebooks col-12 col-lg-4 collapse show" id="notebooks-bar">
-                        <h2 class="mb-3 d-inline-block">Notebooks</h2>
                         <button type="button" id="create-notebook-btn" class="btn btn-success btn-block">
                             <i class="fas fa-book-open d-inline-block mr-2"></i> 
                             Create a Notebook
@@ -198,7 +206,6 @@
                         <div class="notebooks-container mt-4 w-100"></div>
                     </div>
                     <div class="notes col-12 col-lg-8" id="notes-bar">
-                        <h2 class="mb-3 d-inline-block">Notes</h2>
                         <button type="button" id="create-note-btn" class="btn btn-info btn-block">
                             <i class="fas fa-pencil-alt d-inline-block mr-2"></i>
                             Write a note
@@ -215,7 +222,9 @@
                             </label>
                             <button type="submit" class="btn btn-block btn-primary">Create</button>
                         </form>
-                        <div class="notes-container"></div>
+                        <div class="container-fluid">
+                            <div class="notes-container row"></div>
+                        </div>
                     </div>
                 </div>
             </div>
