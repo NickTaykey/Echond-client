@@ -54,10 +54,10 @@ const coreMethods = {
                         </div>
                     </div>
                 </div>
-                <section class="edit-notebook-form form-inline mt-5">
+                <section class="edit-notebook-form mt-5">
                     <div class="alert alert-danger err-label" role="alert"></div>    
-                    <input type="text" class="form-control w-75 d-inline-block" placeholder="Your notebook's title" name="title" value="${notebook.title}"/>
-                    <button type="button" class="btn btn-warning update-btn d-inline-block">Update</button>
+                    <input type="text" class="form-control" placeholder="Your notebook's title" name="title" value="${notebook.title}"/>
+                    <button type="button" class="btn btn-warning btn-block mt-3 update-btn">Update</button>
                 </section>
             </div>
         </div>
@@ -156,7 +156,7 @@ const coreMethods = {
                         notebooksContainer.innerHTML = "";
                         notesContainer.innerHTML = "";
                         const $notebooksList = $("#notebooks-list");
-                        $notebooksList.html("<h3>Choose a Notebook</h3>");
+                        $notebooksList.html("<h3 class='mb-3'>Choose a Notebook</h3>");
                         for(let i = 0; i<notebooks.length; i++){
                             const notebook = notebooks[i];
                             const oldContent = notebooksContainer.innerHTML;
@@ -164,7 +164,7 @@ const coreMethods = {
                             notebooksContainer.innerHTML = oldContent + newContent;
                             usersNotebooks = notebooks;
                             $notebooksList.append(`
-                            <input type="radio" name="notebook" class="notebook-radio" value="${ notebook._id }" id="create-${ notebook._id }">
+                            <input type="radio" name="notebook" class="notebook-radio d-inline-block ml-3 mr-1" value="${ notebook._id }" id="create-${ notebook._id }">
                             <label for="create-${ notebook._id }">${ notebook.title }</label>
                             `);
                             $(`#${notebooks[0]._id} > .show-notes-btn`).click();

@@ -75,16 +75,8 @@ body{
     display: flex;
 }
 
-#inline-form-submit-btn, .update-btn{
-    width: 23.9%;
-}
-
 .card-title{
     display: inline-block;
-}
-
-.notes{
-    display: none;
 }
 
 #arrow-right{

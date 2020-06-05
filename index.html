@@ -177,44 +177,47 @@
         </div>
     </div>
         <header class="container p-0 my-3 offset-1">
-            <i class="fas fa-arrow-left notebooks-bar-toggler" id="arrow-left"></i>
+            <i class="fas fa-arrow-left notebooks-bar-toggler" id="arrow-left" data-toggle="collapse" href="#notebooks-bar" role="button" aria-expanded="false" aria-controls="notebooks-bar"></i>
             <i class="fas fa-arrow-right notebooks-bar-toggler" id="arrow-right"></i>
         </header>
-        <div id="resources-container" class="container">
-        <div class="row">
-            <div class="notebooks col-10 offset-1">
-                <h2 class="mb-3 d-inline-block">Notebooks</h2>
-                <button type="button" id="create-notebook-btn" class="btn btn-success btn-block">
-                    <i class="fas fa-book-open d-inline-block mr-2"></i> 
-                    Create a Notebook
-                </button>
-                <form id="create-notebook-form" class="form-inline my-5">
-                    <div class="alert alert-danger err-label" role="alert"></div>
-                    <label class="sr-only" for="notebook-title">Title</label>
-                    <input type="text" class="form-control w-75" placeholder="title of the notebook" id="notebook-title" name="title">
-                    <button type="submit" class="btn btn-primary" id="inline-form-submit-btn">Create</button>
-                </form>
-                <div class="notebooks-container mt-4 w-100"></div>
-            </div>
-    
-    
-            <div class="notes">
-                <button type="button" id="create-note-btn">Write a note</button>
-                <form id="create-note-form">
-                    <div class="alert alert-danger err-label" role="alert"></div>
-                    <br>
-                    <section id="notebooks-list"></section>
-                    <br>
-                    <label for="note-body">Note:</label>
-                    <textarea class="note-body" id="note-body" name="body" cols="30" rows="10" placeholder="your note"></textarea>
-                    <br>
-                    <label for="note-pointed">Pointed?</label>
-                    <input type="checkbox" name="pointed" id="note-pointed">
-                    <br>
-                    <button type="submit">Create</button>
-                </form>
-                <h3>Notes</h3>
-                <div class="notes-container"></div>
+        <div id="resources-container">
+            <div class="container">
+                <div class="row">
+                    <div class="notebooks col-12 col-lg-4 collapse show" id="notebooks-bar">
+                        <h2 class="mb-3 d-inline-block">Notebooks</h2>
+                        <button type="button" id="create-notebook-btn" class="btn btn-success btn-block">
+                            <i class="fas fa-book-open d-inline-block mr-2"></i> 
+                            Create a Notebook
+                        </button>
+                        <form id="create-notebook-form" class="my-4">
+                            <div class="alert alert-danger err-label" role="alert"></div>
+                            <label class="sr-only" for="notebook-title">Title</label>
+                            <input type="text" class="form-control" placeholder="title of the notebook" id="notebook-title" name="title">
+                            <button type="submit" class="btn btn-primary btn-block mt-3" id="inline-form-submit-btn">Create</button>
+                        </form>
+                        <div class="notebooks-container mt-4 w-100"></div>
+                    </div>
+                    <div class="notes col-12 col-lg-8" id="notes-bar">
+                        <h2 class="mb-3 d-inline-block">Notes</h2>
+                        <button type="button" id="create-note-btn" class="btn btn-info btn-block">
+                            <i class="fas fa-pencil-alt d-inline-block mr-2"></i>
+                            Write a note
+                        </button>
+                        <form id="create-note-form" class="my-5">
+                            <div class="alert alert-danger err-label" role="alert"></div>
+                            <section id="notebooks-list" class="my-4 text-center"></section>
+                            <label for="note-body" class="sr-only">Note:</label>
+                            <textarea class="note-body" id="note-body" name="body" cols="30" rows="10" placeholder="your note"></textarea>
+                            <input type="checkbox" name="pointed" id="note-pointed">
+                            <label for="note-pointed" class="my-4 ml-2">
+                                <i class="fas fa-star d-inline-block text-warning"></i> 
+                                Pointed
+                            </label>
+                            <button type="submit" class="btn btn-block btn-primary">Create</button>
+                        </form>
+                        <div class="notes-container"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

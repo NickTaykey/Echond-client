@@ -212,5 +212,6 @@ createNotebookForm.addEventListener("submit", function(e){
 
 $(".notebooks-bar-toggler").click(function(e){
     e.preventDefault();
-    $(".notebooks, .notebooks-bar-toggler").toggle("fast");
+    $("#notebooks-bar").collapse('toggle')
+    $(".notebooks-bar-toggler").toggle("fast");
 });
