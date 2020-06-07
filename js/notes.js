@@ -30,11 +30,15 @@ $(notesContainer).on("click", ".delete-note-btn", function(e){
     });
 });
 
-// show or hide edit note btn
+// show or hide edit note form
 $(notesContainer).on("click", ".edit-note-btn", function(e){
     e.preventDefault();
     e.stopPropagation();
-    const form = $(this).siblings(".edit-note-form")[0];
+    const $modalBody = $(this)
+        .parents(".modal-header")
+        .siblings(".modal-body");
+    const form = $modalBody.find("form")[0];
+    $modalBody.find(".note-view").toggle();
     coreMethods.toggleVisibility(form);
     const id = $(this).parents(".note").attr("id");
     const selector = `note-${id}-body`;
@@ -45,13 +49,33 @@ $(notesContainer).on("click", ".edit-note-btn", function(e){
     }
 });
 
+$(".notes-container").on("click", ".close-show-note-modal-btn", function(e){
+    const $form = $(this)
+        .parents(".modal-header")
+        .siblings(".modal-body")
+        .find("form");
+    const id = $form
+        .find("textarea")
+        .attr("id")
+        .split("-")[1];
+    const editor = tinyMCE.editors[`note-${ id }-body`]
+    if(editor){
+        editor.remove();
+        coreMethods.toggleVisibility($form[0]);
+    }
+    $form.siblings("section").show();
+});
+
 // update a note
 $(notesContainer).on("submit", ".edit-note-form", function(e){
     e.preventDefault();
     e.stopPropagation();
-    const noteElement = this.parentElement;
+    const id = $(this)
+        .find("textarea")
+        .attr("id")
+        .split("-")[1];
+    const noteElement = $(`#${id}`);
     const { activeEditor } = tinyMCE;
-    const id = noteElement.getAttribute("id");
     const notebook = $(this).children(".notebooks-list-update").children("input[type=radio]:checked").val();
     const body =  activeEditor.getContent();
     const pointed = $(`#note-${ id }-pointed`).prop("checked");
@@ -80,8 +104,10 @@ $(notesContainer).on("submit", ".edit-note-form", function(e){
                             const { note, notebook, oldNotebook } = response;
                             const { noteElement } = this;
                             if(notebook._id===oldNotebook._id){
+                                $(noteElement).find("");
                                 const section = noteElement.children[0];
                                 const pointedLabel = noteElement.children[1];
+
                                 pointedLabel.textContent = `Pointed: ${ note.pointed }`;
                                 const form = noteElement.children[4];
                                 section.innerHTML = note.body;
