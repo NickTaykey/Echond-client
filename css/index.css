@@ -3,7 +3,7 @@
 }
 
 body{
-    padding-top: 56px;
+    padding-top: 50px;
 }
 
 .alert-success,
@@ -90,6 +90,10 @@ body{
     display: flex;
 }
 
+.selected-notebook{
+    border: 1px solid #dee2e6!important;
+    border-color: #007bff;
+}
 
 .card-title{
     display: inline-block;

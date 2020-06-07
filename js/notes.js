@@ -16,10 +16,10 @@ $(notesContainer).on("click", ".delete-note-btn", function(e){
                 let contNotebook = coreMethods.clientSideNotebookErrorHandler(response);
                 let contNote = coreMethods.clientSideNoteErrorHandler(response);  
                 if(contNote && contNotebook){
-                    this.noteElement.remove();
-                    $(".modal-backdrop").remove();
-                    // remove the note from the notebooks array
                     const { note } = response;
+                    $(`#delete-${ note._id }-modal`).modal("hide");
+                    this.noteElement.remove();
+                    // remove the note from the notebooks array
                     const { notes } = coreMethods.findNoteBookById(response.notebook._id);
                     const index = notes.indexOf(note);
                     notes.splice(index, 1);

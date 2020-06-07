@@ -33,10 +33,10 @@ const coreMethods = {
                         <a href="#" class="btn btn-sm btn-warning edit-notebook-btn">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-notebook-modal">
+                        <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-${ notebook._id }-modal">
                             <i class="fas fa-trash-alt"></i>
                         </a>
-                        <div class="modal fade notebook-delete-modal" id="delete-notebook-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal fade notebook-delete-modal" id="delete-${ notebook._id }-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -110,13 +110,13 @@ const coreMethods = {
                             <button type="button" class="btn btn-sm btn-warning edit-note-btn">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delete-note-modal">
+                            <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delete-${ note._id }-modal">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </div>
                     </div>
                     <section class="note-body-show">${ note.body.slice(0, 50) } ... </section>
-                    <div class="modal fade" id="delete-note-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal fade" id="delete-${ note._id }-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">

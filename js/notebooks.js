@@ -109,7 +109,6 @@ $(notebooksContainer).on("click", ".update-btn", function(e){
 $(notebooksContainer).on("click", ".delete-notebook-btn", function(e){
     e.preventDefault();
     e.stopPropagation();
-    $(".modal-backdrop").remove();
     const $notebook = $(this).parents(".notebook");
     const id = $notebook.attr("id");
     $.ajax({
@@ -129,11 +128,10 @@ $(notebooksContainer).on("click", ".delete-notebook-btn", function(e){
                     // if the selected notebook gets deleted select the next
                     if(this.$notebook.hasClass("selected-notebook")){
                         this.$notebook
-                            .next()
-                            .find(".show-notes-btn")
-                            .click();
+                        .next()
+                        .find(".show-notes-btn")
+                        .click();
                     }
-                    this.$notebook.remove();
                     // show the first notebook notes
                     notesContainer.innerHTML = "";
                     if(usersNotebooks[0]){
@@ -141,6 +139,7 @@ $(notebooksContainer).on("click", ".delete-notebook-btn", function(e){
                             notesContainer.innerHTML += coreMethods.generateNoteMarkup(n);
                         });
                     }
+                    $(`#delete-${ notebook._id }-modal`).modal('hide');
                     coreMethods.loadNotebooks();
                     coreMethods.setAlert("Notebook successfully deleted!", "success");
                 }
