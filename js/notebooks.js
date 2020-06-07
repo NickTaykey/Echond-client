@@ -212,6 +212,14 @@ createNotebookForm.addEventListener("submit", function(e){
 
 $(".notebooks-bar-toggler").click(function(e){
     e.preventDefault();
-    $("#notebooks-bar").collapse('toggle');
+    const $notebooksBar = $("#notebooks-bar");
+    $notebooksBar.collapse('toggle');
     $(".notebooks-bar-toggler").toggle("fast");
+    const $notesBar = $("#notes-bar");
+    $notesBar.toggleClass("col-lg-8");
+    const $createNoteBtn = $("#create-note-btn");
+    $createNoteBtn.toggleClass("create-note-btn-on");
+    $("#header-row").toggleClass("mb-4")
+    $(".note")
+        .toggleClass(["col-lg-6", "col-lg-4"])
 });

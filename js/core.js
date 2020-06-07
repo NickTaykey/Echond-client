@@ -100,67 +100,48 @@ const coreMethods = {
             <label for="${ note._id }-update-${ n._id }">${ n.title }</label>
             `;
         });
-        /* const markup = `
-        <div class="note" id=${note._id}>
-            <section class="note-body-show">${ note.body }</section>
-            <strong>Pointed: ${ note.pointed }</strong>
-            <button type="button" class="edit-note-btn">Edit</button>
-            <button type="button" class="delete-note-btn">Delete Note</button>
-            <form action="${ notesBaseUrl }/${ note._id }" class="edit-note-form">
-                <div class="alert alert-danger err-label" role="alert"></div>
-                <br>
-                <section class="notebooks-list-update">${ updateNotebookFieldSet }</section>
-                <br>
-                <label for="note-${ note._id }-body">Your Note</label>
-                <textarea class="note-body" name="body" id="note-${ note._id }-body" cols="30" rows="10">${ note.body }</textarea>
-                </br>
-                <label for="note-${ note._id }-pointed">Pointed</label>
-                <input type="checkbox" name="pointed" id="note-${ note._id }-pointed" ${ note.pointed ? "checked" : "" }>
-                </br>
-                <button type="submit">Update</button>
-            </form>
-        </div>
-        `; */
         const markup = `
-        <div class="note card col-12 col-lg-5" id=${note._id}>
-            <div class="card-body">
-                <div class="mb-4 d-flex justify-content-${ note.pointed ? 'between' : 'end'}">
-                    <i class="fas fa-star pointed-note-star text-warning ${ note.pointed ? '' : 'd-none'}"></i>
-                    <div>
-                        <button type="button" class="btn btn-sm btn-warning edit-note-btn">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delete-note-modal">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </div>
-                </div>
-                <section class="note-body-show">${ note.body.slice(0, 25) } ... </section>
-                <div class="modal fade" id="delete-note-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Are you sure to delete this note?</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        </div>
-                        <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-danger delete-note-btn">Delete</button>
+        <div class="note col-12 col-lg-6 mb-4" id=${note._id}>
+            <div class="mx-lg-1 card">
+                <div class="card-body">
+                    <div class="mb-4 d-flex justify-content-${ note.pointed ? 'between' : 'end'}">
+                        <i class="fas fa-star pointed-note-star text-warning ${ note.pointed ? '' : 'd-none'}"></i>
+                        <div>
+                            <button type="button" class="btn btn-sm btn-warning edit-note-btn">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delete-note-modal">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
                         </div>
                     </div>
+                    <section class="note-body-show">${ note.body.slice(0, 50) } ... </section>
+                    <div class="modal fade" id="delete-note-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Are you sure to delete this note?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-danger delete-note-btn">Delete</button>
+                            </div>
+                        </div>
+                        </div>
                     </div>
+                    <form action="${ notesBaseUrl }/${ note._id }" class="edit-note-form">
+                        <div class="alert alert-danger err-label" role="alert"></div>
+                        <section class="notebooks-list-update">${ updateNotebookFieldSet }</section>
+                        <label for="note-${ note._id }-body">Your Note</label>
+                        <textarea class="note-body" name="body" id="note-${ note._id }-body" cols="30" rows="10">${ note.body }</textarea>
+                        <label for="note-${ note._id }-pointed">Pointed</label>
+                        <input type="checkbox" name="pointed" id="note-${ note._id }-pointed" ${ note.pointed ? "checked" : "" }>
+                        <button type="submit">Update</button>
+                    </form>
                 </div>
-                <form action="${ notesBaseUrl }/${ note._id }" class="edit-note-form">
-                    <div class="alert alert-danger err-label" role="alert"></div>
-                    <section class="notebooks-list-update">${ updateNotebookFieldSet }</section>
-                    <label for="note-${ note._id }-body">Your Note</label>
-                    <textarea class="note-body" name="body" id="note-${ note._id }-body" cols="30" rows="10">${ note.body }</textarea>
-                    <label for="note-${ note._id }-pointed">Pointed</label>
-                    <input type="checkbox" name="pointed" id="note-${ note._id }-pointed" ${ note.pointed ? "checked" : "" }>
-                    <button type="submit">Update</button>
-                </form>
             </div>
         </div>
         `;

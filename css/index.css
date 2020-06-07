@@ -49,11 +49,23 @@ body{
     width: 250px;
 }
 
+.create-note-btn-on{
+    width: 50%;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 3rem!important;
+    margin-top: 1.5rem!important;
+
+}
+
 @media (max-width: 992px){
     .custom-offset{
         margin-left: 9.5%;
     }
     #user-profile, #filters, #search-field{
+        width: 100%;
+    }
+    .create-note-btn-on{
         width: 100%;
     }
 }
@@ -78,6 +90,7 @@ body{
     display: flex;
 }
 
+
 .card-title{
     display: inline-block;
 }
@@ -88,10 +101,6 @@ body{
 
 #arrow-right{
     display: none;
-}
-
-.note{
-    margin: 30px auto;
 }
 
 .fa-arrow-left, .fa-arrow-right{
