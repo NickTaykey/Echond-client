@@ -92,7 +92,7 @@ body{
 
 .selected-notebook{
     border: 1px solid #dee2e6!important;
-    border-color: #007bff;
+    border-color: #007bff!important;
 }
 
 .card-title{

@@ -7,9 +7,13 @@ $(notebooksContainer).on("click", ".show-notes-btn", function(e){
     e.preventDefault();
     e.stopPropagation();
     // activate the former notebook show notes btn
-    $(".selected-notebook > .show-notes-btn").attr("disabled", false);
+    $(".selected-notebook")
+        .find(".show-notes-btn")
+        .removeClass("disabled");
     // disable show notes btn
-    this.setAttribute("disabled", true);
+    $(this)
+        .addClass("disabled")
+        .css({ boxShadow: "none" });
     // remove selected state from the former selected notebook
     $(notebooksContainer)
         .find(".selected-notebook")
