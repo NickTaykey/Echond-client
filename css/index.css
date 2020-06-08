@@ -45,6 +45,11 @@ body{
     width: 400px;
 }
 
+.fa-user-circle, .fa-sign-out-alt, .fa-sign-in-alt{
+    font-size: 1.35rem;
+}
+
+
 #search-field{
     width: 250px;
 }
