@@ -120,7 +120,7 @@ $(notesContainer).on("submit", ".edit-note-form", function(e){
                                 } else {
                                     $controlsBar.addClass("justify-content-between");
                                 }
-                                $section.html(`${ note.body.slice(0, 50) } ...`);
+                                $section.html(coreMethods.summarizeNoteBody(note.body));
                                 $(modalEditForm)
                                     .siblings(".note-view")
                                     .html(note.body);

@@ -90,6 +90,14 @@ const coreMethods = {
         }
         return true;
     },
+    summarizeNoteBody(body){
+        const elemsList = jQuery.parseHTML(body);
+        let textContent = "";
+        for(let e of elemsList){
+            textContent+=e.textContent;
+        }
+        return textContent.slice(0, 50) + " ... ";
+    },
     generateNoteMarkup(note){
         let updateNotebookFieldSet = `<h3 class="text-center my-3">Notebook</h3>`;
         const selectedNotebookId = $(".selected-notebook").attr("id");
@@ -115,7 +123,7 @@ const coreMethods = {
                             </button>
                         </div>
                     </div>
-                    <section class="note-body-show">${ note.body.slice(0, 50) } ... </section>
+                    <section class="note-body-show">${ coreMethods.summarizeNoteBody(note.body) }</section>
                     <div class="modal fade" id="delete-${ note._id }-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         <div class="modal-dialog">
                         <div class="modal-content">
