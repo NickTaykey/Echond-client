@@ -22,7 +22,7 @@ logoutLink.addEventListener("click", function(e){
     $(logoutItem).hide();
     $("#profile-item").hide();
     $(profile).hide();
-    $("#welcome-item, #profile-item, #sf-item, #fuzzy-search-item").hide();
+    $("#welcome-item, #profile-item, #sf-item, #fuzzy-search-item, #header-container").hide();
     $("#registration-item, #login-item").show();
     $("#welcome-msg").text("");
     coreMethods.setAlert("Logout successfully completed!", "success");
@@ -96,7 +96,7 @@ twoFactorForm.addEventListener("submit", function(e){
                         $("#auth-container").hide();
                         $("#welcome-item").show();
                         $("#welcome-msg").text(content);
-                        $("#profile-item, #sf-item, #fuzzy-search-item").show();
+                        $("#profile-item, #sf-item, #fuzzy-search-item, #header-container").show();
                         $("#login-item, #registration-item").hide();
                     }
                     if(this.feature==="Reset password" && code===200){
@@ -163,7 +163,7 @@ resetPwdForm.addEventListener("submit", function(e){
                 $("#registration-item, #login-item, #auth-container").hide();
                 $(this.resetPwdForm).children("input[type=password]").val("");
                 $(
-                    "#resources-container, #logout-item, #welcome-item, #profile-item, #sf-item"
+                    "#resources-container, #logout-item, #welcome-item, #profile-item, #sf-item, #header-container"
                 ).show();
                 $("#welcome-msg").text(`Welcome back ${user.username}!`);
                 localStorage.JWTtoken = token;
@@ -321,7 +321,7 @@ if(localStorage.JWTtoken){
     $(logoutItem).show();
     $("#profile-item").show();
     const { username } = JSON.parse(localStorage.currentUser);
-    $("#welcome-item, #profile-item, #sf-item, #fuzzy-search-item").show();
+    $("#welcome-item, #profile-item, #sf-item, #fuzzy-search-item, #header-container").show();
     $("#login-item, #registration-item").hide();
     $("#welcome-msg").text(`Welcome back ${username}!`);
     $("#resources-container").show();

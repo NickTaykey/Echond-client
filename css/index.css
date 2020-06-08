@@ -36,7 +36,8 @@ body{
 #profile-item,
 #login-form-title,
 #registration-form-title,
-#fuzzy-search-item
+#fuzzy-search-item,
+#header-container
 {
     display: none;
 }
