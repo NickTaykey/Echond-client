@@ -157,17 +157,18 @@ const coreMethods = {
                                     </section>
                                     <form action="${ notesBaseUrl }/${ note._id }" class="edit-note-form">
                                         <div class="alert alert-danger err-label" role="alert"></div>
-                                        <section class="notebooks-list-update mb-3">${ updateNotebookFieldSet }</section>
+                                        <section class="notebooks-list-update">${ updateNotebookFieldSet }</section>
                                         <label for="note-${ note._id }-body" class="sr-only">Your Note</label>
+                                        <h3 class="text-center my-3">Note</h3>
                                         <textarea class="note-body" name="body" id="note-${ note._id }-body" cols="30" rows="10">${ note.body }</textarea>
-                                        <div class="mt-3">
+                                        <div class="my-3">
                                             <input type="checkbox" name="pointed" id="note-${ note._id }-pointed" ${ note.pointed ? "checked" : "" }>
-                                            <label for="note-${ note._id }-pointed" class="ml-2">
+                                            <label for="note-${ note._id }-pointed" class="ml-2 my-0">
                                                 <i class="fas fa-star d-inline-block text-warning"></i> 
                                                 Pointed
                                             </label>
                                         </div>
-                                        <button type="submit" class="btn btn-warning btn-block my-3">Update</button>
+                                        <button type="submit" class="btn btn-warning btn-block mb-3">Update</button>
                                     </form>
                                 </div>
                             </div>
