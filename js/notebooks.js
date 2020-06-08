@@ -98,6 +98,8 @@ $(notebooksContainer).on("click", ".update-btn", function(e){
                             const notebook = coreMethods.findNoteBookById(response.notebook._id);
                             const notebookIndex = usersNotebooks.indexOf(notebook);
                             usersNotebooks.splice(notebookIndex, 1, response.notebook);
+                            $("#search-field").val("");
+                            $("#sf-item").show();
                             coreMethods.setFormErrLabel();
                             coreMethods.loadNotebooks();
                             coreMethods.setAlert("Notebook successfully updated!", "success");
@@ -202,6 +204,8 @@ createNotebookForm.addEventListener("submit", function(e){
                                 <input type="checkbox" id="filter-${notebook._id}" class="notebook-filter-item">
                             </li>`
                         );
+                        $("#search-field").val("");
+                        $("#sf-item").show();
                         coreMethods.setFormErrLabel();
                         coreMethods.loadNotebooks();
                         coreMethods.setAlert("Notebook successfully added!", "success");

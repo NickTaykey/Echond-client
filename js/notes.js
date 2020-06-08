@@ -104,6 +104,9 @@ $(notesContainer).on("submit", ".edit-note-form", function(e){
                             // remove current note 
                             const { note, notebook, oldNotebook } = response;
                             const { $noteElement, modalEditForm, activeEditor } = this;
+                            const modalSelector = `#show-${ note._id }-modal`;
+                            $("#search-field").val("");
+                            $("#sf-item").show();
                             if(notebook._id===oldNotebook._id){
                                 const $section = $noteElement.find(".note-body-show");
                                 const $star = $noteElement
@@ -128,9 +131,11 @@ $(notesContainer).on("submit", ".edit-note-form", function(e){
                                     .parents(".modal-content")
                                     .find(".edit-note-btn")
                                     .click();
+                                $(modalSelector).on('hidden.bs.modal', function (e) {
+                                    coreMethods.loadNotebooks(notebook._id);
+                                });
                                 coreMethods.setAlert("Note successfully updated!", "success");
                             } else {
-                                const modalSelector = `#show-${ note._id }-modal`;
                                 // remove the original note from the DOM
                                 $(modalSelector).modal("hide");
                                 $(modalSelector).on('hidden.bs.modal', function (e) {
@@ -153,6 +158,7 @@ $(notesContainer).on("submit", ".edit-note-form", function(e){
                                         .click();
                                     activeEditor.remove();
                                     $noteElement.remove();
+                                    coreMethods.loadNotebooks(notebook._id);
                                     coreMethods.setAlert("Note successfully updated!", "success");
                                 });
                             }
@@ -220,6 +226,11 @@ createNoteForm.addEventListener("submit", function(e){
                             .find("#note-pointed, .notebook-radio")
                             .prop("checked", false);
                         coreMethods.toggleVisibility(createNoteForm);
+                        const searchVal = $("#search-field").val();
+                        $("#search-field").val("");
+                        $("#sf-item").show();
+                        if(searchVal.length)
+                            coreMethods.loadNotebooks(notebook._id);
                         coreMethods.setAlert("Note successfully created!", "success");
                     }
                 }

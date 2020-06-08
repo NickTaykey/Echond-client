@@ -189,7 +189,7 @@ const coreMethods = {
         }
         previouslyLoggedIn = false;
     },
-    loadNotebooks(){
+    loadNotebooks(targetNotebook){
         if(localStorage.JWTtoken){
             // get all the notebooks
             $.get(
@@ -225,7 +225,8 @@ const coreMethods = {
                             <label for="create-${ notebook._id }">${ notebook.title }</label>
                             `);
                         }
-                        $(`#${notebooks[0]._id}`).find(".show-notes-btn").click()
+                        const notebookSelector = "#" + (targetNotebook ? targetNotebook : notebooks[0]._id);
+                        $(notebookSelector).find(".show-notes-btn").click();
                     }
                 }
             );
