@@ -74,7 +74,7 @@ $(notesContainer).on("submit", ".edit-note-form", function(e){
         .find("textarea")
         .attr("id")
         .split("-")[1];
-    const noteElement = $(`#${id}`);
+    const $noteElement = $(`#${id}`);
     const { activeEditor } = tinyMCE;
     const notebook = $(this).children(".notebooks-list-update").children("input[type=radio]:checked").val();
     const body =  activeEditor.getContent();
@@ -89,8 +89,9 @@ $(notesContainer).on("submit", ".edit-note-form", function(e){
             {
                 url: `${notesBaseUrl}/${id}`,
                 type: "PUT",
-                noteElement,
+                $noteElement,
                 activeEditor,
+                modalEditForm: this,
                 data,
                 success: function(response){
                     const { err } = response;
@@ -102,39 +103,59 @@ $(notesContainer).on("submit", ".edit-note-form", function(e){
                         if(contNote && contNotebook){
                             // remove current note 
                             const { note, notebook, oldNotebook } = response;
-                            const { noteElement } = this;
+                            const { $noteElement, modalEditForm, activeEditor } = this;
                             if(notebook._id===oldNotebook._id){
-                                $(noteElement).find("");
-                                const section = noteElement.children[0];
-                                const pointedLabel = noteElement.children[1];
-
-                                pointedLabel.textContent = `Pointed: ${ note.pointed }`;
-                                const form = noteElement.children[4];
-                                section.innerHTML = note.body;
-                                form.style.display = "none";
-                            } else {
-                                // remove the original note from the DOM
-                                $(noteElement).remove();
-                                this.activeEditor.remove();
-                                // update usersNotebooks
-                                // remove the note from the old notebook
-                                let clientNotebook = coreMethods.findNoteBookById(oldNotebook._id);
-                                let notebookIndex = usersNotebooks.indexOf(clientNotebook);
-                                let clientNote = usersNotebooks[notebookIndex].notes.find(n=>n._id===note._id);
-                                let noteIndex = usersNotebooks[notebookIndex].notes.indexOf(clientNote);
-                                usersNotebooks[notebookIndex].notes.splice(noteIndex, 1);
-                                // add the note to the new notebook
-                                clientNotebook = coreMethods.findNoteBookById(notebook._id);
-                                notebookIndex = usersNotebooks.indexOf(clientNotebook);
-                                usersNotebooks[notebookIndex].notes.push(note);
-                                // select the new notebook
-                                const $notebookElement = $(`#${notebook._id}`);
-                                // show the notes
-                                $notebookElement
-                                    .find(".show-notes-btn")
+                                const $section = $noteElement.find(".note-body-show");
+                                const $star = $noteElement
+                                    .find(".controls-bar")
+                                    .find(".fa-star");
+                                $star.removeClass("d-none");
+                                const $controlsBar = $noteElement.find(".controls-bar");
+                                $controlsBar.removeClass(
+                                    ["justify-content-end", "justify-content-between"]
+                                );
+                                if(!note.pointed){
+                                    $star.addClass("d-none");
+                                    $controlsBar.addClass("justify-content-end");
+                                } else {
+                                    $controlsBar.addClass("justify-content-between");
+                                }
+                                $section.html(`${ note.body.slice(0, 50) } ...`);
+                                $(modalEditForm)
+                                    .siblings(".note-view")
+                                    .html(note.body);
+                                $(modalEditForm)
+                                    .parents(".modal-content")
+                                    .find(".edit-note-btn")
                                     .click();
+                                coreMethods.setAlert("Note successfully updated!", "success");
+                            } else {
+                                const modalSelector = `#show-${ note._id }-modal`;
+                                // remove the original note from the DOM
+                                $(modalSelector).modal("hide");
+                                $(modalSelector).on('hidden.bs.modal', function (e) {
+                                    // update usersNotebooks
+                                    // remove the note from the old notebook
+                                    let clientNotebook = coreMethods.findNoteBookById(oldNotebook._id);
+                                    let notebookIndex = usersNotebooks.indexOf(clientNotebook);
+                                    let clientNote = usersNotebooks[notebookIndex].notes.find(n=>n._id===note._id);
+                                    let noteIndex = usersNotebooks[notebookIndex].notes.indexOf(clientNote);
+                                    usersNotebooks[notebookIndex].notes.splice(noteIndex, 1);
+                                    // add the note to the new notebook
+                                    clientNotebook = coreMethods.findNoteBookById(notebook._id);
+                                    notebookIndex = usersNotebooks.indexOf(clientNotebook);
+                                    usersNotebooks[notebookIndex].notes.push(note);
+                                    // select the new notebook
+                                    const $notebookElement = $(`#${notebook._id}`);
+                                    // show the notes
+                                    $notebookElement
+                                        .find(".show-notes-btn")
+                                        .click();
+                                    activeEditor.remove();
+                                    $noteElement.remove();
+                                    coreMethods.setAlert("Note successfully updated!", "success");
+                                });
                             }
-                            coreMethods.setAlert("Note successfully updated!", "success");
                         }
                     }
                 }

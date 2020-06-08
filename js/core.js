@@ -104,12 +104,9 @@ const coreMethods = {
         <div class="note col-12 col-lg-6 mb-4" id=${note._id}>
             <div class="mx-lg-1 card">
                 <div class="card-body">
-                    <div class="mb-4 d-flex justify-content-${ note.pointed ? 'between' : 'end'}">
-                        <i class="fas fa-star pointed-note-star text-warning ${ note.pointed ? '' : 'd-none'}"></i>
+                    <div class="mb-4 d-flex justify-content-${ note.pointed ? 'between' : 'end'} controls-bar">
+                        <i class="fas fa-star pointed-note-star text-warning${ note.pointed ? '' : ' d-none'}"></i>
                         <div>
-                            <!--button type="button" class="btn btn-sm btn-warning edit-note-btn">
-                                <i class="fas fa-edit"></i>
-                            </button-->
                             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#show-${ note._id }-modal">
                                 <i class="fas fa-search"></i>
                             </button>
