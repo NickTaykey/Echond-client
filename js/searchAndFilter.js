@@ -99,22 +99,25 @@ filterBtn.addEventListener("click", function(e){
     // find the names of the selected notebook
     const selectedNotebooks = [];
     $(".notebook-filter-item:checked")
-    .siblings("label")
-    .each((i, l)=>{
-        const id = l.getAttribute("for")
-        .replace("filter-", "");
-        selectedNotebooks.push(id);
-    });
+        .siblings("label")
+        .each((i, l)=>{
+            const id = l
+                .getAttribute("for")
+                .replace("filter-", "");
+            selectedNotebooks.push(id);
+        });
     if(selectedNotebooks.length){
         // hide all the notebooks
         $(notebooksContainer)
-        .children()
-        .hide();
+            .children()
+            .hide();
         // show only the selected notebooks
         selectedNotebooks.forEach((id, i)=>{
             $(`#${id}`).show();
-            if(i===0) 
-            $(`#${id} > .show-notes-btn`).click();
+            if(i===0)
+                $(`#${id}`)
+                    .find(".show-notes-btn")
+                    .click();
         });
         msg+=" notebooks,";
     } else {
