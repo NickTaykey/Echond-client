@@ -209,6 +209,7 @@ createNotebookForm.addEventListener("submit", function(e){
                         );
                         $("#search-field").val("");
                         $("#sf-item").show();
+                        $("#no-notebooks-label").remove();
                         coreMethods.setFormErrLabel();
                         coreMethods.loadNotebooks();
                         coreMethods.setAlert("Notebook successfully added!", "success");

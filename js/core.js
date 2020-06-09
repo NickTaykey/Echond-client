@@ -226,8 +226,14 @@ const coreMethods = {
                             <label for="create-${ notebook._id }">${ notebook.title }</label>
                             `);
                         }
-                        const notebookSelector = "#" + (targetNotebook ? targetNotebook : notebooks[0]._id);
-                        $(notebookSelector).find(".show-notes-btn").click();
+                        if(usersNotebooks.length){
+                            const notebookSelector = "#" + (targetNotebook ? targetNotebook : notebooks[0]._id);
+                            $(notebookSelector).find(".show-notes-btn").click();
+                        } else {
+                            $(notebooksContainer).html("<h3 class='font-weight-light mt-5 text-muted text-center'>No Notebooks</h3>");
+                            $(notesContainer).html("<h3 class='col-12 font-weight-light mt-4 text-muted text-center'>No Notes</h3>");
+                            $("#filter-bar-notebooks").before("<div id='no-notebooks-label' class='text-center text-muted'>No Notebooks</div>")
+                        }
                     }
                 }
             );
