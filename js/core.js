@@ -265,10 +265,11 @@ const coreMethods = {
     },
     showPointedNotes(notes){
         for(let e of notes){
-            const isPoinedLabel = $(e).find("strong").text();
-            if(!(/true/gi.exec(isPoinedLabel))){
+            const isPoinedNote = $(e)
+                .find(".fa-star")
+                .hasClass("d-none");
+            if(isPoinedNote)
                 $(e).hide();
-            }
         }
     }
 }

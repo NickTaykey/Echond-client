@@ -233,7 +233,7 @@ createNoteForm.addEventListener("submit", function(e){
                         $notebookItem
                             .find(".show-notes-btn")
                             .click();
-                        $(notesContainer).append(
+                        $(notesContainer).prepend(
                             coreMethods.generateNoteMarkup(note)
                         );
                         this.activeEditor.setContent("");
