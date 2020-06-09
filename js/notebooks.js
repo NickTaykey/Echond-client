@@ -165,6 +165,7 @@ createNotebookBtn.addEventListener("click", function(e){
     $(this)
         .siblings("#create-notebook-form")
         .toggle();
+    coreMethods.setAlert();
 });
 
 const createNotebookForm = document.getElementById("create-notebook-form");

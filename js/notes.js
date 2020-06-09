@@ -195,6 +195,7 @@ $(notesContainer).on("submit", ".edit-note-form", function(e){
 const createNoteBtn = document.getElementById("create-note-btn");
 createNoteBtn.addEventListener("click", function(e){
     e.preventDefault();
+    coreMethods.setAlert();
     const form = this.nextElementSibling;
     coreMethods.toggleVisibility(form);
 });

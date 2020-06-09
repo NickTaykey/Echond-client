@@ -29,14 +29,17 @@ searchFiled.addEventListener("input", function(e){
                     newContent += coreMethods.generateNotebookMarkup(n);
                 });
                 notebooksContainer.innerHTML = newContent;
-                let type = "danger", msg = "No results found!";
+                let type = "danger", msg;
                 const results = notes.length + notebooks.length;
                 coreMethods.setAlert();
-                if(results>0){
-                    type = "success"; msg = `${results} results found!`;
-                }
+                if(!notebooks.length)
+                    $(notebooksContainer).html("<h3 class='font-weight-light mt-5 text-muted text-center'>No Notebooks</h3>");
+                if(!notes.length)
+                    $(notesContainer).html("<h3 class='col-12 font-weight-light mt-4 text-muted text-center'>No Notes</h3>");
+                if(results>0)
+                    type = "success"; msg = `Found <strong>${ notebooks.length }</strong> notebooks and <strong>${ notes.length }</strong> notes!`;
                 $("#sf-item").hide();
-                coreMethods.setAlert(msg, type);
+                coreMethods.setAlert(msg, type, true);
             }
         });
     } else{

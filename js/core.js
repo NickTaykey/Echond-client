@@ -237,11 +237,12 @@ const coreMethods = {
        return usersNotebooks.find(n=>n._id===id);
     },
     // set up an alert, reset the former
-    setAlert(msg, type){
+    setAlert(msg, type, html){
         if(msg && type){
             const selector = `.alert-${type}:not(.show-note-modal-alert)`;
             $(selector).show();
-            $(selector).text(msg);
+            if(html) $(selector).html(msg);
+            else $(selector).text(msg);
         } else {
             $(".alert-danger, .alert-success").hide();
             $(".alert-danger, .alert-success").text("");
