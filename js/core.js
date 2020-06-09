@@ -98,13 +98,13 @@ const coreMethods = {
         }
         return textContent.slice(0, 50) + " ... ";
     },
-    generateNoteMarkup(note){
+    generateNoteMarkup(note, customNotebook){
         let updateNotebookFieldSet = `<h3 class="text-center my-3">Notebook</h3>`;
         const selectedNotebookId = $(".selected-notebook").attr("id");
         usersNotebooks.forEach(n=>{
             updateNotebookFieldSet+=
             `
-            <input type="radio" name="notebook" class="notebook-radio" value="${ n._id }" id="${ note._id }-update-${ n._id }" ${ selectedNotebookId===n._id ? "checked" : "" }>
+            <input type="radio" name="notebook" class="notebook-radio" value="${ n._id }" id="${ note._id }-update-${ n._id }" ${ customNotebook===n._id || selectedNotebookId===n._id ? "checked" : "" }>
             <label for="${ note._id }-update-${ n._id }">${ n.title }</label>
             `;
         });
@@ -152,6 +152,7 @@ const coreMethods = {
                                     </button>
                                 </div>
                                 <div class="modal-body pt-0">
+                                    <div class="alert alert-success my-3 show-note-modal-alert" role="alert"></div>
                                     <section class="note-view my-4">
                                         ${ note.body }
                                     </section>
@@ -238,8 +239,9 @@ const coreMethods = {
     // set up an alert, reset the former
     setAlert(msg, type){
         if(msg && type){
-            $(`.alert-${type}`).show();
-            $(`.alert-${type}`).text(msg);
+            const selector = `.alert-${type}:not(.show-note-modal-alert)`;
+            $(selector).show();
+            $(selector).text(msg);
         } else {
             $(".alert-danger, .alert-success").hide();
             $(".alert-danger, .alert-success").text("");

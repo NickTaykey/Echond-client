@@ -146,6 +146,8 @@ $(notebooksContainer).on("click", ".delete-notebook-btn", function(e){
                         });
                     }
                     $(`#delete-${ notebook._id }-modal`).modal('hide');
+                    $("#search-field").val("");
+                    $("#sf-item").show();
                     coreMethods.loadNotebooks();
                     coreMethods.setAlert("Notebook successfully deleted!", "success");
                 }

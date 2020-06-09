@@ -23,6 +23,9 @@ $(notesContainer).on("click", ".delete-note-btn", function(e){
                     const { notes } = coreMethods.findNoteBookById(response.notebook._id);
                     const index = notes.indexOf(note);
                     notes.splice(index, 1);
+                    $("#search-field").val("");
+                    $("#sf-item").show();
+                    coreMethods.loadNotebooks();
                     coreMethods.setAlert("Note successfully deleted!", "success");
                 }
             }
@@ -44,6 +47,12 @@ $(notesContainer).on("click", ".edit-note-btn", function(e){
     const selector = `note-${id}-body`;
     if(form.style.display!=="none"){
         coreMethods.configureTextEditor(`#${selector}`);
+        $(this)
+            .parents(".modal-header")
+            .siblings(".modal-body")
+            .find(".alert-success")
+            .text("")
+            .hide();
     } else {
         tinyMCE.editors[selector].remove();
     }
@@ -58,6 +67,12 @@ $(".notes-container").on("click", ".close-show-note-modal-btn", function(e){
         .find("textarea")
         .attr("id")
         .split("-")[1];
+    $(this)
+        .parents(".modal-header")
+        .siblings(".modal-body")
+        .find(".alert-success")
+        .text("")
+        .hide();
     const editor = tinyMCE.editors[`note-${ id }-body`]
     if(editor){
         editor.remove();
@@ -105,6 +120,7 @@ $(notesContainer).on("submit", ".edit-note-form", function(e){
                             const { note, notebook, oldNotebook } = response;
                             const { $noteElement, modalEditForm, activeEditor } = this;
                             const modalSelector = `#show-${ note._id }-modal`;
+                            const lastSearchValue = $("#search-field").val();
                             $("#search-field").val("");
                             $("#sf-item").show();
                             if(notebook._id===oldNotebook._id){
@@ -131,10 +147,15 @@ $(notesContainer).on("submit", ".edit-note-form", function(e){
                                     .parents(".modal-content")
                                     .find(".edit-note-btn")
                                     .click();
-                                $(modalSelector).on('hidden.bs.modal', function (e) {
-                                    coreMethods.loadNotebooks(notebook._id);
-                                });
-                                coreMethods.setAlert("Note successfully updated!", "success");
+                                $(modalSelector)
+                                    .find(".alert-success")
+                                    .text("Note successfully updated!")
+                                    .show();
+                                if(lastSearchValue.length)
+                                    $(modalSelector).on('hidden.bs.modal', function (e) {
+                                        coreMethods.setAlert();
+                                        coreMethods.loadNotebooks(notebook._id);
+                                    });
                             } else {
                                 // remove the original note from the DOM
                                 $(modalSelector).modal("hide");

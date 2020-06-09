@@ -20,7 +20,7 @@ searchFiled.addEventListener("input", function(e){
                         });
                     });
                     if(notebook)
-                        newContent += coreMethods.generateNoteMarkup(n);
+                        newContent += coreMethods.generateNoteMarkup(n, notebook._id);
                 });
                 notesContainer.innerHTML = newContent;
                 
