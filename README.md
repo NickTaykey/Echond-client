@@ -2,4 +2,4 @@
 The client-side of an Evernote like web app #VanillaJS #JQuery #BS4, built completely without frontend frameworks, only JQuery
 and Bs4
 
-**© Echond Niccoò Toccane 2020**
+**Echond © 2020 Niccolò Toccane**
