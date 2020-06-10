@@ -124,6 +124,10 @@ $(notesContainer).on("submit", ".edit-note-form", function(e){
                             $("#search-field").val("");
                             $("#sf-item").show();
                             if(notebook._id===oldNotebook._id){
+                                const nb = coreMethods.findNoteBookById(notebook._id);
+                                const noteItem = nb.notes.find(n=>n._id===note._id);
+                                const noteIndex = nb.notes.indexOf(noteItem);
+                                nb.notes.splice(noteIndex, 1, note);
                                 const $section = $noteElement.find(".note-body-show");
                                 const $star = $noteElement
                                     .find(".controls-bar")
@@ -147,15 +151,15 @@ $(notesContainer).on("submit", ".edit-note-form", function(e){
                                     .parents(".modal-content")
                                     .find(".edit-note-btn")
                                     .click();
+                                coreMethods.setAlert();
                                 $(modalSelector)
                                     .find(".alert-success")
                                     .text("Note successfully updated!")
                                     .show();
-                                if(lastSearchValue.length)
-                                    $(modalSelector).on('hidden.bs.modal', function (e) {
-                                        coreMethods.setAlert();
-                                        coreMethods.loadNotebooks(notebook._id);
-                                    });
+                                $(modalSelector).on('hidden.bs.modal', function (e) {
+                                    $("#reset-search-filters-field").click();
+                                    coreMethods.loadNotebooks(notebook._id);
+                                });
                             } else {
                                 // remove the original note from the DOM
                                 $(modalSelector).modal("hide");

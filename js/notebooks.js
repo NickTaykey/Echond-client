@@ -25,18 +25,22 @@ $(notebooksContainer).on("click", ".show-notes-btn", function(e){
     const notebook = usersNotebooks.find(n=>n._id===notebookId);
     let newContent = "";
     const notes = [...notebook.notes];
-    if(filterDate){
-        notes.reverse();
+    if(notes.length){
+        if(filterDate){
+            notes.reverse();
+        }
+        notes.forEach(n=>{
+            newContent += coreMethods.generateNoteMarkup(n);
+        });
+        notesContainer.innerHTML = newContent;
+        if(filterPointed){
+            const $notes = $(notesContainer).children(".note");
+            coreMethods.showPointedNotes($notes);
+        }
+        lastInspectedNotebook = notebookContainer;
+    } else {
+        $(notesContainer).html("<h3 class='col-12 font-weight-light mt-4 text-muted text-center'>No Notes</h3>");
     }
-    notes.forEach(n=>{
-        newContent += coreMethods.generateNoteMarkup(n);
-    });
-    notesContainer.innerHTML = newContent;
-    if(filterPointed){
-        const $notes = $(notesContainer).children(".note");
-        coreMethods.showPointedNotes($notes);
-    }
-    lastInspectedNotebook = notebookContainer;
 });
 
 // load all the notebooks
